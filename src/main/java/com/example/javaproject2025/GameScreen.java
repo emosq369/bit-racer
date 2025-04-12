@@ -42,9 +42,10 @@ public class GameScreen extends Application {
         // 2. current position + amount pulled back in direction = distance moved
         // 3. figure out how to move such distance.
         bit1.bitRendered.setOnMouseDragged(jmouseEvent -> {
+            // 30 is radius, will fix code later.
             if(
             (jmouseEvent.getX() < bit1.bitBoundary.getCenterX() + 30 && jmouseEvent.getY() < bit1.bitBoundary.getCenterY() + 30) &&
-            (jmouseEvent.getX() > bit1.bitBoundary.getCenterX() - 30))
+            (jmouseEvent.getX() > bit1.bitBoundary.getCenterX() - 30) && jmouseEvent.getY() > bit1.bitBoundary.getCenterY() - 30)
             {
                 bit1.bitRendered.setCenterX(jmouseEvent.getX());
                 bit1.bitRendered.setCenterY(jmouseEvent.getY());
@@ -63,6 +64,8 @@ public class GameScreen extends Application {
             bit1.bitRendered.setCenterX(bit1.bitRendered.getCenterX() + 15);
             bit1.bitBoundary.setCenterX(bit1.bitRendered.getCenterX());
             bit1.bitBoundary.setCenterY(bit1.bitRendered.getCenterY());
+            bit1.bitDirection.setStartY(bit1.bitRendered.getCenterY());
+            bit1.bitDirection.setStartX(bit1.bitRendered.getCenterX());
         });
 
 

@@ -5,6 +5,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.List;
 public class Bit {
 
 
+    public Line bitDirection = new Line();
     public Circle bitRendered = new Circle();
     public Circle bitBoundary = new Circle();
 
@@ -30,6 +32,7 @@ public class Bit {
         this.xPos = xPos;
         this.yPos = yPos;
         bitBoundary();
+        bitLine();
         bitRendered.setCenterY(yPos);
         bitRendered.setCenterX(xPos);
         bitRendered.setRadius(10);
@@ -47,6 +50,19 @@ public class Bit {
         this.bitBoundary.setStroke(Color.WHITE);
     }
 
+    public void bitLine(){
+        this.bitDirection.setStroke(Color.WHITE);
+        this.bitDirection.setFill(Color.WHITE);
+        this.bitDirection.setStartY(yPos);
+        this.bitDirection.setStartX(xPos);
+        this.bitDirection.setStrokeWidth(5);
+        this.bitDirection.setOpacity(0.5);
+        this.bitDirection.setEndX(xPos + 5);
+        this.bitDirection.setEndY(yPos + 5);
+//        this.bitDirection.setEndY(335);
+//        this.bitDirection.setEndX(335);
+    }
+
     public void moveBit() {
 //        bitRendered.setOnMouseClicked(event -> {
 //            MouseButton mb = event.getButton();
@@ -57,7 +73,7 @@ public class Bit {
 
 
     public void render(Pane root) {
-        root.getChildren().addAll(bitBoundary, bitRendered);
+        root.getChildren().addAll(bitBoundary,bitDirection, bitRendered);
     }
 
 }
