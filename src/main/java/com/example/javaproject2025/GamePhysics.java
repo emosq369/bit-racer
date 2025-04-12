@@ -2,12 +2,11 @@ package com.example.javaproject2025;
 
 public class GamePhysics {
 
-    private double acceleration;
+    public double acceleration;
 
-    private double velocity;
+    public double velocity;
 
-    private double force;
-
+    public double force;
 
 
 }

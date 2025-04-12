@@ -1,4 +1,7 @@
 package com.example.javaproject2025;
+import javafx.scene.Node;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -8,7 +11,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import java.awt.*;
+import java.util.Collection;
 
 
 public class GameScreen extends Application {
@@ -16,31 +23,44 @@ public class GameScreen extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-
         Pane root = new Pane();
 
         Scene scene = new Scene(root, 600, 600, Color.BLACK);
+        Text myText = new Text();
+        Text previousBitCoordinates = new Text();
+        Bit bit1 = new Bit(237, 568);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Bit Racer");
         primaryStage.show();
 
-        Bit bit1 = new Bit(237, 568);
+        // functionality for restarting, just for testing reasons.
+        scene.addEventHandler(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
+            if (event.getCode() == KeyCode.R) {
+                previousBitCoordinates.setText("previous bit coordinate " + " x : " + bit1.bitRendered.getCenterX() + " " + "y : " + bit1.bitRendered.getCenterY() + "\n");
+                bit1.restartPosition();
+                myText.setText("bit coordinates " + " x : " + bit1.bitRendered.getCenterX() + " " + "y : " + bit1.bitRendered.getCenterY() + "\n");
+            }
+        });
 
         System.out.println("info about boundary");
         System.out.println(bit1.bitBoundary.getCenterX());
         System.out.println(bit1.bitBoundary.getCenterY());
-        System.out.println("radisu calc : "  +  bit1.bitBoundary.getRadius());
+        System.out.println("radius calc : " + bit1.bitBoundary.getRadius());
 
         scene.addEventHandler(MouseEvent.MOUSE_MOVED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-//                System.out.println("moved");
+                System.out.println("moved");
             }
         });
 
         // 1. need to keep track of current position
         // 2. current position + amount pulled back in direction = distance moved
         // 3. figure out how to move such distance.
+        previousBitCoordinates.setFill(Color.RED);
+        previousBitCoordinates.setStyle("-fx-font-size: 20");
+        previousBitCoordinates.setText("previous bit coordinate " + " x : " + bit1.bitRendered.getCenterX() + " " + "y : " + bit1.bitRendered.getCenterY()+ "\n");
+
         bit1.bitRendered.setOnMouseDragged(jmouseEvent -> {
             // 30 is radius, will fix code later.
             if(
@@ -54,9 +74,12 @@ public class GameScreen extends Application {
             }
             else
                 System.out.println("out of bounds");
+//                myText.setText(myText.getText() + "out of bounds");"
             bit1.bitRendered.setFill(Color.RED);
 //            bit1.bitBoundary.setCenterX(jmouseEvent.getX());
 //            bit1.bitBoundary.setCenterY(jmouseEvent.getY());
+            myText.setText("mouse coordinates " + " x : " + jmouseEvent.getX() + " " + "y : " + jmouseEvent.getY()+ "\n");
+
 
         });
 
@@ -66,8 +89,9 @@ public class GameScreen extends Application {
             bit1.bitBoundary.setCenterY(bit1.bitRendered.getCenterY());
             bit1.bitDirection.setStartY(bit1.bitRendered.getCenterY());
             bit1.bitDirection.setStartX(bit1.bitRendered.getCenterX());
+            myText.setText(myText.getText() + '\n' + "bit coordinates " + " x : " + bit1.bitRendered.getCenterX() + " " + "y : " + bit1.bitRendered.getCenterY() + "\n");
+            previousBitCoordinates.setText("previous bit coordinate " + " x : " + bit1.bitRendered.getCenterX() + " " + "y : " + bit1.bitRendered.getCenterY()+ "\n");
         });
-
 
         //Sample track
         Track beginnerTrack = new Track("Beginner Track");
@@ -81,8 +105,15 @@ public class GameScreen extends Application {
         beginnerTrack.addBoundary(leftBottom);
         beginnerTrack.addBoundary(rightBottom);
         beginnerTrack.render(root);
+        myText.setX(40);
+        myText.setStyle("-fx-font-size: 20px;");
+        myText.setFill(Color.WHITE);
+        myText.setY(60);
+        previousBitCoordinates.setX(40);
+        previousBitCoordinates.setY(34);
         bit1.render(root);
-
+        root.getChildren().add(myText);
+        root.getChildren().add(previousBitCoordinates);
 
     }
 
