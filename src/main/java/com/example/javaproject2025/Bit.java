@@ -71,11 +71,7 @@ public class Bit extends ImageView {
     }
 
     public void moveBit(double mouseLocationX, double mouseLocationY) {
-        double xPos = this.bitBoundary.getCenterX() - mouseLocationX;
-        double yPos = this.bitBoundary.getCenterY() - mouseLocationY;
 
-        this.bitRendered.setCenterX(this.bitRendered.getCenterX() - xPos);
-        this.bitRendered.setCenterY(this.bitRendered.getCenterY() - yPos);
     }
 
 

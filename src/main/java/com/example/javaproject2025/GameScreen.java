@@ -35,15 +35,23 @@ public class GameScreen extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle("Bit Racer");
         primaryStage.show();
+
+        // this makes the window show in focus rather than having to be opened
+        // by selecting it.
         primaryStage.requestFocus();
 
-
+        // I believe game physics will be handled in here. This function constantly
+        // checks for updates within our app.
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                bit1.bitRendered.setCenterX(bit1.bitRendered.getCenterX() + .10);
+                bit1.bitRendered.setOnMouseEntered(jmouseEvent -> {
+                    bit1.bitRendered.setCenterX(bit1.bitRendered.getCenterX() + 10);
+                });
+//                bit1.bitRendered.setCenterX(bit1.bitRendered.getCenterX() + .10);
             }
         };
+
         // functionality for restarting, just for testing reasons.
         scene.addEventHandler(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
             if (event.getCode() == KeyCode.R) {
