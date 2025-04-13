@@ -1,4 +1,5 @@
 package com.example.javaproject2025;
+import javafx.animation.AnimationTimer;
 import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -23,6 +24,8 @@ public class GameScreen extends Application {
     @Override
     public void start(Stage primaryStage) {
 
+        // i have to read more about this, but I believe this is how
+        // we can handle physics and collision checks.
         Pane root = new Pane();
 
         Scene scene = new Scene(root, 600, 600, Color.BLACK);
@@ -32,7 +35,15 @@ public class GameScreen extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle("Bit Racer");
         primaryStage.show();
+        primaryStage.requestFocus();
 
+
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                bit1.bitRendered.setCenterX(bit1.bitRendered.getCenterX() + .10);
+            }
+        };
         // functionality for restarting, just for testing reasons.
         scene.addEventHandler(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
             if (event.getCode() == KeyCode.R) {
@@ -111,6 +122,11 @@ public class GameScreen extends Application {
         myText.setY(60);
         previousBitCoordinates.setX(40);
         previousBitCoordinates.setY(34);
+
+
+
+
+        timer.start();
         bit1.render(root);
         root.getChildren().add(myText);
         root.getChildren().add(previousBitCoordinates);
