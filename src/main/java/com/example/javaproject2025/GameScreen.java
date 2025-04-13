@@ -46,7 +46,7 @@ public class GameScreen extends Application {
             @Override
             public void handle(long l) {
                 bit1.bitRendered.setOnMouseEntered(jmouseEvent -> {
-                    bit1.bitRendered.setCenterX(bit1.bitRendered.getCenterX() + 10);
+//                    bit1.bitRendered.setCenterX(bit1.bitRendered.getCenterX() + 10);
                 });
 //                bit1.bitRendered.setCenterX(bit1.bitRendered.getCenterX() + .10);
             }
@@ -106,8 +106,6 @@ public class GameScreen extends Application {
             bit1.bitRendered.setCenterX(bit1.bitRendered.getCenterX() + 15);
             bit1.bitBoundary.setCenterX(bit1.bitRendered.getCenterX());
             bit1.bitBoundary.setCenterY(bit1.bitRendered.getCenterY());
-            bit1.bitDirection.setStartY(bit1.bitRendered.getCenterY());
-            bit1.bitDirection.setStartX(bit1.bitRendered.getCenterX());
             myText.setText(myText.getText() + '\n' + "bit coordinates " + " x : " + bit1.bitRendered.getCenterX() + " " + "y : " + bit1.bitRendered.getCenterY() + "\n");
             previousBitCoordinates.setText("previous bit coordinate " + " x : " + bit1.bitRendered.getCenterX() + " " + "y : " + bit1.bitRendered.getCenterY()+ "\n");
         });
@@ -120,7 +118,6 @@ public class GameScreen extends Application {
         Line rightBottom = new Line(480, primaryStage.getWidth()/2, 360, primaryStage.getWidth());
         // Add to track
         beginnerTrack.addBoundary(leftTop);
-        beginnerTrack.addBoundary(rightTop);
         beginnerTrack.addBoundary(leftBottom);
         beginnerTrack.addBoundary(rightBottom);
         beginnerTrack.render(root);
