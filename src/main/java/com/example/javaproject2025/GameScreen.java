@@ -13,25 +13,32 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-
 import java.awt.*;
 import java.util.Collection;
 
 
 public class GameScreen extends Application {
-
     @Override
     public void start(Stage primaryStage) {
-
         // i have to read more about this, but I believe this is how
         // we can handle physics and collision checks.
-        Pane root = new Pane();
+        Image gifImage = new Image(getClass().getResource("/images/starGif.gif").toExternalForm());
+        ImageView gifView = new ImageView(gifImage);
+        gifView.setFitHeight(600);
+        gifView.setFitWidth(600);
+        gifView.setPreserveRatio(true);
 
-        Scene scene = new Scene(root, 600, 600, Color.BLACK);
+
+        Pane root = new Pane();
+        Scene scene = new Scene(root, 600,600, Color.BLACK);
         Text myText = new Text();
+        GameHUD gameHUD = new GameHUD();
         Text previousBitCoordinates = new Text();
         Bit bit1 = new Bit(237, 568);
+        root.getChildren().add(gifView);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Bit Racer");
         primaryStage.show();
@@ -120,21 +127,20 @@ public class GameScreen extends Application {
         beginnerTrack.addBoundary(leftTop);
         beginnerTrack.addBoundary(leftBottom);
         beginnerTrack.addBoundary(rightBottom);
+        beginnerTrack.addBoundary(rightTop);
         beginnerTrack.render(root);
+        bit1.render(root);
+        gameHUD.render(root);
         myText.setX(40);
         myText.setStyle("-fx-font-size: 20px;");
         myText.setFill(Color.WHITE);
         myText.setY(60);
         previousBitCoordinates.setX(40);
         previousBitCoordinates.setY(34);
-
-
-
-
         timer.start();
-        bit1.render(root);
-        root.getChildren().add(myText);
-        root.getChildren().add(previousBitCoordinates);
+//        Render text for testing
+//        root.getChildren().add(myText);
+//        root.getChildren().add(previousBitCoordinates);
 
     }
 
