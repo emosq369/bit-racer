@@ -71,7 +71,7 @@ public class testEdwin extends Application {
         scene.addEventHandler(MouseEvent.MOUSE_MOVED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                System.out.println("moved");
+//                System.out.println("moved");
             }
         });
 
