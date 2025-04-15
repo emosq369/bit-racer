@@ -14,7 +14,6 @@ import javafx.scene.text.Text;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-
 public class testEdwin extends Application {
     @Override
     public void start(Stage primaryStage) {
@@ -52,6 +51,9 @@ public class testEdwin extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
+                position.add(velocity);
+                vectorCircle.setCenterX(position.x);
+                vectorCircle.setCenterY(position.y);
                 if (position.x > 600 || position.x < 0) {
                     velocity.x = velocity.x * -1;
                 }
@@ -59,9 +61,6 @@ public class testEdwin extends Application {
                     velocity.y = velocity.y * -1;
                 }
                 bit1.bitRendered.setOnMouseDragged(jmouseEvent -> {
-                    position.add(velocity);
-                    vectorCircle.setCenterX(position.x);
-                    vectorCircle.setCenterY(position.y);
 //                    bit1.bitRendered.setCenterX(bit1.bitRendered.getCenterX() + 10);
                 });
 //                bit1.bitRendered.setCenterX(bit1.bitRendered.getCenterX() + .10);
