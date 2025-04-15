@@ -8,13 +8,12 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-
-import java.util.Vector;
 
 public class testEdwin extends Application {
     @Override
@@ -33,6 +32,7 @@ public class testEdwin extends Application {
         GameHUD gameHUD = new GameHUD();
         Text previousBitCoordinates = new Text();
         Bit bit1 = new Bit(237, 568);
+
         root.getChildren().add(gifView);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Bit Racer");
@@ -42,12 +42,26 @@ public class testEdwin extends Application {
         // by selecting it.
         primaryStage.requestFocus();
 
+        Vector position = new Vector(200, 200);
+        Vector velocity = new Vector(2.5, 2);
+        Circle vectorCircle = new Circle(position.x, position.y, 20);
+        vectorCircle.setFill(Color.WHITE);
+        vectorCircle.setStroke(Color.BLACK);
         // I believe game physics will be handled in here. This function constantly
         // checks for updates within our app.
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                bit1.bitRendered.setOnMouseEntered(jmouseEvent -> {
+                if (position.x > 600 || position.x < 0) {
+                    velocity.x = velocity.x * -1;
+                }
+                if (position.y > 600 || position.y < 0) {
+                    velocity.y = velocity.y * -1;
+                }
+                bit1.bitRendered.setOnMouseDragged(jmouseEvent -> {
+                    position.add(velocity);
+                    vectorCircle.setCenterX(position.x);
+                    vectorCircle.setCenterY(position.y);
 //                    bit1.bitRendered.setCenterX(bit1.bitRendered.getCenterX() + 10);
                 });
 //                bit1.bitRendered.setCenterX(bit1.bitRendered.getCenterX() + .10);
@@ -133,6 +147,8 @@ public class testEdwin extends Application {
         previousBitCoordinates.setX(40);
         previousBitCoordinates.setY(34);
         timer.start();
+        root.getChildren().add(vectorCircle);
+        root.getChildren().add(position.direction);
 //        Render text for testing
 //        root.getChildren().add(myText);
 //        root.getChildren().add(previousBitCoordinates);
