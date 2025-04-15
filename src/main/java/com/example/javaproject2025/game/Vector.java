@@ -1,6 +1,5 @@
-package com.example.javaproject2025;
+package com.example.javaproject2025.game;
 
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 public class Vector {

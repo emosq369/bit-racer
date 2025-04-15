@@ -1,15 +1,11 @@
-package com.example.javaproject2025;
+package com.example.javaproject2025.ui;
 
 import javafx.scene.control.Button;
 import javafx.scene.effect.Glow;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import org.w3c.dom.ls.LSOutput;
-
-import java.awt.*;
 
 public class GameHUD {
 

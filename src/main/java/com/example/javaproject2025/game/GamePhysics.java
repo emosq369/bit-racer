@@ -1,4 +1,4 @@
-package com.example.javaproject2025;
+package com.example.javaproject2025.game;
 
 public class GamePhysics {
 

@@ -1,4 +1,8 @@
 package com.example.javaproject2025;
+import com.example.javaproject2025.game.Bit;
+import com.example.javaproject2025.game.Track;
+import com.example.javaproject2025.game.Vector;
+import com.example.javaproject2025.ui.GameHUD;
 import javafx.animation.AnimationTimer;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -30,7 +34,7 @@ public class testEdwin extends Application {
         Text myText = new Text();
         GameHUD gameHUD = new GameHUD();
         Text previousBitCoordinates = new Text();
-        Bit bit1 = new Bit(237, 568);
+        Bit bit1 = new Bit("bit1", 237, 568, Color.RED);
 
         root.getChildren().add(gifView);
         primaryStage.setScene(scene);
@@ -60,26 +64,16 @@ public class testEdwin extends Application {
                 if (position.y > 600 || position.y < 0) {
                     velocity.y = velocity.y * -1;
                 }
-                bit1.bitRendered.setOnMouseDragged(jmouseEvent -> {
+//                bit1.bitRendered.setOnMouseDragged(jmouseEvent -> {
 //                    bit1.bitRendered.setCenterX(bit1.bitRendered.getCenterX() + 10);
-                });
+//                });
 //                bit1.bitRendered.setCenterX(bit1.bitRendered.getCenterX() + .10);
             }
         };
 
         // functionality for restarting, just for testing reasons.
-        scene.addEventHandler(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
-            if (event.getCode() == KeyCode.R) {
-                previousBitCoordinates.setText("previous bit coordinate " + " x : " + bit1.bitRendered.getCenterX() + " " + "y : " + bit1.bitRendered.getCenterY() + "\n");
-                bit1.restartPosition();
-                myText.setText("bit coordinates " + " x : " + bit1.bitRendered.getCenterX() + " " + "y : " + bit1.bitRendered.getCenterY() + "\n");
-            }
-        });
 
         System.out.println("info about boundary");
-        System.out.println(bit1.bitBoundary.getCenterX());
-        System.out.println(bit1.bitBoundary.getCenterY());
-        System.out.println("radius calc : " + bit1.bitBoundary.getRadius());
 
         scene.addEventHandler(MouseEvent.MOUSE_MOVED, new EventHandler<MouseEvent>() {
             @Override
@@ -93,37 +87,6 @@ public class testEdwin extends Application {
         // 3. figure out how to move such distance.
         previousBitCoordinates.setFill(Color.RED);
         previousBitCoordinates.setStyle("-fx-font-size: 20");
-        previousBitCoordinates.setText("previous bit coordinate " + " x : " + bit1.bitRendered.getCenterX() + " " + "y : " + bit1.bitRendered.getCenterY()+ "\n");
-
-        bit1.bitRendered.setOnMouseDragged(jmouseEvent -> {
-            // 30 is radius, will fix code later.
-            if(
-                    (jmouseEvent.getX() < bit1.bitBoundary.getCenterX() + 30 && jmouseEvent.getY() < bit1.bitBoundary.getCenterY() + 30) &&
-                            (jmouseEvent.getX() > bit1.bitBoundary.getCenterX() - 30) && jmouseEvent.getY() > bit1.bitBoundary.getCenterY() - 30)
-            {
-                bit1.bitRendered.setCenterX(jmouseEvent.getX());
-                bit1.bitRendered.setCenterY(jmouseEvent.getY());
-                System.out.println("x value : " + bit1.bitRendered.getCenterX());
-                System.out.println("y value : " + bit1.bitRendered.getCenterY());
-            }
-            else
-                System.out.println("out of bounds");
-//                myText.setText(myText.getText() + "out of bounds");"
-            bit1.bitRendered.setFill(Color.RED);
-//            bit1.bitBoundary.setCenterX(jmouseEvent.getX());
-//            bit1.bitBoundary.setCenterY(jmouseEvent.getY());
-            myText.setText("mouse coordinates " + " x : " + jmouseEvent.getX() + " " + "y : " + jmouseEvent.getY()+ "\n");
-
-
-        });
-
-        bit1.bitRendered.setOnMouseReleased(jmouseEvent -> {
-            bit1.bitRendered.setCenterX(bit1.bitRendered.getCenterX() + 15);
-            bit1.bitBoundary.setCenterX(bit1.bitRendered.getCenterX());
-            bit1.bitBoundary.setCenterY(bit1.bitRendered.getCenterY());
-            myText.setText(myText.getText() + '\n' + "bit coordinates " + " x : " + bit1.bitRendered.getCenterX() + " " + "y : " + bit1.bitRendered.getCenterY() + "\n");
-            previousBitCoordinates.setText("previous bit coordinate " + " x : " + bit1.bitRendered.getCenterX() + " " + "y : " + bit1.bitRendered.getCenterY()+ "\n");
-        });
 
         //Sample track
         Track beginnerTrack = new Track("Beginner Track");
@@ -132,12 +95,6 @@ public class testEdwin extends Application {
         Line leftBottom = new Line(300, primaryStage.getWidth()/2, 180, primaryStage.getWidth());
         Line rightBottom = new Line(480, primaryStage.getWidth()/2, 360, primaryStage.getWidth());
         // Add to track
-        beginnerTrack.addBoundary(leftTop);
-        beginnerTrack.addBoundary(leftBottom);
-        beginnerTrack.addBoundary(rightBottom);
-        beginnerTrack.addBoundary(rightTop);
-        beginnerTrack.render(root);
-        bit1.render(root);
         gameHUD.render(root);
         myText.setX(40);
         myText.setStyle("-fx-font-size: 20px;");

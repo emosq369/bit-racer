@@ -6,4 +6,8 @@ module com.example.javaproject2025 {
 
     opens com.example.javaproject2025 to javafx.fxml;
     exports com.example.javaproject2025;
+    exports com.example.javaproject2025.game;
+    opens com.example.javaproject2025.game to javafx.fxml;
+    exports com.example.javaproject2025.ui;
+    opens com.example.javaproject2025.ui to javafx.fxml;
 }
