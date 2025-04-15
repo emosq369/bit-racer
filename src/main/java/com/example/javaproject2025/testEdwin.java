@@ -14,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+import java.util.Vector;
 
 public class testEdwin extends Application {
     @Override
@@ -25,7 +26,6 @@ public class testEdwin extends Application {
         gifView.setFitHeight(600);
         gifView.setFitWidth(600);
         gifView.setPreserveRatio(true);
-
 
         Pane root = new Pane();
         Scene scene = new Scene(root, 600,600, Color.BLACK);
