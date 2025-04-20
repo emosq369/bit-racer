@@ -45,9 +45,15 @@ public class testEdwin extends Application {
         // by selecting it.
         primaryStage.requestFocus();
 
+
         Vector position = new Vector(200, 200);
-        Vector velocity = new Vector(2.5, 2);
+        Vector velocity = new Vector(2.5, 4);
         Circle vectorCircle = new Circle(position.x, position.y, 20);
+        Vector circleToCursorPosition = new Vector(vectorCircle.getCenterX(), vectorCircle.getCenterY());
+        Vector fakeMove = new Vector(0,0);
+        Line circleToCursor = new Line(circleToCursorPosition.x, circleToCursorPosition.y, 0, 0 );
+        circleToCursor.setFill(Color.RED);
+        circleToCursor.setStroke(Color.RED);
         vectorCircle.setFill(Color.WHITE);
         vectorCircle.setStroke(Color.BLACK);
         // I believe game physics will be handled in here. This function constantly
@@ -55,15 +61,42 @@ public class testEdwin extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                position.add(velocity);
-                vectorCircle.setCenterX(position.x);
-                vectorCircle.setCenterY(position.y);
-                if (position.x > 600 || position.x < 0) {
-                    velocity.x = velocity.x * -1;
-                }
-                if (position.y > 600 || position.y < 0) {
-                    velocity.y = velocity.y * -1;
-                }
+                scene.setOnMouseMoved(jmouseEvent ->{
+                    circleToCursor.setEndX(jmouseEvent.getX());
+                    circleToCursor.setEndY(jmouseEvent.getY());
+                    System.out.println("x" + Math.abs(circleToCursor.getEndX() - vectorCircle.getCenterX()));
+                    System.out.println("y" + Math.abs(circleToCursor.getEndY() - vectorCircle.getCenterY()));
+                });
+                scene.setOnMouseClicked(mouseEvent ->{
+                        fakeMove.x = vectorCircle.getCenterX() - mouseEvent.getX();
+                        fakeMove.y = vectorCircle.getCenterY() - mouseEvent.getY();
+                        //position.add(velocity);
+                        //vectorCircle.setCenterX(position.x);
+                        //vectorCircle.setCenterY(position.y);
+                        //velocity.x += 1;
+                        //kvelocity.y += 1;
+                        position.add(fakeMove);
+                        vectorCircle.setCenterX(position.x);
+                        vectorCircle.setCenterY(position.y);
+
+                        circleToCursorPosition.add(fakeMove);
+                        circleToCursor.setStartX(circleToCursorPosition.x);
+                        circleToCursor.setStartY(circleToCursorPosition.y);
+                        //circleToCursorPosition.x = vectorCircle.getCenterX();
+                        //circleToCursorPosition.y = vectorCircle.getCenterY();
+                });
+                vectorCircle.setOnMouseClicked(jmouseEvent ->{
+                    System.out.println("hi");
+                });
+//                position.add(velocity);
+//                vectorCircle.setCenterX(position.x);
+//                vectorCircle.setCenterY(position.y);
+//                if (position.x > 600 || position.x < 0) {
+//                   velocity.x = velocity.x * -1;
+//                }
+//                if (position.y > 600 || position.y < 0) {
+//                    velocity.y = velocity.y * -1;
+//                }
 //                bit1.bitRendered.setOnMouseDragged(jmouseEvent -> {
 //                    bit1.bitRendered.setCenterX(bit1.bitRendered.getCenterX() + 10);
 //                });
@@ -105,6 +138,8 @@ public class testEdwin extends Application {
         timer.start();
         root.getChildren().add(vectorCircle);
         root.getChildren().add(position.direction);
+        root.getChildren().add(bit1.getShape());
+        root.getChildren().add(circleToCursor);
 //        Render text for testing
 //        root.getChildren().add(myText);
 //        root.getChildren().add(previousBitCoordinates);
