@@ -35,7 +35,6 @@ public class testEdwin extends Application {
         GameHUD gameHUD = new GameHUD();
         Text previousBitCoordinates = new Text();
         Bit bit1 = new Bit("bit1", 237, 568, Color.RED);
-
         root.getChildren().add(gifView);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Bit Racer");
@@ -45,12 +44,11 @@ public class testEdwin extends Application {
         // by selecting it.
         primaryStage.requestFocus();
 
-
         Vector position = new Vector(200, 200);
         Vector velocity = new Vector(2.5, 4);
         Circle vectorCircle = new Circle(position.x, position.y, 20);
         Vector circleToCursorPosition = new Vector(vectorCircle.getCenterX(), vectorCircle.getCenterY());
-        Vector fakeMove = new Vector(0,0);
+        Vector fakeMove = new Vector(2,2);
         Line circleToCursor = new Line(circleToCursorPosition.x, circleToCursorPosition.y, 0, 0 );
         circleToCursor.setFill(Color.RED);
         circleToCursor.setStroke(Color.RED);
@@ -62,38 +60,43 @@ public class testEdwin extends Application {
             boolean move = false;
             @Override
             public void handle(long l) {
+                circleToCursor.setStartX(vectorCircle.getCenterX());
+                circleToCursor.setStartY(vectorCircle.getCenterY());
                 scene.setOnMouseClicked(mouseEvent ->{
                     move = true;
-                    fakeMove.x = (vectorCircle.getCenterX() - mouseEvent.getX()) * 1/2;
-                    fakeMove.y = (vectorCircle.getCenterY() - mouseEvent.getY()) * 1/2;
-                    //position.add(velocity);
-                    //vectorCircle.setCenterX(position.x);
-                    //vectorCircle.setCenterY(position.y);
-                    //velocity.x += 1;
-                    //kvelocity.y += 1;
-                    position.add(fakeMove);
-                    vectorCircle.setCenterX(position.x);
-                    vectorCircle.setCenterY(position.y);
-
-                    circleToCursorPosition.add(fakeMove);
-                    circleToCursor.setStartX(circleToCursorPosition.x);
-                    circleToCursor.setStartY(circleToCursorPosition.y);
-                    //circleToCursorPosition.x = vectorCircle.getCenterX();
-                    //circleToCursorPosition.y = vectorCircle.getCenterY();
+//                    fakeMove.x = (vectorCircle.getCenterX() - mouseEvent.getX()) * 1/2;
+//                    fakeMove.y = (vectorCircle.getCenterY() - mouseEvent.getY()) * 1/2;
+//                    //position.add(velocity);
+//                    //vectorCircle.setCenterX(position.x);
+//                    //vectorCircle.setCenterY(position.y);
+//                    //velocity.x += 1;
+//                    //kvelocity.y += 1;
+//                    position.add(fakeMove);
+//                    vectorCircle.setCenterX(position.x);
+//                    vectorCircle.setCenterY(position.y);
+//
                 });
 
+                if(!move) {
+                }
+                else{
+                    position.add(velocity);
+                    vectorCircle.setCenterX(position.x);
+                    vectorCircle.setCenterY(position.y);
+                    if (position.x > 600 || position.x < 0) {
+                       velocity.x = velocity.x * -1;
+                       move = false;
+                       circleToCursorPosition.x = vectorCircle.getCenterX();
+                       circleToCursorPosition.y = vectorCircle.getCenterY();
+                    }
+                    if (position.y > 600 || position.y < 0) {
+                        velocity.y = velocity.y * -1;
+                        move = false;
+                    }
+                }
             }
         }; // Animation timer ends here
 
-//                position.add(velocity);
-//                vectorCircle.setCenterX(position.x);
-//                vectorCircle.setCenterY(position.y);
-//                if (position.x > 600 || position.x < 0) {
-//                   velocity.x = velocity.x * -1;
-//                }
-//                if (position.y > 600 || position.y < 0) {
-//                    velocity.y = velocity.y * -1;
-//                }
 //                bit1.bitRendered.setOnMouseDragged(jmouseEvent -> {
 //                    bit1.bitRendered.setCenterX(bit1.bitRendered.getCenterX() + 10);
 //                });

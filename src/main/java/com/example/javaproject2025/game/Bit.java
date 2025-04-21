@@ -8,14 +8,18 @@ public class Bit {
     private Circle shape;
     private Line directionLine;
     private String name;
-    private double angle = 270;
-    //in degrees, it goes clockwise instead of counter clock wise
+    private double angle = 270; //in degrees, it goes clokwise instead of counter clock wise
     //that's why it's 270 instead of 90 to point upwards
+    private boolean launched = false;
+    private double dx = 0;
+    private double dy = 0;
+
 
     public Bit(String name, double startX, double startY, Color color) {
         this.name = name;
         shape = new Circle(startX, startY, 5);
         shape.setFill(color);
+
         directionLine = new Line(startX, startY, startX, startY - 20);
         directionLine.setStroke(color);
         directionLine.setStrokeWidth(2);
@@ -65,4 +69,34 @@ public class Bit {
     public String getName() {
         return name;
     }
+
+    public void launch(double speed) {
+        if (launched) return; //prevent double launch
+
+        double radians = Math.toRadians(angle);
+        dx = speed * Math.cos(radians);
+        dy = speed * Math.sin(radians);
+
+        launched = true;
+    }
+
+    public void moveIfLaunched() {
+        if (launched) {
+            if(this.checkCollision()){
+                // stop movement
+                dx = 0;
+                dy = 0;
+                shape.setCenterY(shape.getCenterY() + 10);
+            }
+            move(dx, dy);
+            updateDirectionLine(); //so the arrow follows
+        }
+    }
+
+    public boolean checkCollision() {
+        if(this.getY() < 0)
+            return true;
+        return false;
+    }
+
 }

@@ -1,6 +1,5 @@
 package com.example.javaproject2025.game;
 
-import javafx.scene.Group;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;

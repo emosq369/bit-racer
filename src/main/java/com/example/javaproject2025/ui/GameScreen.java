@@ -1,6 +1,8 @@
 package com.example.javaproject2025.ui;
+
 import com.example.javaproject2025.game.Bit;
 import com.example.javaproject2025.game.Track;
+import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -28,20 +30,36 @@ public class GameScreen  {
         root.getChildren().addAll(bit1.getShape(), bit2.getShape(),
                 bit1.getDirectionLine(), bit2.getDirectionLine());
 
+
         // Add more elements later: bits, arrows, etc.
         scene = new Scene(root, sceneWidth, sceneHeight, Color.BLACK);
         scene.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case A -> bit1.rotate(-5);  // Bit1 Rotate left
                 case D -> bit1.rotate(5);   // Bit 1 Rotate right
+                case S -> bit1.launch(10); // launch bit1
                 case LEFT -> bit2.rotate(-5); //Bit 2 Rotate left
                 case RIGHT -> bit2.rotate(5); // Bit 2 Rotate right
+                case UP -> bit2.launch(10); // launch bit2
+
             }
         });
+
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                System.out.println(bit2.getX());
+                System.out.println(bit2.getY());
+                bit1.moveIfLaunched();
+                bit2.moveIfLaunched();
+            }
+        };
+        timer.start();
     }
 
     public Scene getScene() {
         return scene;
     }
+
 
 }
