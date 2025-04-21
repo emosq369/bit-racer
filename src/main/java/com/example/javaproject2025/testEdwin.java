@@ -59,35 +59,32 @@ public class testEdwin extends Application {
         // I believe game physics will be handled in here. This function constantly
         // checks for updates within our app.
         AnimationTimer timer = new AnimationTimer() {
+            boolean move = false;
             @Override
             public void handle(long l) {
-                scene.setOnMouseMoved(jmouseEvent ->{
-                    circleToCursor.setEndX(jmouseEvent.getX());
-                    circleToCursor.setEndY(jmouseEvent.getY());
-                    System.out.println("x" + Math.abs(circleToCursor.getEndX() - vectorCircle.getCenterX()));
-                    System.out.println("y" + Math.abs(circleToCursor.getEndY() - vectorCircle.getCenterY()));
-                });
                 scene.setOnMouseClicked(mouseEvent ->{
-                        fakeMove.x = vectorCircle.getCenterX() - mouseEvent.getX();
-                        fakeMove.y = vectorCircle.getCenterY() - mouseEvent.getY();
-                        //position.add(velocity);
-                        //vectorCircle.setCenterX(position.x);
-                        //vectorCircle.setCenterY(position.y);
-                        //velocity.x += 1;
-                        //kvelocity.y += 1;
-                        position.add(fakeMove);
-                        vectorCircle.setCenterX(position.x);
-                        vectorCircle.setCenterY(position.y);
+                    move = true;
+                    fakeMove.x = (vectorCircle.getCenterX() - mouseEvent.getX()) * 1/2;
+                    fakeMove.y = (vectorCircle.getCenterY() - mouseEvent.getY()) * 1/2;
+                    //position.add(velocity);
+                    //vectorCircle.setCenterX(position.x);
+                    //vectorCircle.setCenterY(position.y);
+                    //velocity.x += 1;
+                    //kvelocity.y += 1;
+                    position.add(fakeMove);
+                    vectorCircle.setCenterX(position.x);
+                    vectorCircle.setCenterY(position.y);
 
-                        circleToCursorPosition.add(fakeMove);
-                        circleToCursor.setStartX(circleToCursorPosition.x);
-                        circleToCursor.setStartY(circleToCursorPosition.y);
-                        //circleToCursorPosition.x = vectorCircle.getCenterX();
-                        //circleToCursorPosition.y = vectorCircle.getCenterY();
+                    circleToCursorPosition.add(fakeMove);
+                    circleToCursor.setStartX(circleToCursorPosition.x);
+                    circleToCursor.setStartY(circleToCursorPosition.y);
+                    //circleToCursorPosition.x = vectorCircle.getCenterX();
+                    //circleToCursorPosition.y = vectorCircle.getCenterY();
                 });
-                vectorCircle.setOnMouseClicked(jmouseEvent ->{
-                    System.out.println("hi");
-                });
+
+            }
+        }; // Animation timer ends here
+
 //                position.add(velocity);
 //                vectorCircle.setCenterX(position.x);
 //                vectorCircle.setCenterY(position.y);
@@ -101,8 +98,13 @@ public class testEdwin extends Application {
 //                    bit1.bitRendered.setCenterX(bit1.bitRendered.getCenterX() + 10);
 //                });
 //                bit1.bitRendered.setCenterX(bit1.bitRendered.getCenterX() + .10);
-            }
-        };
+
+        scene.setOnMouseMoved(jmouseEvent ->{
+            circleToCursor.setEndX(jmouseEvent.getX());
+            circleToCursor.setEndY(jmouseEvent.getY());
+            //System.out.println("x" + Math.abs(circleToCursor.getEndX() - vectorCircle.getCenterX()));
+            //System.out.println("y" + Math.abs(circleToCursor.getEndY() - vectorCircle.getCenterY()));
+        });
 
         // functionality for restarting, just for testing reasons.
 
