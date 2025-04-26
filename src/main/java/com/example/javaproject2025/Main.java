@@ -1,6 +1,7 @@
 package com.example.javaproject2025;
 
 import com.example.javaproject2025.ui.GameScreen;
+import com.example.javaproject2025.ui.MainScreen;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -9,9 +10,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        GameScreen gameScreen = new GameScreen();
-        Scene scene = gameScreen.getScene();
-
+//        GameScreen gameScreen = new GameScreen();
+//        Scene scene = gameScreen.getScene();
+        MainScreen mainScreen = new MainScreen(primaryStage);
+        Scene scene = mainScreen.getScene();
         primaryStage.setScene(scene);
         primaryStage.setTitle("Bit Racer");
         primaryStage.show();
