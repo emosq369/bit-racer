@@ -27,7 +27,7 @@ public class GameHUD {
 
     public void setupBackButton(){
         this.backButton = new Button("main menu");
-        this.backButton.setEffect(glowEffect);
+        //this.backButton.setEffect(glowEffect);
         this.backButton.setOnMouseEntered(e -> {
             this.backButton.setTextFill(Color.RED);
         });
@@ -69,8 +69,4 @@ public class GameHUD {
     }
 
 
-    public void render(Pane root) {
-        root.getChildren().addAll(this.playerOneScore, this.playerTwoScore, this.backButton);
-        root.getChildren().add(powerMeter);
-    }
 }

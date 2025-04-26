@@ -23,7 +23,7 @@ public class testEdwin extends Application {
     public void start(Stage primaryStage) {
         // i have to read more about this, but I believe this is how
         // we can handle physics and collision checks.
-        Image gifImage = new Image(getClass().getResource("/images/starGif.gif").toExternalForm());
+        Image gifImage = new Image(getClass().getResource("/images/shootingStar.gif").toExternalForm());
         ImageView gifView = new ImageView(gifImage);
         gifView.setFitHeight(600);
         gifView.setFitWidth(600);
@@ -133,7 +133,7 @@ public class testEdwin extends Application {
         Line leftBottom = new Line(300, primaryStage.getWidth()/2, 180, primaryStage.getWidth());
         Line rightBottom = new Line(480, primaryStage.getWidth()/2, 360, primaryStage.getWidth());
         // Add to track
-        gameHUD.render(root);
+        //gameHUD.render(root);
         myText.setX(40);
         myText.setStyle("-fx-font-size: 20px;");
         myText.setFill(Color.WHITE);

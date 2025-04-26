@@ -1,13 +1,17 @@
 package com.example.javaproject2025.game;
 
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Polyline;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Track {
     private List<Line> boundaries = new ArrayList<>();
+    private List<Image> stars = new ArrayList<>();
     final private String name;
 
     public Track(String name) {
@@ -24,7 +28,6 @@ public class Track {
 
     public void buildLevel1Layout(double width, double height) {
         double centerY = height / 2;
-
         Line leftTop = new Line(180, centerY, 400, 0);
         Line rightTop = new Line(369, centerY, 420, 0);
         Line leftBottom = new Line(width * 1/3, height, 180, centerY);
@@ -35,5 +38,7 @@ public class Track {
             l.setStrokeWidth(4);
             boundaries.add(l);
         }
+
     }
+
 }

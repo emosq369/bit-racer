@@ -10,9 +10,10 @@ public class Bit {
     private String name;
     private double angle = 270; //in degrees, it goes clokwise instead of counter clock wise
     //that's why it's 270 instead of 90 to point upwards
-    private boolean launched = false;
-    private double dx = 0;
-    private double dy = 0;
+    public boolean launched = false;
+    public boolean moved = false;
+    public double dx = 0;
+    public double dy = 0;
 
 
     public Bit(String name, double startX, double startY, Color color) {
@@ -73,6 +74,8 @@ public class Bit {
     public void launch(double speed) {
         if (launched) return; //prevent double launch
 
+
+
         double radians = Math.toRadians(angle);
         dx = speed * Math.cos(radians);
         dy = speed * Math.sin(radians);
@@ -82,14 +85,21 @@ public class Bit {
 
     public void moveIfLaunched() {
         if (launched) {
-            if(this.checkCollision()){
-                // stop movement
+            move(dx, dy);
+            //so the arrow follows
+            updateDirectionLine();
+
+            // ✅ Apply friction
+            dx *= 0.98; // Or 0.95, tweak to taste
+            dy *= 0.98;
+
+            // ✅ Stop the ball when it's slow enough
+            if (Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1) {
                 dx = 0;
                 dy = 0;
-                shape.setCenterY(shape.getCenterY() + 10);
+                launched = false;
+
             }
-            move(dx, dy);
-            updateDirectionLine(); //so the arrow follows
         }
     }
 
