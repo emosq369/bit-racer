@@ -5,27 +5,23 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.text.FontWeight;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.animation.ScaleTransition;
-import javafx.util.Duration;
-
+import static com.example.javaproject2025.ui.ScreenUtils.*;
 
 
 public class MainScreen {
     private Scene scene;
 
     public MainScreen(Stage primaryStage) {
+
         // Create a background with stars
         Pane backgroundPane = new Pane();
         backgroundPane.setPrefSize(600, 600);
         backgroundPane.setStyle("-fx-background-color: black;");
-        drawStars(backgroundPane, 100); // Draw 100 random stars
+        drawStars(backgroundPane); // Draw 100 random stars
 
         BorderPane root = new BorderPane();
         root.setStyle("-fx-background-color: transparent;");
@@ -40,7 +36,7 @@ public class MainScreen {
         VBox menu = new VBox(30); // 20 px vertical spacing
         menu.setAlignment(Pos.CENTER);
 
-        Label playLabel = createMenuLabel("PLAY", Color.WHITE);
+        Label playLabel = createMenuLabel("PLAY");
         //This links the "PLAY" button to GameScreen
         playLabel.setOnMouseClicked(event -> {
             GameScreen gameScreen = new GameScreen();
@@ -48,23 +44,20 @@ public class MainScreen {
             primaryStage.setScene(gameScene);
         });
 
-        Label userProfileLabel = createMenuLabel("USER PROFILE", Color.WHITE);
-        //This links the "PLAY" button to GameScreen
+        Label userProfileLabel = createMenuLabel("USER PROFILE");
+        //This links the "User Profile" button to UserProfileScreen
         userProfileLabel.setOnMouseClicked(event -> {
             UserProfileScreen userProfileScreen = new UserProfileScreen();
             Scene userScene = userProfileScreen.getScene();
             primaryStage.setScene(userScene);
         });
 
-        Label scoresLabel = createMenuLabel("SCORES", Color.WHITE);
+        Label scoresLabel = createMenuLabel("SCORES");
 
         menu.getChildren().addAll(playLabel, userProfileLabel, scoresLabel);
 
         // Logout at top right
-        Label logout = new Label("LOG OUT");
-        logout.setFont(Font.font("Orbitron", 16));
-        logout.setTextFill(Color.LIGHTGRAY);
-        logout.setEffect(createNeonGlow(Color.LIGHTGRAY));
+        Label logout = createNavigationLabel("LOG OUT");
         logout.setTranslateX(-20);
         logout.setTranslateY(10);
 
@@ -96,61 +89,6 @@ public class MainScreen {
         primaryStage.setTitle("Bit Racer");
         primaryStage.show();
     }
-
-    private Label createMenuLabel(String text, Color neonColor) {
-        Label label = new Label(text);
-        label.setFont(Font.font("Orbitron", FontWeight.BOLD, 35));
-        label.setTextFill(neonColor);
-
-        DropShadow normalGlow = createNeonGlow(neonColor);
-        DropShadow strongGlow = createNeonGlow(neonColor);
-        strongGlow.setRadius(40); // Bigger glow when hovered
-
-        label.setEffect(normalGlow);
-
-        // Hover effects
-        label.setOnMouseEntered(event -> {
-            label.setEffect(strongGlow);
-            label.setScaleX(1.1);
-            label.setScaleY(1.1);
-        });
-
-        label.setOnMouseExited(event -> {
-            label.setEffect(normalGlow);
-            label.setScaleX(1.0);
-            label.setScaleY(1.0);
-        });
-
-        return label;
-    }
-
-
-    private DropShadow createNeonGlow(Color color) {
-        DropShadow glow = new DropShadow();
-        glow.setOffsetX(0);
-        glow.setOffsetY(0);
-        glow.setColor(color);
-        glow.setRadius(20);
-        return glow;
-    }
-
-    private void drawStars(Pane pane, int numberOfStars) {
-        DropShadow glow = new DropShadow();
-        glow.setOffsetX(0);
-        glow.setOffsetY(0);
-        glow.setColor(Color.WHITE);
-        glow.setRadius(10);
-
-        for (int i = 0; i < numberOfStars; i++) {
-            double x = Math.random() * pane.getPrefWidth();
-            double y = Math.random() * pane.getPrefHeight();
-
-            Circle star = new Circle(x, y, Math.random()*0.5, Color.WHITE);
-
-            pane.getChildren().add(star);
-        }
-    }
-
 
     public Scene getScene() {
         return scene;
