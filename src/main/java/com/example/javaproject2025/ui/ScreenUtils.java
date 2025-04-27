@@ -6,7 +6,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 
 
 public class ScreenUtils {
@@ -23,33 +22,6 @@ public class ScreenUtils {
         }
     }
 
-    public static Label createMenuLabel(String text) {
-
-        Label label = new Label(text);
-        label.setFont(Font.font("Orbitron", FontWeight.BOLD, 35));
-        label.setTextFill(Color.WHITE);
-
-        DropShadow normalGlow = createNeonGlow(Color.WHITE);
-        DropShadow strongGlow = createNeonGlow(Color.WHITE);
-        strongGlow.setRadius(40); // Bigger glow when hovered
-
-        label.setEffect(normalGlow);
-
-        // Hover effects
-        label.setOnMouseEntered(event -> {
-            label.setEffect(strongGlow);
-            label.setScaleX(1.1);
-            label.setScaleY(1.1);
-        });
-
-        label.setOnMouseExited(event -> {
-            label.setEffect(normalGlow);
-            label.setScaleX(1.0);
-            label.setScaleY(1.0);
-        });
-
-        return label;
-    }
 
     public static Label createNavigationLabel(String text) {
         Label label = new Label(text);

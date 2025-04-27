@@ -3,9 +3,11 @@ package com.example.javaproject2025.ui;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -37,7 +39,7 @@ public class MainScreen {
         menu.setAlignment(Pos.CENTER);
 
         Label playLabel = createMenuLabel("PLAY");
-        //This links the "PLAY" button to GameScreen
+        //This links the "PLAY" label to GameScreen
         playLabel.setOnMouseClicked(event -> {
             GameScreen gameScreen = new GameScreen();
             Scene gameScene = gameScreen.getScene();
@@ -45,9 +47,9 @@ public class MainScreen {
         });
 
         Label userProfileLabel = createMenuLabel("USER PROFILE");
-        //This links the "User Profile" button to UserProfileScreen
+        //This links the "User Profile" label to UserProfileScreen
         userProfileLabel.setOnMouseClicked(event -> {
-            UserProfileScreen userProfileScreen = new UserProfileScreen();
+            UserProfileScreen userProfileScreen = new UserProfileScreen(primaryStage);
             Scene userScene = userProfileScreen.getScene();
             primaryStage.setScene(userScene);
         });
@@ -88,6 +90,34 @@ public class MainScreen {
         primaryStage.setScene(scene);
         primaryStage.setTitle("Bit Racer");
         primaryStage.show();
+    }
+
+    private Label createMenuLabel(String text) {
+
+        Label label = new Label(text);
+        label.setFont(Font.font("Orbitron", FontWeight.BOLD, 35));
+        label.setTextFill(Color.WHITE);
+
+        DropShadow normalGlow = createNeonGlow(Color.WHITE);
+        DropShadow strongGlow = createNeonGlow(Color.WHITE);
+        strongGlow.setRadius(40); // Bigger glow when hovered
+
+        label.setEffect(normalGlow);
+
+        // Hover effects
+        label.setOnMouseEntered(event -> {
+            label.setEffect(strongGlow);
+            label.setScaleX(1.1);
+            label.setScaleY(1.1);
+        });
+
+        label.setOnMouseExited(event -> {
+            label.setEffect(normalGlow);
+            label.setScaleX(1.0);
+            label.setScaleY(1.0);
+        });
+
+        return label;
     }
 
     public Scene getScene() {
