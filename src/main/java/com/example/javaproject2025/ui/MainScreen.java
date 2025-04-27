@@ -41,15 +41,22 @@ public class MainScreen {
         menu.setAlignment(Pos.CENTER);
 
         Label playLabel = createMenuLabel("PLAY", Color.WHITE);
-        Label userProfileLabel = createMenuLabel("USER PROFILE", Color.WHITE);
-        Label scoresLabel = createMenuLabel("SCORES", Color.WHITE);
-
         //This links the "PLAY" button to GameScreen
         playLabel.setOnMouseClicked(event -> {
             GameScreen gameScreen = new GameScreen();
             Scene gameScene = gameScreen.getScene();
             primaryStage.setScene(gameScene);
         });
+
+        Label userProfileLabel = createMenuLabel("USER PROFILE", Color.WHITE);
+        //This links the "PLAY" button to GameScreen
+        userProfileLabel.setOnMouseClicked(event -> {
+            UserProfileScreen userProfileScreen = new UserProfileScreen();
+            Scene userScene = userProfileScreen.getScene();
+            primaryStage.setScene(userScene);
+        });
+
+        Label scoresLabel = createMenuLabel("SCORES", Color.WHITE);
 
         menu.getChildren().addAll(playLabel, userProfileLabel, scoresLabel);
 
