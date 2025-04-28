@@ -39,14 +39,14 @@ public class MainScreen {
         // Menu options
         VBox menu = new VBox(30); // 20 px vertical spacing
         menu.setAlignment(Pos.CENTER);
-
+        
         Label playLabel = createMenuLabel("PLAY", Color.WHITE);
         Label userProfileLabel = createMenuLabel("USER PROFILE", Color.WHITE);
         Label scoresLabel = createMenuLabel("SCORES", Color.WHITE);
 
         //This links the "PLAY" button to GameScreen
         playLabel.setOnMouseClicked(event -> {
-            GameScreen gameScreen = new GameScreen();
+            GameScreen gameScreen = new GameScreen(primaryStage);
             Scene gameScene = gameScreen.getScene();
             primaryStage.setScene(gameScene);
         });
@@ -90,7 +90,7 @@ public class MainScreen {
         primaryStage.show();
     }
 
-    private Label createMenuLabel(String text, Color neonColor) {
+    static public Label createMenuLabel(String text, Color neonColor) {
         Label label = new Label(text);
         label.setFont(Font.font("Orbitron", FontWeight.BOLD, 35));
         label.setTextFill(neonColor);
@@ -118,7 +118,7 @@ public class MainScreen {
     }
 
 
-    private DropShadow createNeonGlow(Color color) {
+    public static DropShadow createNeonGlow(Color color) {
         DropShadow glow = new DropShadow();
         glow.setOffsetX(0);
         glow.setOffsetY(0);
