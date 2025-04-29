@@ -53,8 +53,8 @@ public class WinnerScreen {
         }
 
         Text displayScore = new Text(Integer.toString(score));
-        displayScore.setFont(Font.font("Orbitron", FontWeight.BOLD, 35));
-        displayScore.setX(340);
+        displayScore.setFont(Font.font("Orbitron", FontWeight.BOLD, 32));
+        displayScore.setX(335);
         displayScore.setY(275);
         displayScore.setFill(Color.WHITE);
         root.getChildren().add(displayScore);

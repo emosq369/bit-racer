@@ -12,9 +12,6 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.text.FontWeight;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.animation.ScaleTransition;
-import javafx.util.Duration;
-
 
 
 public class MainScreen {
@@ -39,27 +36,32 @@ public class MainScreen {
         // Menu options
         VBox menu = new VBox(30); // 20 px vertical spacing
         menu.setAlignment(Pos.CENTER);
-        
+
         Label playLabel = createMenuLabel("PLAY", Color.WHITE);
         Label userProfileLabel = createMenuLabel("USER PROFILE", Color.WHITE);
         Label scoresLabel = createMenuLabel("SCORES", Color.WHITE);
 
         //This links the "PLAY" button to GameScreen
         playLabel.setOnMouseClicked(event -> {
-            GameScreen gameScreen = new GameScreen(primaryStage);
-            Scene gameScene = gameScreen.getScene();
-            primaryStage.setScene(gameScene);
+            StageSelect playScreen = new StageSelect(primaryStage);
+            Scene playScene = playScreen.getScene();
+            primaryStage.setScene(playScene);
         });
 
         menu.getChildren().addAll(playLabel, userProfileLabel, scoresLabel);
 
         // Logout at top right
-        Label logout = new Label("LOG OUT");
+        Label logout = createMenuLabel("LOG OUT", Color.WHITE);
         logout.setFont(Font.font("Orbitron", 16));
         logout.setTextFill(Color.LIGHTGRAY);
         logout.setEffect(createNeonGlow(Color.LIGHTGRAY));
         logout.setTranslateX(-20);
         logout.setTranslateY(10);
+        logout.setOnMouseClicked(event -> {
+            LoginScreen loginScreen = new LoginScreen(primaryStage);
+            Scene loginScene = loginScreen.getScene();
+            primaryStage.setScene(loginScene);
+        });
 
         // VBox for logout and logo
         VBox topVBox = new VBox();
@@ -70,10 +72,7 @@ public class MainScreen {
         logoutPane.setRight(logout);
         logoutPane.setPrefHeight(40);
         logoutPane.setStyle("-fx-background-color: transparent;");
-
         topVBox.getChildren().addAll(logoutPane, logoView);
-
-
         // VBox for the whole screen layout
         VBox mainLayout = new VBox(); // 60px spacing between logo and menu
         mainLayout.setAlignment(Pos.TOP_CENTER);
