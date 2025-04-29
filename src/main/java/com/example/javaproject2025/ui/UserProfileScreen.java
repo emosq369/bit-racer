@@ -48,6 +48,7 @@ public class UserProfileScreen {
         Label username = new Label("Player1");
         username.setFont(Font.font("Orbitron", FontWeight.BOLD, 50));
         username.setStyle("-fx-text-fill: white;");
+        username.setEffect(createNeonGlow(Color.WHITE));
         topVBox.getChildren().addAll(logoutPane, username);
 
         root.setTop(topVBox);
@@ -57,9 +58,18 @@ public class UserProfileScreen {
         centerSection.setAlignment(Pos.CENTER);
 
         //Default values for now
-        Label totalPlays = createProfileLabel("Total Plays: 42");
-        Label wins = createProfileLabel("Wins: 10");
-        Label fastestTime = createProfileLabel("Fastest Time: 1:32");
+        Label totalPlays = createProfileLabel("Total Plays: ", Color.BLUE);
+        totalPlays.setStyle("-fx-text-fill: blue;");
+        Label tP = createProfileLabel("42", Color.WHITE);
+        Label wins = createProfileLabel("Wins: ", Color.RED);
+        Label w = createProfileLabel("10", Color.WHITE);
+        wins.setStyle("-fx-text-fill: red;");
+        HBox plays = new HBox();
+        plays.setAlignment(Pos.CENTER);
+        plays.getChildren().addAll(totalPlays, tP);
+        HBox winsH = new HBox();
+        winsH.setAlignment(Pos.CENTER);
+        winsH.getChildren().addAll(wins, w);
 
         Button scoresButton = new Button("SCORES");
         scoresButton.setFont(Font.font("Orbitron", FontWeight.BOLD, 35));
@@ -67,11 +77,10 @@ public class UserProfileScreen {
                 "-fx-border-color: white;");
         scoresButton.setEffect(createNeonGlow(Color.WHITE));
 
-        centerSection.getChildren().addAll(totalPlays, wins, fastestTime, scoresButton);
+        centerSection.getChildren().addAll(plays, winsH, scoresButton);
         root.setCenter(centerSection);
 
-        // Bottom Section (Navigation)
-        Button editProfile = new Button("EDIT PROFILE");
+        // Bottom Section (Main menu link)
         Button mainMenu = new Button("MAIN MENU");
         //This links the "Main menu" button to MainScreen
         mainMenu.setOnMouseClicked(event -> {
@@ -80,10 +89,9 @@ public class UserProfileScreen {
             primaryStage.setScene(mainScene);
         });
 
-        styleNavigationButton(editProfile);
         styleNavigationButton(mainMenu);
 
-        HBox bottomSection = new HBox(300, editProfile, mainMenu);
+        HBox bottomSection = new HBox(300, mainMenu);
         bottomSection.setAlignment(Pos.BOTTOM_CENTER);
         root.setBottom(bottomSection);
 
@@ -91,13 +99,13 @@ public class UserProfileScreen {
         scene = new Scene(layeredRoot, 600, 600);
     }
 
-    public static Label createProfileLabel(String text) {
+    public static Label createProfileLabel(String text, Color color) {
 
         Label label = new Label(text);
         label.setFont(Font.font("Orbitron", FontWeight.BOLD, 35));
         label.setTextFill(Color.WHITE);
 
-        label.setEffect(createNeonGlow(Color.WHITE));
+        label.setEffect(createNeonGlow(color));
 
         return label;
     }
