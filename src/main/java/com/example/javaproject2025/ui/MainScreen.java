@@ -13,11 +13,18 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.sql.SQLException;
+
 
 public class MainScreen {
     private Scene scene;
-
-    public MainScreen(Stage primaryStage) {
+    public String userOneUsername;
+    public String userTwoUsername;
+    public MainScreen(Stage primaryStage, String userOne, String userTwo) {
+        System.out.println(userTwo);
+        System.out.println(userOne);
+        this.userOneUsername = userOne;
+        this.userTwoUsername = userTwo;
         // Create a background with stars
         Pane backgroundPane = new Pane();
         backgroundPane.setPrefSize(600, 600);
@@ -43,7 +50,7 @@ public class MainScreen {
 
         //This links the "PLAY" button to GameScreen
         playLabel.setOnMouseClicked(event -> {
-            StageSelect playScreen = new StageSelect(primaryStage);
+            StageSelect playScreen = new StageSelect(primaryStage, userOneUsername, userTwoUsername);
             Scene playScene = playScreen.getScene();
             primaryStage.setScene(playScene);
         });
@@ -58,7 +65,14 @@ public class MainScreen {
         logout.setTranslateX(-20);
         logout.setTranslateY(10);
         logout.setOnMouseClicked(event -> {
-            LoginScreen loginScreen = new LoginScreen(primaryStage);
+            LoginScreen loginScreen = null;
+            try {
+                loginScreen = new LoginScreen(primaryStage);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
             Scene loginScene = loginScreen.getScene();
             primaryStage.setScene(loginScene);
         });

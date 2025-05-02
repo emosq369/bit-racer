@@ -7,10 +7,12 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.sql.SQLException;
+
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws SQLException, ClassNotFoundException {
 //        GameScreen gameScreen = new GameScreen();
 //        Scene scene = gameScreen.getScene();
         LoginScreen loginScreen = new LoginScreen(primaryStage);

@@ -3,6 +3,8 @@ module com.example.javaproject2025 {
     requires javafx.fxml;
     requires java.desktop;
     requires java.management;
+    requires java.sql;
+    requires mysql.connector.j;
 
 
     opens com.example.javaproject2025 to javafx.fxml;

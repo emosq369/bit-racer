@@ -23,8 +23,12 @@ public class StageSelect {
     public Label track3Label = labelCreation("TRACK 3", Color.WHITE, 435, 190);
     public Label mainMenuLabel = labelCreation("MAIN MENU", Color.WHITE, 225, 530);
     public Label trackSelect = labelCreation("SELECT A TRACK", Color.WHITE, 180, 50);
+    public String userOneUsername;
+    public String userTwoUsername;
 
-    public StageSelect(Stage primaryStage){
+    public StageSelect(Stage primaryStage, String userOne, String userTwo) {
+        this.userOneUsername = userOne;
+        this.userTwoUsername = userTwo;
         Glow glow = new Glow();
         glow.setLevel(10);
         Image image = new Image(getClass().getResource("/images/stageSelect.png").toExternalForm());
@@ -37,13 +41,13 @@ public class StageSelect {
         });
 
         track1Label.setOnMouseClicked(event -> {
-            GameScreen gameScreen = new GameScreen(primaryStage);
+            GameScreen gameScreen = new GameScreen(primaryStage, userOneUsername, userTwoUsername);
             Scene scene = gameScreen.getScene();
             primaryStage.setScene(scene);
         });
 
         mainMenuLabel.setOnMouseClicked(event -> {
-            MainScreen mainScreen = new MainScreen(primaryStage);
+            MainScreen mainScreen = new MainScreen(primaryStage, userOneUsername, userTwoUsername);
             Scene scene = mainScreen.getScene();
             primaryStage.setScene(scene);
         });
@@ -63,7 +67,7 @@ public class StageSelect {
         Label label = new Label(text);
         label.setTranslateX(x);
         label.setTranslateY(y);
-        label.setFont(Font.font("Orbitron", FontWeight.BOLD, 25));
+        label.setFont(Font.font("Orbitron", FontWeight.BOLD, 17));
         label.setTextFill(neonColor);
         DropShadow normalGlow = createNeonGlow(neonColor);
         DropShadow strongGlow = createNeonGlow(neonColor);
@@ -80,7 +84,7 @@ public class StageSelect {
 
         label.setOnMouseExited(event -> {
             label.setEffect(normalGlow);
-            label.setScaleX(1.0);
+                label.setScaleX(1.0);
             label.setScaleY(1.0);
         });
 

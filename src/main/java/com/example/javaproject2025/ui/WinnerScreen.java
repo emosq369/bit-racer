@@ -10,32 +10,40 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 public class WinnerScreen {
 
     private Scene scene;
     public Pane root;
-    private Text winner;
+    public Image bit0WinScreen = new Image(getClass().getResource("/images/bit0WinScreen.png").toExternalForm());
+    public Image bit1WinScreen = new Image(getClass().getResource("/images/bit1WinScreen.png").toExternalForm());
+    public ImageView winScreenImageView;
+    public String winnerBit;
+    public String userOneUsername;
+    public String userTwoUsername;
 
-    public WinnerScreen(Stage primaryStage){
-        GameScreen gameScreen = new GameScreen(primaryStage);
+    public WinnerScreen(Stage primaryStage, String winnerBit, String userOneUsername, String userTwoUsername) {
+        this.winnerBit = winnerBit;
+        GameScreen gameScreen = new GameScreen(primaryStage, userOneUsername, userTwoUsername);
         Label mainMenu = gameScreen.mainMenuButton;
         mainMenu.setTranslateX(250);
         mainMenu.setTranslateY(500);
         root = new Pane();
+        if(winnerBit.equals("bit1")){
+            winScreenImageView = new ImageView(bit0WinScreen);
+            winScreenImageView.setFitHeight(600);
+            winScreenImageView.setFitWidth(605);
+            winScreenImageView.setPreserveRatio(true);
+            root.getChildren().add(winScreenImageView);
+        }
+        if(winnerBit.equals("bit2")){
+            winScreenImageView = new ImageView(bit1WinScreen);
+            winScreenImageView.setFitHeight(600);
+            winScreenImageView.setFitWidth(605);
+            winScreenImageView.setPreserveRatio(true);
+            root.getChildren().add(winScreenImageView);
+        }
+
         root.setStyle("-fx-background-color: black;");
-        Image gameAssets = new Image(getClass().getResource("/images/bit0WinScreen.png").toExternalForm());
-        ImageView gameAssetsImageView = new ImageView(gameAssets);
-        gameAssetsImageView.setFitHeight(600);
-        gameAssetsImageView.setFitWidth(605);
-        gameAssetsImageView.setPreserveRatio(true);
-        Text winnerDisplay = new Text("Winner");
-        winnerDisplay.setStyle("-fx-font-size: 20px;");
-        winnerDisplay.setFill(Color.WHITE);
-        winnerDisplay.setX(5);
-        winnerDisplay.setY(5);
-        root.getChildren().add(winnerDisplay);
-        root.getChildren().add(gameAssetsImageView);
         root.getChildren().add(mainMenu);
         scene = new Scene(root, 600, 600);
         primaryStage.setScene(scene);
@@ -43,20 +51,23 @@ public class WinnerScreen {
         primaryStage.show();
     }
 
-    public void sendScore(String winnerString ,int score){
-        winner = new Text(winnerString + " WINS");
-        if(winnerString.equals("BIT 1")){
-            winner.setFill(Color.RED);
+    public void sendScore(String winnerString ,int score) {
+        if (winnerString.equals("BIT 1")) {
+            winnerBit = "Bit 1";
         }
-        else if(winnerString.equals("BIT 2")){
-            winner.setFill(Color.BLUE);
+        else if (winnerString.equals("BIT 2")){
+            winnerBit = "Bit 2";
         }
 
         Text displayScore = new Text(Integer.toString(score));
+//        winScreenImageView.setFitHeight(600);
+//        winScreenImageView.setFitWidth(605);
+//        winScreenImageView.setPreserveRatio(true);
         displayScore.setFont(Font.font("Orbitron", FontWeight.BOLD, 32));
         displayScore.setX(335);
         displayScore.setY(275);
         displayScore.setFill(Color.WHITE);
+//        root.getChildren().add(winScreenImageView);
         root.getChildren().add(displayScore);
 
     }

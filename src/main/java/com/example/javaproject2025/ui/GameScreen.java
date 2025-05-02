@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.Glow;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -23,6 +24,7 @@ import static com.example.javaproject2025.ui.MainScreen.createNeonGlow;
 
 public class GameScreen  {
     // main root, holds all elements of the game.
+    public Pane root = new Pane();
     public Bit bit1 = new Bit("Bit1", 600*4/9, 600-5, Color.RED);
     public Bit bit2 = new Bit("Bit2", 600*5/9, 600-5, Color.BLUE);
     public Scene scene;
@@ -38,8 +40,12 @@ public class GameScreen  {
     private Text playerTwoScore;
     public Label mainMenuButton = createMenuLabel("MAIN MENU", Color.WHITE);
     public Line finishLine = new Line();
+    public String userOneUsername;
+    public String userTwoUsername;
 
-    public GameScreen(Stage primaryStage) {
+    public GameScreen(Stage primaryStage, String userOne, String userTwo) {
+        this.userOneUsername = userOne;
+        this.userTwoUsername = userTwo;
         root.setStyle("-fx-background-color: black;");
         mainMenuButton.setFont(Font.font("Orbitron", 16));
         mainMenuButton.setTextFill(Color.LIGHTGRAY);
@@ -107,7 +113,7 @@ public class GameScreen  {
         mainMenuButton.setOnMouseClicked(event -> {
             root.getChildren().removeAll(bit1.getShape(), bit2.getShape(), bit1.getDirectionLine(), bit2.getDirectionLine(),
                     finishLine, mainMenuButton, gameAssetsImageView, scoreBit1, scoreBit2);
-            MainScreen newMenuAfterClicked = new MainScreen(primaryStage);
+            MainScreen newMenuAfterClicked = new MainScreen(primaryStage, userOneUsername, userTwoUsername);
             primaryStage.setScene(newMenuAfterClicked.getScene());
         });
 
@@ -138,7 +144,6 @@ public class GameScreen  {
                         bit1.moved = true;
                         scoreBit1.setText("BIT 1 SCORE : " + Integer.toString(bit1Score));
                     }
-
                 }
             }
             else{
@@ -177,16 +182,17 @@ public class GameScreen  {
                     root.getChildren().removeAll(bit1.getShape(), bit2.getShape(), bit1.getDirectionLine(), bit2.getDirectionLine(),
                             finishLine, mainMenuButton, gameAssetsImageView, scoreBit1, scoreBit2);
                     this.stop();
-                    WinnerScreen winnerScreen = new WinnerScreen(primaryStage);
+                    WinnerScreen winnerScreen = new WinnerScreen(primaryStage, "bit1", userOneUsername, userTwoUsername);
                     primaryStage.setScene(winnerScreen.getScene());
                     winnerScreen.sendScore("BIT 1", bit1Score);
                 }
+
                 else if(checkWinner() == "bit2" ){
                     System.out.println("bit 2 wins!");
                     root.getChildren().removeAll(bit1.getShape(), bit2.getShape(), bit1.getDirectionLine(), bit2.getDirectionLine(),
                             finishLine, mainMenuButton, gameAssetsImageView, scoreBit1, scoreBit2);
                     this.stop();
-                    WinnerScreen winnerScreen = new WinnerScreen(primaryStage);
+                    WinnerScreen winnerScreen = new WinnerScreen(primaryStage, "bit2", userOneUsername, userTwoUsername);
                     primaryStage.setScene(winnerScreen.getScene());
                     winnerScreen.sendScore("BIT 2", bit2Score);
 
