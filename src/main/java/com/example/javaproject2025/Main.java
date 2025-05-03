@@ -10,6 +10,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+
         MainScreen mainScreen = new MainScreen(primaryStage);
         Scene scene = mainScreen.getScene();
         primaryStage.setScene(scene);
