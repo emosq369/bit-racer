@@ -17,10 +17,14 @@ import static com.example.javaproject2025.ui.ScreenUtils.*;
 
 public class UserProfileScreen {
     private Scene scene;
+    private String userOneUsername;
+    private String userTwoUsername;
     private Stage primaryStage;
 
-    public UserProfileScreen(Stage primaryStage) {
+    public UserProfileScreen(Stage primaryStage, String userOne, String userTwo) {
         this.primaryStage = primaryStage;
+        this.userOneUsername = userOne;
+        this.userTwoUsername = userTwo;
 
         // Background pane with stars
         Pane backgroundPane = new Pane();
@@ -84,7 +88,7 @@ public class UserProfileScreen {
         Button mainMenu = new Button("MAIN MENU");
         //This links the "Main menu" button to MainScreen
         mainMenu.setOnMouseClicked(event -> {
-            MainScreen mainScreen = new MainScreen(primaryStage);
+            MainScreen mainScreen = new MainScreen(primaryStage, userOneUsername, userTwoUsername);
             Scene mainScene = mainScreen.getScene();
             primaryStage.setScene(mainScene);
         });

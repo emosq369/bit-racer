@@ -47,21 +47,21 @@ public class MainScreen {
         VBox menu = new VBox(30); // 20 px vertical spacing
         menu.setAlignment(Pos.CENTER);
 
-        Label playLabel = createMenuLabel("PLAY");
+        Label playLabel = createMenuLabel("PLAY", Color.WHITE);
         playLabel.setOnMouseClicked(event -> {
             StageSelect playScreen = new StageSelect(primaryStage, userOneUsername, userTwoUsername);
             Scene playScene = playScreen.getScene();
             primaryStage.setScene(playScene);
         });
 
-        Label userProfileLabel = createMenuLabel("USER PROFILE");
+        Label userProfileLabel = createMenuLabel("USER PROFILE", Color.WHITE);
         userProfileLabel.setOnMouseClicked(event -> {
-            UserProfileScreen userProfileScreen = new UserProfileScreen(primaryStage);
+            UserProfileScreen userProfileScreen = new UserProfileScreen(primaryStage, userOneUsername,userTwoUsername);
             Scene userScene = userProfileScreen.getScene();
             primaryStage.setScene(userScene);
         });
 
-        Label scoresLabel = createMenuLabel("SCORES");
+        Label scoresLabel = createMenuLabel("SCORES", Color.WHITE);
 
         menu.getChildren().addAll(playLabel, userProfileLabel, scoresLabel);
 
@@ -105,10 +105,10 @@ public class MainScreen {
         primaryStage.show();
     }
 
-    public static Label createMenuLabel(String text, Color neonColor) {
+    public static Label createMenuLabel(String text, Color color) {
         Label label = new Label(text);
         label.setFont(Font.font("Orbitron", FontWeight.BOLD, 35));
-        label.setTextFill(Color.WHITE);
+        label.setTextFill(color);
 
         DropShadow normalGlow = createNeonGlow(Color.WHITE);
         DropShadow strongGlow = createNeonGlow(Color.WHITE);

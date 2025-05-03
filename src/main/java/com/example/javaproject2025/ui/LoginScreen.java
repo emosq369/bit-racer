@@ -191,7 +191,7 @@ public class LoginScreen {
         String userNameFromDatabase;
         String userPasswordFromDatabase;
         Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/bitracer", "root", "Gedobrivagiju30.");
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/bitracer", "root", "bitracerDB");
         Statement statement = connection.createStatement();
         ResultSet databaseQuery = statement.executeQuery(
                 "SELECT username, password FROM users WHERE username = '" + username + "'"
@@ -245,7 +245,7 @@ public class LoginScreen {
         try {
 
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/bitracer", "root", "Gedobrivagiju30.");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/bitracer", "root", "bitracerDB");
 
             // validate length
             if(usernameFromInput.length() > 0){
