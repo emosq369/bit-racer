@@ -12,15 +12,19 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.text.FontWeight;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.animation.ScaleTransition;
-import javafx.util.Duration;
 
+import java.sql.SQLException;
 
 
 public class MainScreen {
     private Scene scene;
-
-    public MainScreen(Stage primaryStage) {
+    public String userOneUsername;
+    public String userTwoUsername;
+    public MainScreen(Stage primaryStage, String userOne, String userTwo) {
+        System.out.println("bit one is : " + userOne);
+        System.out.println("bit two is : " + userTwo);
+        this.userOneUsername = userOne;
+        this.userTwoUsername = userTwo;
         // Create a background with stars
         Pane backgroundPane = new Pane();
         backgroundPane.setPrefSize(600, 600);
@@ -43,9 +47,9 @@ public class MainScreen {
         Label playLabel = createMenuLabel("PLAY", Color.WHITE);
         //This links the "PLAY" button to GameScreen
         playLabel.setOnMouseClicked(event -> {
-            GameScreen gameScreen = new GameScreen();
-            Scene gameScene = gameScreen.getScene();
-            primaryStage.setScene(gameScene);
+            StageSelect playScreen = new StageSelect(primaryStage, userOneUsername, userTwoUsername);
+            Scene playScene = playScreen.getScene();
+            primaryStage.setScene(playScene);
         });
 
         Label userProfileLabel = createMenuLabel("USER PROFILE", Color.WHITE);
@@ -61,12 +65,24 @@ public class MainScreen {
         menu.getChildren().addAll(playLabel, userProfileLabel, scoresLabel);
 
         // Logout at top right
-        Label logout = new Label("LOG OUT");
+        Label logout = createMenuLabel("LOG OUT", Color.WHITE);
         logout.setFont(Font.font("Orbitron", 16));
         logout.setTextFill(Color.LIGHTGRAY);
         logout.setEffect(createNeonGlow(Color.LIGHTGRAY));
         logout.setTranslateX(-20);
         logout.setTranslateY(10);
+        logout.setOnMouseClicked(event -> {
+            LoginScreen loginScreen = null;
+            try {
+                loginScreen = new LoginScreen(primaryStage);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            Scene loginScene = loginScreen.getScene();
+            primaryStage.setScene(loginScene);
+        });
 
         // VBox for logout and logo
         VBox topVBox = new VBox();
@@ -77,10 +93,7 @@ public class MainScreen {
         logoutPane.setRight(logout);
         logoutPane.setPrefHeight(40);
         logoutPane.setStyle("-fx-background-color: transparent;");
-
         topVBox.getChildren().addAll(logoutPane, logoView);
-
-
         // VBox for the whole screen layout
         VBox mainLayout = new VBox(); // 60px spacing between logo and menu
         mainLayout.setAlignment(Pos.TOP_CENTER);
@@ -97,7 +110,7 @@ public class MainScreen {
         primaryStage.show();
     }
 
-    private Label createMenuLabel(String text, Color neonColor) {
+    static public Label createMenuLabel(String text, Color neonColor) {
         Label label = new Label(text);
         label.setFont(Font.font("Orbitron", FontWeight.BOLD, 35));
         label.setTextFill(neonColor);
@@ -125,7 +138,7 @@ public class MainScreen {
     }
 
 
-    private DropShadow createNeonGlow(Color color) {
+    public static DropShadow createNeonGlow(Color color) {
         DropShadow glow = new DropShadow();
         glow.setOffsetX(0);
         glow.setOffsetY(0);

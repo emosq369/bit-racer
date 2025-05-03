@@ -86,14 +86,14 @@ public class Bit {
     public void moveIfLaunched() {
         if (launched) {
             move(dx, dy);
-            //so the arrow follows
+            // so the arrow follows
             updateDirectionLine();
 
-            // ✅ Apply friction
+            //  Apply friction
             dx *= 0.98; // Or 0.95, tweak to taste
             dy *= 0.98;
 
-            // ✅ Stop the ball when it's slow enough
+            //  Stop the ball when it's slow enough
             if (Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1) {
                 dx = 0;
                 dy = 0;
