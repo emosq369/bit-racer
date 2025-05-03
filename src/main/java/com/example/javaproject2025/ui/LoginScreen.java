@@ -42,9 +42,11 @@ public class LoginScreen {
     public Text incorrectPasswordDisplay = createText("INCORRECT PASSWORD", 20, Color.RED, 165, 550);
     public Text shortUserNameDisplay = createText("USERNAME IS TOO SHORT", 20, Color.RED, 155, 550);
     public Text emptyLoginDisplay = createText("ENTER A VALID USERNAME", 20, Color.RED, 145, 550);
+    public Text duplicateLoginDisplay = createText("PLAYER TWO CANNOT BE SAME ACCOUNT", 20, Color.RED, 65, 550);
 
     public LoginScreen(Stage primaryStage) throws ClassNotFoundException, SQLException {
         shortUserNameDisplay.setVisible(false);
+        duplicateLoginDisplay.setVisible(false);
         incorrectPasswordDisplay.setVisible(false);
         userDoesNotExistDisplay.setVisible(false);
         duplicateFoundDisplay.setVisible(false);
@@ -57,6 +59,7 @@ public class LoginScreen {
         FadeTransition incorrectPasswordFade = new FadeTransition(Duration.seconds(2), incorrectPasswordDisplay); incorrectPasswordFade.setFromValue(1.0); incorrectPasswordFade.setToValue(0.0);
         FadeTransition shortUserNameFade = new FadeTransition(Duration.seconds(2), shortUserNameDisplay); shortUserNameFade.setFromValue(1); shortUserNameFade.setToValue(0);
         FadeTransition emptyLoginFade = new FadeTransition(Duration.seconds(2), emptyLoginDisplay); emptyLoginFade.setFromValue(1); emptyLoginFade.setToValue(0);
+        FadeTransition mustUseTwoLoginsFade = new FadeTransition(Duration.seconds(3), duplicateLoginDisplay); mustUseTwoLoginsFade.setFromValue(1); mustUseTwoLoginsFade.setToValue(0);
         registerHere.setFont(Font.font("Orbitron", 12));
         registerHere.setTranslateX(237);
         registerHere.setTranslateY(433);
@@ -128,6 +131,9 @@ public class LoginScreen {
                     System.out.println("OK USER EXISTS BUT ACCOUNT DOES NOT");
                     incorrectPasswordDisplay.setVisible(true);
                     incorrectPasswordFade.play();
+                } else if (validatingLogin == 4) {
+                    duplicateLoginDisplay.setVisible(true);
+                    mustUseTwoLoginsFade.play();
                 }
                 else if(validatingLogin == -1) {
                     incorrectPasswordDisplay.setVisible(true);
@@ -153,7 +159,7 @@ public class LoginScreen {
         gameAssetsImageView.setFitHeight(600);
         gameAssetsImageView.setFitWidth(605);
         gameAssetsImageView.setPreserveRatio(true);
-        loginPane.getChildren().addAll(gameAssetsImageView, onLoginClick, userInputLogin, userInputPassword, registerHere, userDoesNotExistDisplay, incorrectPasswordDisplay, emptyLoginDisplay);
+        loginPane.getChildren().addAll(gameAssetsImageView, onLoginClick, userInputLogin, userInputPassword, registerHere, userDoesNotExistDisplay, incorrectPasswordDisplay, emptyLoginDisplay, duplicateLoginDisplay);
         registerPane.getChildren().addAll(registerGameAssetsImageView, createAccount, userInputRegisterUsername, userInputRegisterPassword, returnToLogin, duplicateFoundDisplay, accountCreatedDisplay, shortUserNameDisplay);
         registerHere.setOnMouseClicked(mouseEvent -> {
             loginPane.setDisable(true);
@@ -214,6 +220,12 @@ public class LoginScreen {
         );
 
         if (databaseQuery.next()) {
+            if(userOne != null && usersLoggedIn == 1) {
+                if(userOne.equals(username)){
+                    System.out.println("THIS USER ALREADY LOGGED IN DUPLICATE LOGIN");
+                    return 4;
+                }
+            }
             System.out.println("WE ARE QUERYING RIGHT NOW");
             userNameFromDatabase = databaseQuery.getString(1);
             userPasswordFromDatabase = databaseQuery.getString(2);
