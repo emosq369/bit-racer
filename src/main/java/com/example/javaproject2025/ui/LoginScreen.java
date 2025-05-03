@@ -1,5 +1,6 @@
 package com.example.javaproject2025.ui;
 
+import java.sql.*;
 import javafx.animation.FadeTransition;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -14,9 +15,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-import java.sql.*;
-
+import java.sql.SQLException;
 import static com.example.javaproject2025.ui.MainScreen.createMenuLabel;
 import static com.example.javaproject2025.ui.MainScreen.createNeonGlow;
 import static com.example.javaproject2025.ui.StageSelect.labelCreation;
@@ -38,26 +37,24 @@ public class LoginScreen {
     public String userTwo;
     public Text duplicateFoundDisplay = new Text("NAME TAKEN, TRY AGAIN");
     public Label startGame = labelCreation("START GAME", Color.WHITE, 235, 500);
-//    public Label accountCreatedDisplay = labelCreation("ACCOUNT CREATED", Color.GREEN, 235, 500);
-    public Text accountCreatedDisplay = createText("ACCOUNT CREATED", 20, Color.GREEN, 175, 550);
-    public Text userDoesNotExistDisplay = createText("USER DOES NOT EXIST", 20, Color.RED, 175, 550);
+    //    public Label accountCreatedDisplay = labelCreation("ACCOUNT CREATED", Color.GREEN, 235, 500);
+    public Text accountCreatedDisplay = createText("ACCOUNT CREATED", 20, Color.GREEN, 185, 550);
+    public Text userDoesNotExistDisplay = createText("USER DOES NOT EXIST", 20, Color.RED, 165, 550);
+    public Text incorrectPasswordDisplay = createText("INCORRECT PASSWORD", 20, Color.RED, 165, 550);
+    public Text shortUserNameDisplay = createText("USERNAME IS TOO SHORT", 20, Color.RED, 155, 550);
 
     public LoginScreen(Stage primaryStage) throws ClassNotFoundException, SQLException {
+        shortUserNameDisplay.setVisible(false);
+        incorrectPasswordDisplay.setVisible(false);
         userDoesNotExistDisplay.setVisible(false);
         duplicateFoundDisplay.setVisible(false);
         accountCreatedDisplay.setVisible(false);
         registerPane.setVisible(false);
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/bitracer", "root", "bitracerDB");
-        FadeTransition duplicateAccountFade = new FadeTransition(Duration.seconds(2), duplicateFoundDisplay);
-        FadeTransition accountCreatedFade = new FadeTransition(Duration.seconds(2), accountCreatedDisplay);
-        FadeTransition userDoesNotExistFade = new FadeTransition(Duration.seconds(2), userDoesNotExistDisplay);
-        duplicateAccountFade.setFromValue(1.0);
-        duplicateAccountFade.setToValue(0.0);
-        accountCreatedFade.setFromValue(1.0);
-        accountCreatedFade.setToValue(0.0);
-        userDoesNotExistFade.setFromValue(1.0);
-        userDoesNotExistFade.setToValue(0.0);
+        FadeTransition duplicateAccountFade = new FadeTransition(Duration.seconds(2), duplicateFoundDisplay); duplicateAccountFade.setFromValue(1.0); duplicateAccountFade.setToValue(0.0);
+        FadeTransition accountCreatedFade = new FadeTransition(Duration.seconds(2), accountCreatedDisplay); accountCreatedFade.setFromValue(1.0); accountCreatedFade.setToValue(0.0);
+        FadeTransition userDoesNotExistFade = new FadeTransition(Duration.seconds(2), userDoesNotExistDisplay); userDoesNotExistFade.setFromValue(1.0); userDoesNotExistFade.setToValue(0.0);
+        FadeTransition incorrectPasswordFade = new FadeTransition(Duration.seconds(2), incorrectPasswordDisplay); incorrectPasswordFade.setFromValue(1.0); incorrectPasswordFade.setToValue(0.0);
+        FadeTransition shortUserNameFade = new FadeTransition(Duration.seconds(2), shortUserNameDisplay); shortUserNameFade.setFromValue(1); shortUserNameFade.setToValue(0);
         registerHere.setFont(Font.font("Orbitron", 12));
         registerHere.setTranslateX(237);
         registerHere.setTranslateY(433);
@@ -110,24 +107,21 @@ public class LoginScreen {
         // handling when user clicks log in
         onLoginClick.setOnMouseClicked(mouseEvent -> {
             try {
-                if(validateLogin(userInputLogin.getText(),userInputPassword.getText()) == 1){
+                if (validateLogin(userInputLogin.getText(), userInputPassword.getText()) == 1) {
                     System.out.println("IT WORKED");
-                }
-                else if(validateLogin(userInputLogin.getText(),userInputPassword.getText()) == 0){
+                } else if (validateLogin(userInputLogin.getText(), userInputPassword.getText()) == 0) {
                     System.out.println("IT NOT WORKED");
                     userDoesNotExistDisplay.setVisible(true);
                     userDoesNotExistFade.play();
-                }
-                else if(validateLogin(userInputLogin.getText(),userInputPassword.getText()) == -1){
+                } else if (validateLogin(userInputLogin.getText(), userInputPassword.getText()) == -1) {
                     System.out.println("OK USER EXISTS BUT ACCOUNT DOES NOT");
+                    incorrectPasswordDisplay.setVisible(true);
+                    incorrectPasswordFade.play();
                 }
-            } catch (ClassNotFoundException e) {
+            } catch (ClassNotFoundException | SQLException e) {
                 throw new RuntimeException(e);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-            finally {
-                if(usersLoggedIn == 2){
+            } finally {
+                if (usersLoggedIn == 2) {
                     onLoginClick.setVisible(false);
                     loginPane.getChildren().add(startGame);
                     loginPane.getChildren().remove(onLoginClick);
@@ -144,9 +138,8 @@ public class LoginScreen {
         gameAssetsImageView.setFitHeight(600);
         gameAssetsImageView.setFitWidth(605);
         gameAssetsImageView.setPreserveRatio(true);
-        loginPane.getChildren().addAll(gameAssetsImageView, onLoginClick, userInputLogin, userInputPassword, registerHere, userDoesNotExistDisplay);
-        registerPane.getChildren().addAll(registerGameAssetsImageView, createAccount, userInputRegisterUsername, userInputRegisterPassword, returnToLogin, duplicateFoundDisplay, accountCreatedDisplay);
-
+        loginPane.getChildren().addAll(gameAssetsImageView, onLoginClick, userInputLogin, userInputPassword, registerHere, userDoesNotExistDisplay, incorrectPasswordDisplay);
+        registerPane.getChildren().addAll(registerGameAssetsImageView, createAccount, userInputRegisterUsername, userInputRegisterPassword, returnToLogin, duplicateFoundDisplay, accountCreatedDisplay, shortUserNameDisplay);
         registerHere.setOnMouseClicked(mouseEvent -> {
             loginPane.setDisable(true);
             registerPane.setDisable(false);
@@ -157,42 +150,22 @@ public class LoginScreen {
         createAccount.setOnMouseClicked(mouseEvent -> {
             System.out.println(usersLoggedIn);
             try {
-                String dupliactedUsername;
-                Statement checkDuplicate = connection.createStatement();
-                ResultSet duplicateUser = checkDuplicate.executeQuery(
-                        "SELECT username FROM users WHERE username = '" + userInputRegisterUsername.getText() + "'"
-                );
+                int result = createAccount(userInputRegisterUsername.getText(), userInputPassword.getText());
 
-                if (duplicateUser.next()) {
-                    dupliactedUsername = duplicateUser.getString(1);
-                    //System.out.println("username already exists : " + dupliactedUsername);
-                }
+                if (result == 0) {
+                    accountCreatedDisplay.setVisible(true);
+                    accountCreatedFade.play();
 
-                Statement statement = connection.createStatement();
-
-                PreparedStatement ps = null;
-
-                String userInput = "insert into users values('" + userInputRegisterUsername.getText() + "','" + userInputRegisterPassword.getText() + "')";
-
-                ps = connection.prepareStatement(userInput);
-                ps.executeUpdate();
-
-                // if duplicate not found, do this work
-                accountCreatedDisplay.setVisible(true);
-                accountCreatedFade.play();
-
-            } catch (SQLException e) {
-                if (e instanceof SQLIntegrityConstraintViolationException) {
+                } else if (result == 1) {
                     System.out.println("SQLIntegrityConstraintViolationException, username already exists in database.");
-//                duplicateFound = true;
-                    System.out.println("duplicate found");
-                    duplicateFoundDisplay.setVisible(true);
-                    duplicateFoundDisplay.setFont(Font.font("Orbitron", 20));
-                    duplicateFoundDisplay.setFill(Color.RED);
-                    duplicateFoundDisplay.setX(165);
-                    duplicateFoundDisplay.setY(550);
                     duplicateAccountFade.play();
+
+                } else if (result == 2) {
+                    shortUserNameDisplay.setVisible(true);
+                    shortUserNameFade.play();
                 }
+            } catch (ClassNotFoundException | SQLException e) {
+                throw new RuntimeException(e);
             }
         });
 
@@ -216,7 +189,7 @@ public class LoginScreen {
 
     public int validateLogin(String username, String password) throws ClassNotFoundException, SQLException {
         String userNameFromDatabase;
-        String userPasswordFromDatabase ;
+        String userPasswordFromDatabase;
         Class.forName("com.mysql.cj.jdbc.Driver");
         Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/bitracer", "root", "bitracerDB");
         Statement statement = connection.createStatement();
@@ -231,22 +204,21 @@ public class LoginScreen {
 //            System.out.println("found user -> " + userNameFromDatabase);
 //            System.out.println("found user & their password is -> " + userPasswordFromDatabase);
 //            System.out.println("username already exists : " + dupliactedUsername);
+            // TODO : implement two users not logging in with the same username and password, aka same account.
             if (password.equals(userPasswordFromDatabase)) {
                 usersLoggedIn++;
-                if(usersLoggedIn == 1){
+                if (usersLoggedIn == 1) {
                     userOne = userNameFromDatabase;
                     userOneLoggedIn = labelCreation("Player One Logged In", Color.RED, 45, 50);
                     loginPane.getChildren().add(userOneLoggedIn);
-                }
-                else if(usersLoggedIn == 2){
+                } else if (usersLoggedIn == 2) {
                     userTwo = userNameFromDatabase;
                     userTwoLoggedIn = labelCreation("Player Two Logged In", Color.BLUE, 350, 50);
                     loginPane.getChildren().add(userTwoLoggedIn);
                 }
                 // if user signed in correctly, return one.
                 return 1;
-            }
-            else{
+            } else {
                 // if the user exists but the password is wrong, return -1.
                 System.out.println("OK ACCOUNT EXISTS BUT WRONG PASSWORD");
                 return -1;
@@ -257,7 +229,7 @@ public class LoginScreen {
         return 0;
     }
 
-    public Text createText(String text, int fontSize, Color color, int x, int y){
+    public Text createText(String text, int fontSize, Color color, int x, int y) {
         Text createText = new Text(text);
         DropShadow strongGlow = createNeonGlow(color);
         strongGlow.setRadius(40);
@@ -269,4 +241,43 @@ public class LoginScreen {
         return createText;
     }
 
+    public int createAccount(String usernameFromInput, String passwordFromInput) throws ClassNotFoundException, SQLException {
+        try {
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/bitracer", "root", "bitracerDB");
+
+            Statement statement = connection.createStatement();
+
+            PreparedStatement ps;
+
+            // validate length
+            if(usernameFromInput.length() > 0){
+                String userInput = "insert into users values('" + usernameFromInput + "','" + passwordFromInput + "')";
+
+                ps = connection.prepareStatement(userInput);
+                ps.executeUpdate();
+            }
+            else{
+                // return if user does not enter anything into username field
+                return 2;
+            }
+
+
+        } catch (SQLException e) {
+            if (e instanceof SQLIntegrityConstraintViolationException) {
+                // if duplicate found
+                duplicateFoundDisplay.setVisible(true);
+                duplicateFoundDisplay.setFont(Font.font("Orbitron", 20));
+                duplicateFoundDisplay.setFill(Color.RED);
+                duplicateFoundDisplay.setX(165);
+                duplicateFoundDisplay.setY(550);
+                return 1;
+            }
+        }
+
+        // if no duplicate found, insert into table
+        return 0;
+    }
 }
+

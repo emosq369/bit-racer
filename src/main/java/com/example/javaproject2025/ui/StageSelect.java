@@ -41,7 +41,7 @@ public class StageSelect {
         });
 
         track1Label.setOnMouseClicked(event -> {
-            GameScreen gameScreen = new GameScreen(primaryStage, userOneUsername, userTwoUsername);
+            GameScreen gameScreen = new GameScreen(primaryStage, userOneUsername, userTwoUsername, "trackOne");
             Scene scene = gameScreen.getScene();
             primaryStage.setScene(scene);
         });

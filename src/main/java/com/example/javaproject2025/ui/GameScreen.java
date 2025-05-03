@@ -19,6 +19,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.sql.SQLException;
+
 import static com.example.javaproject2025.ui.MainScreen.createMenuLabel;
 import static com.example.javaproject2025.ui.MainScreen.createNeonGlow;
 
@@ -42,10 +44,13 @@ public class GameScreen  {
     public Line finishLine = new Line();
     public String userOneUsername;
     public String userTwoUsername;
+    public String trackName;
 
-    public GameScreen(Stage primaryStage, String userOne, String userTwo) {
+    public GameScreen(Stage primaryStage, String userOne, String userTwo, String trackName) {
         this.userOneUsername = userOne;
         this.userTwoUsername = userTwo;
+        this.trackName = trackName;
+        System.out.println("HELLO TRACK WHAT ARE WE " + trackName);
         root.setStyle("-fx-background-color: black;");
         mainMenuButton.setFont(Font.font("Orbitron", 16));
         mainMenuButton.setTextFill(Color.LIGHTGRAY);
@@ -177,12 +182,19 @@ public class GameScreen  {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if(checkWinner() == "bit1" ){
+                if(checkWinner() == "bit1"){
                     System.out.println("bit 1 wins!");
                     root.getChildren().removeAll(bit1.getShape(), bit2.getShape(), bit1.getDirectionLine(), bit2.getDirectionLine(),
                             finishLine, mainMenuButton, gameAssetsImageView, scoreBit1, scoreBit2);
                     this.stop();
-                    WinnerScreen winnerScreen = new WinnerScreen(primaryStage, "bit1", userOneUsername, userTwoUsername);
+                    WinnerScreen winnerScreen = null;
+                    try {
+                        winnerScreen = new WinnerScreen(primaryStage, "bit1", userOneUsername, bit1Score, trackName, userOneUsername, userTwoUsername);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    } catch (ClassNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
                     primaryStage.setScene(winnerScreen.getScene());
                     winnerScreen.sendScore("BIT 1", bit1Score);
                 }
@@ -192,7 +204,14 @@ public class GameScreen  {
                     root.getChildren().removeAll(bit1.getShape(), bit2.getShape(), bit1.getDirectionLine(), bit2.getDirectionLine(),
                             finishLine, mainMenuButton, gameAssetsImageView, scoreBit1, scoreBit2);
                     this.stop();
-                    WinnerScreen winnerScreen = new WinnerScreen(primaryStage, "bit2", userOneUsername, userTwoUsername);
+                    WinnerScreen winnerScreen = null;
+                    try {
+                        winnerScreen = new WinnerScreen(primaryStage, "bit2", userTwoUsername, bit2Score, trackName, userOneUsername, userTwoUsername);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    } catch (ClassNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
                     primaryStage.setScene(winnerScreen.getScene());
                     winnerScreen.sendScore("BIT 2", bit2Score);
 

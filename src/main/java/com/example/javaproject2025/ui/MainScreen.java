@@ -21,8 +21,8 @@ public class MainScreen {
     public String userOneUsername;
     public String userTwoUsername;
     public MainScreen(Stage primaryStage, String userOne, String userTwo) {
-        System.out.println(userTwo);
-        System.out.println(userOne);
+        System.out.println("bit one is : " + userOne);
+        System.out.println("bit two is : " + userTwo);
         this.userOneUsername = userOne;
         this.userTwoUsername = userTwo;
         // Create a background with stars
