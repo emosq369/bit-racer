@@ -22,7 +22,7 @@ public class StageSelect {
     public Label track2Label = labelCreation("TRACK 2", Color.WHITE, 235, 190);
     public Label track3Label = labelCreation("TRACK 3", Color.WHITE, 435, 190);
     public Label mainMenuLabel = labelCreation("MAIN MENU", Color.WHITE, 225, 530);
-    public Label trackSelect = labelCreation("SELECT A TRACK", Color.WHITE, 180, 50);
+    public Label trackSelect = labelCreation("SELECT A TRACK", Color.WHITE, 175, 50);
     public String userOneUsername;
     public String userTwoUsername;
 
@@ -36,9 +36,9 @@ public class StageSelect {
         imageView.setFitHeight(600);
         imageView.setFitWidth(600);
 
-        root.setOnMouseMoved(event -> {
-            System.out.println("x " + event.getX() + " y " + event.getY());
-        });
+//        root.setOnMouseMoved(event -> {
+//            System.out.println("x " + event.getX() + " y " + event.getY());
+//        });
 
         track1Label.setOnMouseClicked(event -> {
             GameScreen gameScreen = new GameScreen(primaryStage, userOneUsername, userTwoUsername, "trackOne");
@@ -67,7 +67,7 @@ public class StageSelect {
         Label label = new Label(text);
         label.setTranslateX(x);
         label.setTranslateY(y);
-        label.setFont(Font.font("Orbitron", FontWeight.BOLD, 17));
+        label.setFont(Font.font("Orbitron", FontWeight.BOLD, 25));
         label.setTextFill(neonColor);
         DropShadow normalGlow = createNeonGlow(neonColor);
         DropShadow strongGlow = createNeonGlow(neonColor);

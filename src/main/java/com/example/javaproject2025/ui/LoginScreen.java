@@ -32,8 +32,8 @@ public class LoginScreen {
     public Label createAccount = createMenuLabel("REGISTER ACCOUNT", Color.WHITE);
     public Label returnToLogin = labelCreation("RETURN TO LOGIN", Color.WHITE, 420, 22);
     public String userOne;
-    public Label userOneLoggedIn;
-    public Label userTwoLoggedIn;
+    public Text userOneLoggedInDisplay = createText("Player One Logged In", 15, Color.RED, 45,50);
+    public Text userTwoLoggedInDisplay = createText("Player Two Logged In", 15, Color.BLUE, 350,50);
     public String userTwo;
     public Text duplicateFoundDisplay = new Text("NAME TAKEN, TRY AGAIN");
     public Label startGame = labelCreation("START GAME", Color.WHITE, 235, 500);
@@ -45,7 +45,8 @@ public class LoginScreen {
     public Text duplicateLoginDisplay = createText("PLAYER TWO CANNOT BE SAME ACCOUNT", 20, Color.RED, 65, 550);
 
     public LoginScreen(Stage primaryStage) throws ClassNotFoundException, SQLException {
-
+        userOneLoggedInDisplay.setVisible(false);
+        userTwoLoggedInDisplay.setVisible(false);
         shortUserNameDisplay.setVisible(false);
         duplicateLoginDisplay.setVisible(false);
         incorrectPasswordDisplay.setVisible(false);
@@ -61,6 +62,8 @@ public class LoginScreen {
         FadeTransition shortUserNameFade = new FadeTransition(Duration.seconds(2), shortUserNameDisplay); shortUserNameFade.setFromValue(1); shortUserNameFade.setToValue(0);
         FadeTransition emptyLoginFade = new FadeTransition(Duration.seconds(2), emptyLoginDisplay); emptyLoginFade.setFromValue(1); emptyLoginFade.setToValue(0);
         FadeTransition mustUseTwoLoginsFade = new FadeTransition(Duration.seconds(3), duplicateLoginDisplay); mustUseTwoLoginsFade.setFromValue(1); mustUseTwoLoginsFade.setToValue(0);
+        FadeTransition userOneLoggedInFade = new FadeTransition(Duration.seconds(1.5), userOneLoggedInDisplay); userOneLoggedInFade.setFromValue(0); userOneLoggedInFade.setToValue(1);
+        FadeTransition userTwoLoggedInFade = new FadeTransition(Duration.seconds(1.5), userTwoLoggedInDisplay); userTwoLoggedInFade.setFromValue(0); userTwoLoggedInFade.setToValue(1);
         registerHere.setFont(Font.font("Orbitron", 12));
         registerHere.setTranslateX(237);
         registerHere.setTranslateY(433);
@@ -116,6 +119,14 @@ public class LoginScreen {
                 int validatingLogin = validateLogin(userInputLogin.getText(), userInputPassword.getText());
                 if (validatingLogin == 1) {
                     System.out.println("IT WORKED");
+                    if(usersLoggedIn == 1){
+                        userOneLoggedInDisplay.setVisible(true);
+                        userOneLoggedInFade.play();
+                    }
+                    else{
+                        userTwoLoggedInDisplay.setVisible(true);
+                        userTwoLoggedInFade.play();
+                    }
                 }
                 else if (validatingLogin == 0) {
                     System.out.println("IT NOT WORKED");
@@ -160,7 +171,7 @@ public class LoginScreen {
         gameAssetsImageView.setFitHeight(600);
         gameAssetsImageView.setFitWidth(605);
         gameAssetsImageView.setPreserveRatio(true);
-        loginPane.getChildren().addAll(gameAssetsImageView, onLoginClick, userInputLogin, userInputPassword, registerHere, userDoesNotExistDisplay, incorrectPasswordDisplay, emptyLoginDisplay, duplicateLoginDisplay);
+        loginPane.getChildren().addAll(gameAssetsImageView, onLoginClick, userInputLogin, userInputPassword, registerHere, userDoesNotExistDisplay, incorrectPasswordDisplay, emptyLoginDisplay, duplicateLoginDisplay, userOneLoggedInDisplay, userTwoLoggedInDisplay);
         registerPane.getChildren().addAll(registerGameAssetsImageView, createAccount, userInputRegisterUsername, userInputRegisterPassword, returnToLogin, duplicateFoundDisplay, accountCreatedDisplay, shortUserNameDisplay);
         registerHere.setOnMouseClicked(mouseEvent -> {
             loginPane.setDisable(true);
@@ -171,10 +182,10 @@ public class LoginScreen {
 
         //////////////////////////////////////////////////////////////
         // if you want to skip login uncomment these next four lines.
-//        loginPane.getChildren().add(startGame);
-//        startGame.setVisible(true);
-//        startGame.setTranslateX(220);
-//        startGame.setTranslateY(50);
+        loginPane.getChildren().add(startGame);
+        startGame.setVisible(true);
+        startGame.setTranslateX(220);
+        startGame.setTranslateY(50);
         //////////////////////////////////////////////////////////////
 
         createAccount.setOnMouseClicked(mouseEvent -> {
@@ -248,12 +259,8 @@ public class LoginScreen {
                 usersLoggedIn++;
                 if (usersLoggedIn == 1) {
                     userOne = userNameFromDatabase;
-                    userOneLoggedIn = labelCreation("Player One Logged In", Color.RED, 45, 50);
-                    loginPane.getChildren().add(userOneLoggedIn);
                 } else if (usersLoggedIn == 2) {
                     userTwo = userNameFromDatabase;
-                    userTwoLoggedIn = labelCreation("Player Two Logged In", Color.BLUE, 350, 50);
-                    loginPane.getChildren().add(userTwoLoggedIn);
                 }
                 // if user signed in correctly, return one.
                 return 1;
