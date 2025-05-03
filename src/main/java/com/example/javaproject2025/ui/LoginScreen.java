@@ -150,7 +150,7 @@ public class LoginScreen {
         createAccount.setOnMouseClicked(mouseEvent -> {
             System.out.println(usersLoggedIn);
             try {
-                int result = createAccount(userInputRegisterUsername.getText(), userInputPassword.getText());
+                int result = createAccount(userInputRegisterUsername.getText(), userInputRegisterPassword.getText());
 
                 if (result == 0) {
                     accountCreatedDisplay.setVisible(true);
@@ -191,7 +191,7 @@ public class LoginScreen {
         String userNameFromDatabase;
         String userPasswordFromDatabase;
         Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/bitracer", "root", "bitracerDB");
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/bitracer", "root", "Gedobrivagiju30.");
         Statement statement = connection.createStatement();
         ResultSet databaseQuery = statement.executeQuery(
                 "SELECT username, password FROM users WHERE username = '" + username + "'"
@@ -245,18 +245,16 @@ public class LoginScreen {
         try {
 
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/bitracer", "root", "bitracerDB");
-
-            Statement statement = connection.createStatement();
-
-            PreparedStatement ps;
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/bitracer", "root", "Gedobrivagiju30.");
 
             // validate length
             if(usernameFromInput.length() > 0){
-                String userInput = "insert into users values('" + usernameFromInput + "','" + passwordFromInput + "')";
-
-                ps = connection.prepareStatement(userInput);
+                String query = "INSERT INTO users (username, password) VALUES (?, ?)";
+                PreparedStatement ps = connection.prepareStatement(query);
+                ps.setString(1, usernameFromInput);
+                ps.setString(2, passwordFromInput);
                 ps.executeUpdate();
+
             }
             else{
                 // return if user does not enter anything into username field

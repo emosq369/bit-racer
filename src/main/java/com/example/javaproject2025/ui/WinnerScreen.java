@@ -85,7 +85,7 @@ public class WinnerScreen {
         String userNameFromDatabase;
         String userPasswordFromDatabase;
         Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/bitracer", "root", "bitracerDB");
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/bitracer", "root", "Gedobrivagiju30.");
         Statement statement = connection.createStatement();
         PreparedStatement ps = null;
         String insertScoreStatement = "insert into scores values('" + winnerUsername + "','" + winnerScore + "','" + trackName + "')";

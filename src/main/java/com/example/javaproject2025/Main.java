@@ -18,6 +18,7 @@ public class Main extends Application {
         LoginScreen loginScreen = new LoginScreen(primaryStage);
         //MainScreen mainScreen = new MainScreen(primaryStage);
         Scene scene = loginScreen.getScene();
+
         primaryStage.setScene(scene);
         primaryStage.setTitle("Bit Racer");
         primaryStage.show();
