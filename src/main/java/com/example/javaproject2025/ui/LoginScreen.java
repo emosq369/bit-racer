@@ -45,6 +45,7 @@ public class LoginScreen {
     public Text duplicateLoginDisplay = createText("PLAYER TWO CANNOT BE SAME ACCOUNT", 20, Color.RED, 65, 550);
 
     public LoginScreen(Stage primaryStage) throws ClassNotFoundException, SQLException {
+
         shortUserNameDisplay.setVisible(false);
         duplicateLoginDisplay.setVisible(false);
         incorrectPasswordDisplay.setVisible(false);
@@ -168,6 +169,13 @@ public class LoginScreen {
             scene.setRoot(registerPane);
         });
 
+        //////////////////////////////////////////////////////////////
+        // if you want to skip login uncomment these next three lines.
+        loginPane.getChildren().add(startGame);
+        startGame.setVisible(true);
+        startGame.setTranslateX(220);
+        startGame.setTranslateY(50);
+        //////////////////////////////////////////////////////////////
 
         createAccount.setOnMouseClicked(mouseEvent -> {
             System.out.println(usersLoggedIn);
