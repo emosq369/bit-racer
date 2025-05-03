@@ -170,11 +170,11 @@ public class LoginScreen {
         });
 
         //////////////////////////////////////////////////////////////
-        // if you want to skip login uncomment these next three lines.
-        loginPane.getChildren().add(startGame);
-        startGame.setVisible(true);
-        startGame.setTranslateX(220);
-        startGame.setTranslateY(50);
+        // if you want to skip login uncomment these next four lines.
+//        loginPane.getChildren().add(startGame);
+//        startGame.setVisible(true);
+//        startGame.setTranslateX(220);
+//        startGame.setTranslateY(50);
         //////////////////////////////////////////////////////////////
 
         createAccount.setOnMouseClicked(mouseEvent -> {
