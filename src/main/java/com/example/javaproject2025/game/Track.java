@@ -12,7 +12,6 @@ import java.util.List;
 
 public class Track {
     private List<Line> boundaries = new ArrayList<>();
-    private List<Image> stars = new ArrayList<>();
     final private String name;
 
     public Track(String name) {
@@ -44,24 +43,19 @@ public class Track {
             l.setStrokeWidth(4);
             boundaries.add(l);
         }
-
     }
 
     public void buildLevel2Layout(double width, double height) {
-        boundaries.clear();
 
-        double centerY = height / 2;
-        double upperY = height * 0.25;
-
-        Line leftBottom = new Line(width * 1/3, height, 180, centerY);
-        Line leftMiddle = new Line(180, centerY, 160, upperY);
-        Line leftTop = new Line(160, upperY, 300, 0);
-
-        Line rightBottom = new Line(width * 2/3, height, 400, centerY);
-        Line rightMiddle = new Line(400, centerY, 420, upperY);
-        Line rightTop = new Line(420, upperY, 500, 0);
-
-        for (Line l : List.of(leftBottom, leftMiddle, leftTop, rightBottom, rightMiddle, rightTop)) {
+        Line l1 = new Line(2/3.0*width, 1/3.0*height, 300, 0);
+        Line r1 = new Line(500, 1/2.0*height, 2/3.0*width, 0);
+        Line l2 = new Line(width * 1/3, height*1/3, 2/3.0*width, 1/3.0*height);
+        Line r2 = new Line(1/2.0*width, 1/2.0* height, 500, 1/2.0*height);
+        Line l3 = new Line(250, height*2/3, width * 1/3, height*1/3);
+        Line r3 = new Line(350, 2/3.0* height, 1/2.0*width, 1/2.0* height);
+        Line l4 = new Line(width * 1/3.0, height,250, height*2/3 );
+        Line r4 = new Line(width * 2/3.0, height,350, height*2/3);
+        for (Line l : List.of(l1, r1, l2, r2, l3, r3, l4, r4)) {
             l.setStroke(Color.WHITE);
             l.setStrokeWidth(4);
             boundaries.add(l);
