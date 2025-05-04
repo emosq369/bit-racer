@@ -13,10 +13,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
 
-import java.sql.SQLException;
-
-import static com.example.javaproject2025.ui.ScreenUtils.*;
-
 public class MainScreen {
     private Scene scene;
     public String userOneUsername;

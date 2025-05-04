@@ -3,6 +3,7 @@ package com.example.javaproject2025.ui;
 import com.example.javaproject2025.game.Bit;
 import com.example.javaproject2025.game.GamePhysics;
 import com.example.javaproject2025.game.Track;
+import com.example.javaproject2025.utils.ScreenUtils;
 import javafx.animation.AnimationTimer;
 import javafx.animation.FadeTransition;
 import javafx.scene.Scene;
@@ -21,6 +22,7 @@ import javafx.util.Duration;
 
 import java.sql.SQLException;
 
+import static com.example.javaproject2025.utils.ScreenUtils.*;
 import static com.example.javaproject2025.ui.MainScreen.createMenuLabel;
 import static com.example.javaproject2025.ui.MainScreen.createNeonGlow;
 
@@ -45,6 +47,8 @@ public class GameScreen  {
     public String userOneUsername;
     public String userTwoUsername;
     public String trackName;
+    public final double sceneWidth = 600;
+    public final double sceneHeight = 600;
 
     public GameScreen(Stage primaryStage, String userOne, String userTwo, String trackName) {
         this.userOneUsername = userOne;
@@ -52,24 +56,13 @@ public class GameScreen  {
         this.trackName = trackName;
         System.out.println("HELLO TRACK WHAT ARE WE " + trackName);
         root.setStyle("-fx-background-color: black;");
+        root.setPrefSize(sceneWidth, sceneHeight);
+        ScreenUtils.drawStars(root);
         mainMenuButton.setFont(Font.font("Orbitron", 16));
         mainMenuButton.setTextFill(Color.LIGHTGRAY);
         mainMenuButton.setEffect(createNeonGlow(Color.LIGHTGRAY));
         mainMenuButton.setTranslateX(480);
         mainMenuButton.setTranslateY(10);
-        Image gifImage = new Image(getClass().getResource("/images/pulsating_star.gif").toExternalForm());
-        Image gifImage2 = new Image(getClass().getResource("/images/pulsating_star.gif").toExternalForm());
-        ImageView gifView2 = new ImageView(gifImage);
-        gifView2.setX(490);
-        gifView2.setY(290);
-        gifView2.setFitHeight(80);
-        gifView2.setFitWidth(40);
-        gifView2.setPreserveRatio(true);
-        Image gameAssets = new Image(getClass().getResource("/images/game_assets.png").toExternalForm());
-        ImageView gameAssetsImageView = new ImageView(gameAssets);
-        gameAssetsImageView.setFitHeight(600);
-        gameAssetsImageView.setFitWidth(600);
-        gameAssetsImageView.setPreserveRatio(true);
         randomizeTurn();
         scoreBit1.setFont(Font.font("Orbitron", 18));
         scoreBit1.setEffect(glowEffect);
@@ -82,42 +75,36 @@ public class GameScreen  {
         scoreBit2.setX(410);
         scoreBit2.setY(530);
         //scoreBit2.setOpacity(0);
-        ImageView gifView = new ImageView(gifImage);
-        gifView.setX(90);
-        gifView.setY(190);
-        gifView.setFitHeight(80);
-        gifView.setFitWidth(40);
-        gifView.setPreserveRatio(true);
 
-        // main pane for the game (root pane)
-        final double sceneWidth = 600;
-        final double sceneHeight = 600;
+        // finish line
         finishLine.setStartX(330);
         finishLine.setStartY(90);
         finishLine.setEndX(400);
         finishLine.setEndY(90);
         finishLine.setFill(Color.RED);
         finishLine.setStroke(Color.RED);
-        // Instantiate and render level 1's track
-        Track track1 = new Track("Level 1");
-        track1.buildLevel1Layout(sceneWidth, sceneHeight); // A method to define and add 4 boundary lines
-        track1.render(root);
+
+        // Render tracks dynamically
+        Track track = new Track(trackName);
+        switch (trackName.toLowerCase()) {
+            case "track1" -> track.buildLevel1Layout(sceneWidth, sceneHeight);
+            case "track2" -> track.buildLevel2Layout(sceneWidth, sceneHeight);
+            case "track3" -> track.buildLevel3Layout(sceneWidth, sceneHeight);
+            default -> track.buildLevel1Layout(sceneWidth, sceneHeight); // fallback
+        }
+        track.render(root);
 
         // Create bits
 
         // Add bits and directionals to the scene
-        root.getChildren().add(gameAssetsImageView);
+//        root.getChildren().add(gameAssetsImageView);
         root.getChildren().addAll(bit1.getShape(), bit2.getShape(),
-                bit1.getDirectionLine(), bit2.getDirectionLine());
-
-        //root.getChildren().add(finishLine);
-        root.getChildren().addAll(gifView, gifView2);
-        root.getChildren().add(mainMenuButton);
+                bit1.getDirectionLine(), bit2.getDirectionLine(), mainMenuButton);
 
         // button which handles removal of all GameScreen Objects
         mainMenuButton.setOnMouseClicked(event -> {
             root.getChildren().removeAll(bit1.getShape(), bit2.getShape(), bit1.getDirectionLine(), bit2.getDirectionLine(),
-                    finishLine, mainMenuButton, gameAssetsImageView, scoreBit1, scoreBit2);
+                    finishLine, mainMenuButton, scoreBit1, scoreBit2);
             MainScreen newMenuAfterClicked = new MainScreen(primaryStage, userOneUsername, userTwoUsername);
             primaryStage.setScene(newMenuAfterClicked.getScene());
         });
@@ -134,7 +121,7 @@ public class GameScreen  {
         started = true;
 
         // Add more elements later: bits, arrows, etc.
-        scene = new Scene(root, sceneWidth, sceneHeight, Color.BLACK);
+        scene = new Scene(root, sceneWidth, sceneHeight);
         scene.setOnKeyPressed(event -> {
             if(currentTurn.equals("bit1")) {
                 switch (event.getCode()) {
@@ -171,7 +158,7 @@ public class GameScreen  {
                         bit2.launched = false;
                     }
                     case B -> {
-                        track1.render(root);
+                        track.render(root);
                         root.getChildren().add(finishLine);
                     }
 
@@ -185,7 +172,7 @@ public class GameScreen  {
                 if(checkWinner() == "bit1"){
                     System.out.println("bit 1 wins!");
                     root.getChildren().removeAll(bit1.getShape(), bit2.getShape(), bit1.getDirectionLine(), bit2.getDirectionLine(),
-                            finishLine, mainMenuButton, gameAssetsImageView, scoreBit1, scoreBit2);
+                            finishLine, mainMenuButton, scoreBit1, scoreBit2);
                     this.stop();
                     WinnerScreen winnerScreen = null;
                     try {
@@ -202,7 +189,7 @@ public class GameScreen  {
                 else if(checkWinner() == "bit2" ){
                     System.out.println("bit 2 wins!");
                     root.getChildren().removeAll(bit1.getShape(), bit2.getShape(), bit1.getDirectionLine(), bit2.getDirectionLine(),
-                            finishLine, mainMenuButton, gameAssetsImageView, scoreBit1, scoreBit2);
+                            finishLine, mainMenuButton, scoreBit1, scoreBit2);
                     this.stop();
                     WinnerScreen winnerScreen = null;
                     try {
@@ -225,16 +212,16 @@ public class GameScreen  {
 
                 GamePhysics gamePhysics = new GamePhysics();
                 if(bit2.getY() <= finishLine.getStartY()) {
-                    for (int i = 0; i < track1.getBoundaries().size(); i++) {
-                        root.getChildren().remove(track1.getBoundaries().get(i));
+                    for (int i = 0; i < track.getBoundaries().size(); i++) {
+                        root.getChildren().remove(track.getBoundaries().get(i));
                     }
                     root.getChildren().remove(finishLine);
                 }
 
                 bit1.moveIfLaunched();
                 bit2.moveIfLaunched();
-                for (int i = 0; i < track1.getBoundaries().size(); i++) {
-                    Line boundary = track1.getBoundaries().get(i);
+                for (int i = 0; i < track.getBoundaries().size(); i++) {
+                    Line boundary = track.getBoundaries().get(i);
 
                     if (gamePhysics.isCircleCollidingWithLine(bit2.getX(), bit2.getY(), bit2.getShape().getRadius(),
                             boundary.getStartX(), boundary.getStartY(),
@@ -242,8 +229,8 @@ public class GameScreen  {
                         bit2.launched = false;
                     }
                 }
-                for (int i = 0; i < track1.getBoundaries().size(); i++) {
-                    Line boundary = track1.getBoundaries().get(i);
+                for (int i = 0; i < track.getBoundaries().size(); i++) {
+                    Line boundary = track.getBoundaries().get(i);
                     if (gamePhysics.isCircleCollidingWithLine(bit1.getX(), bit1.getY(), bit1.getShape().getRadius(),
                             boundary.getStartX(), boundary.getStartY(),
                             boundary.getEndX(), boundary.getEndY())) {

@@ -4,16 +4,13 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-import static com.example.javaproject2025.ui.ScreenUtils.*;
+import static com.example.javaproject2025.utils.ScreenUtils.*;
 
 public class UserProfileScreen {
     private Scene scene;

@@ -41,10 +41,20 @@ public class StageSelect {
 //        });
 
         track1Label.setOnMouseClicked(event -> {
-            GameScreen gameScreen = new GameScreen(primaryStage, userOneUsername, userTwoUsername, "trackOne");
-            Scene scene = gameScreen.getScene();
-            primaryStage.setScene(scene);
+            GameScreen gameScreen = new GameScreen(primaryStage, userOneUsername, userTwoUsername, "track1");
+            primaryStage.setScene(gameScreen.getScene());
         });
+
+        track2Label.setOnMouseClicked(event -> {
+            GameScreen gameScreen = new GameScreen(primaryStage, userOneUsername, userTwoUsername, "track2");
+            primaryStage.setScene(gameScreen.getScene());
+        });
+
+        track3Label.setOnMouseClicked(event -> {
+            GameScreen gameScreen = new GameScreen(primaryStage, userOneUsername, userTwoUsername, "track3");
+            primaryStage.setScene(gameScreen.getScene());
+        });
+
 
         mainMenuLabel.setOnMouseClicked(event -> {
             MainScreen mainScreen = new MainScreen(primaryStage, userOneUsername, userTwoUsername);

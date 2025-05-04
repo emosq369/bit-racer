@@ -1,4 +1,4 @@
-package com.example.javaproject2025.ui;
+package com.example.javaproject2025.utils;
 
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
