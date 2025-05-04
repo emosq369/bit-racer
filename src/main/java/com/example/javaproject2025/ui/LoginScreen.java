@@ -275,7 +275,7 @@ public class LoginScreen {
         return 0;
     }
 
-    public Text createText(String text, int fontSize, Color color, int x, int y) {
+    public static Text createText(String text, int fontSize, Color color, int x, int y) {
         Text createText = new Text(text);
         DropShadow strongGlow = createNeonGlow(color);
         strongGlow.setRadius(40);
