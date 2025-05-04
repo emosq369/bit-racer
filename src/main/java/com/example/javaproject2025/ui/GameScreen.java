@@ -54,24 +54,26 @@ public class GameScreen  {
         mainMenuButton.setTranslateX(480);
         mainMenuButton.setTranslateY(10);
         randomizeTurn();
-        Text bitOneScoreDisplay = createText(userOne + " score : 0", 18, Color.RED, 20, 530);
-        Text bitTwoScoreDisplay = createText(userTwo + " score : 0", 18, Color.BLUE, 415, 530);
+        Text bitOneScoreDisplay = createText(userOne + "\n    0", 18, Color.RED, 60, 530);
+        Text bitTwoScoreDisplay = createText(userTwo + "\n    0", 18, Color.BLUE, 465, 530);
 
         // finish line
-        finishLine.setStartX(335);
-        finishLine.setStartY(90);
-        finishLine.setEndX(405);
-        finishLine.setEndY(90);
-        finishLine.setFill(Color.GREEN);
-        finishLine.setStroke(Color.GREEN);
-        finishLine.setStrokeWidth(1);
 
         // Render tracks dynamically
         Track track = new Track(trackName);
         switch (trackName.toLowerCase()) {
-            case "track1" -> track.buildLevel1Layout(sceneWidth, sceneHeight);
-            case "track2" -> track.buildLevel2Layout(sceneWidth, sceneHeight);
-            case "track3" -> track.buildLevel3Layout(sceneWidth, sceneHeight);
+            case "track1" -> {
+                track.setFinishLine(finishLine, "track1");
+                track.buildLevel1Layout(sceneWidth, sceneHeight);
+            }
+            case "track2" -> {
+                track.setFinishLine(finishLine, "track2");
+                track.buildLevel2Layout(sceneWidth, sceneHeight);
+            }
+            case "track3" -> {
+                track.setFinishLine(finishLine, "track3");
+                track.buildLevel3Layout(sceneWidth, sceneHeight);
+            }
             default -> track.buildLevel1Layout(sceneWidth, sceneHeight); // fallback
         }
         root.getChildren().add(finishLine);
@@ -117,8 +119,8 @@ public class GameScreen  {
                         bitOneScore += 1;
                         bit1.launch(10);
                         bit1.moved = true;
-                        bitOneScoreDisplay.setText(userOne + " score : " + bitOneScore);
 //                        bitOneScore.setText("BIT 1 SCORE : " + (bit1Score));
+                        bitOneScoreDisplay.setText(userOne + "\n    " + bitOneScore);
                     }
                 }
             }
@@ -135,7 +137,8 @@ public class GameScreen  {
                         bit1.moved = false;
                         bit2.launch(10);
                         bit2.moved = true;
-                        bitTwoScoreDisplay.setText(userTwo + " score : " + bitTwoScore);
+//                        Text bitTwoScoreDisplay = createText(userTwo + "\n  0", 18, Color.BLUE, 465, 530);
+                        bitTwoScoreDisplay.setText(userTwo + "\n    " + bitTwoScore);
                     }
                     case R -> {
                         bit2.getShape().setCenterX(sceneWidth * 5 / 9);

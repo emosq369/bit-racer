@@ -7,6 +7,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import javax.print.attribute.standard.Media;
 import java.sql.SQLException;
 
 public class Main extends Application {
@@ -15,6 +16,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws SQLException, ClassNotFoundException {
 //        GameScreen gameScreen = new GameScreen();
 //        Scene scene = gameScreen.getScene();
+
         LoginScreen loginScreen = new LoginScreen(primaryStage);
         //MainScreen mainScreen = new MainScreen(primaryStage);
         Scene scene = loginScreen.getScene();
