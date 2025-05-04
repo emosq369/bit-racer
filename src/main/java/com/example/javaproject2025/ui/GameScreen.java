@@ -88,7 +88,7 @@ public class GameScreen  {
         mainMenuButton.setOnMouseClicked(event -> {
             root.getChildren().removeAll(bit1.getShape(), bit2.getShape(), bit1.getDirectionLine(), bit2.getDirectionLine(),
                     finishLine, mainMenuButton);
-            MainScreen newMenuAfterClicked = new MainScreen(primaryStage, userOneUsername, userTwoUsername);
+            MainScreen newMenuAfterClicked = new MainScreen(primaryStage);
             primaryStage.setScene(newMenuAfterClicked.getScene());
         });
 

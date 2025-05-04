@@ -57,7 +57,7 @@ public class StageSelect {
 
 
         mainMenuLabel.setOnMouseClicked(event -> {
-            MainScreen mainScreen = new MainScreen(primaryStage, userOneUsername, userTwoUsername);
+            MainScreen mainScreen = new MainScreen(primaryStage);
             Scene scene = mainScreen.getScene();
             primaryStage.setScene(scene);
         });

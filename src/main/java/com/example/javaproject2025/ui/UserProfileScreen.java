@@ -14,14 +14,11 @@ import static com.example.javaproject2025.utils.ScreenUtils.*;
 
 public class UserProfileScreen {
     private Scene scene;
-    private String userOneUsername;
-    private String userTwoUsername;
     private Stage primaryStage;
 
-    public UserProfileScreen(Stage primaryStage, String userOne, String userTwo) {
+    public UserProfileScreen(Stage primaryStage, String userName) {
         this.primaryStage = primaryStage;
-        this.userOneUsername = userOne;
-        this.userTwoUsername = userTwo;
+
 
         // Background pane with stars
         Pane backgroundPane = new Pane();
@@ -46,7 +43,7 @@ public class UserProfileScreen {
         logoutPane.setPrefHeight(40);
         logoutPane.setStyle("-fx-background-color: transparent;");
 
-        Label username = new Label("Player1");
+        Label username = new Label(userName);
         username.setFont(Font.font("Orbitron", FontWeight.BOLD, 50));
         username.setStyle("-fx-text-fill: white;");
         username.setEffect(createNeonGlow(Color.WHITE));
@@ -72,11 +69,14 @@ public class UserProfileScreen {
         winsH.setAlignment(Pos.CENTER);
         winsH.getChildren().addAll(wins, w);
 
-        Button scoresButton = new Button("SCORES");
+        Button scoresButton = new Button("YOUR SCORES");
         scoresButton.setFont(Font.font("Orbitron", FontWeight.BOLD, 35));
         scoresButton.setStyle("-fx-background-color: transparent; -fx-text-fill: white; " +
                 "-fx-border-color: white;");
         scoresButton.setEffect(createNeonGlow(Color.WHITE));
+        scoresButton.setOnMouseClicked(event -> {
+            primaryStage.setScene(new IndividualScoresScreen(primaryStage, userName).getScene());
+        });
 
         centerSection.getChildren().addAll(plays, winsH, scoresButton);
         root.setCenter(centerSection);
@@ -85,7 +85,7 @@ public class UserProfileScreen {
         Button mainMenu = new Button("MAIN MENU");
         //This links the "Main menu" button to MainScreen
         mainMenu.setOnMouseClicked(event -> {
-            MainScreen mainScreen = new MainScreen(primaryStage, userOneUsername, userTwoUsername);
+            MainScreen mainScreen = new MainScreen(primaryStage);
             Scene mainScene = mainScreen.getScene();
             primaryStage.setScene(mainScene);
         });

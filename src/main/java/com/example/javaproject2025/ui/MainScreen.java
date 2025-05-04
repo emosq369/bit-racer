@@ -1,5 +1,6 @@
 package com.example.javaproject2025.ui;
 
+import com.example.javaproject2025.Session;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -15,14 +16,8 @@ import javafx.scene.shape.Circle;
 
 public class MainScreen {
     private Scene scene;
-    public String userOneUsername;
-    public String userTwoUsername;
 
-    public MainScreen(Stage primaryStage, String userOne, String userTwo) {
-        System.out.println("bit one is : " + userOne);
-        System.out.println("bit two is : " + userTwo);
-        this.userOneUsername = userOne;
-        this.userTwoUsername = userTwo;
+    public MainScreen(Stage primaryStage) {
 
         // Create a background with stars
         Pane backgroundPane = new Pane();
@@ -45,19 +40,22 @@ public class MainScreen {
 
         Label playLabel = createMenuLabel("PLAY", Color.WHITE);
         playLabel.setOnMouseClicked(event -> {
-            StageSelect playScreen = new StageSelect(primaryStage, userOneUsername, userTwoUsername);
+            StageSelect playScreen = new StageSelect(primaryStage, Session.getPlayer1(), Session.getPlayer2());
             Scene playScene = playScreen.getScene();
             primaryStage.setScene(playScene);
         });
 
         Label userProfileLabel = createMenuLabel("USER PROFILE", Color.WHITE);
         userProfileLabel.setOnMouseClicked(event -> {
-            UserProfileScreen userProfileScreen = new UserProfileScreen(primaryStage, userOneUsername,userTwoUsername);
-            Scene userScene = userProfileScreen.getScene();
+            UserSelectScreen userSelectScreen = new UserSelectScreen(primaryStage);
+            Scene userScene = userSelectScreen.getScene();
             primaryStage.setScene(userScene);
         });
 
-        Label scoresLabel = createMenuLabel("SCORES", Color.WHITE);
+        Label scoresLabel = createMenuLabel("HIGH SCORES", Color.WHITE);
+        scoresLabel.setOnMouseClicked(event -> {
+            primaryStage.setScene(new GeneralScoresScreen(primaryStage).getScene());
+        });
 
         menu.getChildren().addAll(playLabel, userProfileLabel, scoresLabel);
 
@@ -137,21 +135,6 @@ public class MainScreen {
     }
 
     private void drawStars(Pane pane, int numberOfStars) {
-        DropShadow glow = new DropShadow();
-        glow.setOffsetX(0);
-        glow.setOffsetY(0);
-        glow.setColor(Color.WHITE);
-        glow.setRadius(10);
-
-        for (int i = 0; i < numberOfStars; i++) {
-            double x = Math.random() * pane.getPrefWidth();
-            double y = Math.random() * pane.getPrefHeight();
-            Circle star = new Circle(x, y, Math.random() * 0.5, Color.WHITE);
-            pane.getChildren().add(star);
-        }
-    }
-
-    private void drawGifStars(Pane pane, int numberOfStars) {
         DropShadow glow = new DropShadow();
         glow.setOffsetX(0);
         glow.setOffsetY(0);

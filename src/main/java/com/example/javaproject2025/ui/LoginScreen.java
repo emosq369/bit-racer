@@ -1,6 +1,8 @@
 package com.example.javaproject2025.ui;
 
 import java.sql.*;
+
+import com.example.javaproject2025.Session;
 import javafx.animation.FadeTransition;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -34,7 +36,7 @@ public class LoginScreen {
     public Text userTwoLoggedInDisplay = createText("Player Two Logged In", 15, Color.BLUE, 350,50);
     public String userTwo;
     public Text duplicateFoundDisplay = new Text("NAME TAKEN, TRY AGAIN");
-    public Label startGame = labelCreation("START GAME", Color.WHITE, 235, 500);
+    public Label startGame = labelCreation("START GAME", Color.WHITE, 200, 500);
     public Text accountCreatedDisplay = createText("ACCOUNT CREATED", 20, Color.GREEN, 185, 550);
     public Text userDoesNotExistDisplay = createText("USER DOES NOT EXIST", 20, Color.RED, 165, 550);
     public Text incorrectPasswordDisplay = createText("INCORRECT PASSWORD", 20, Color.RED, 165, 550);
@@ -64,7 +66,7 @@ public class LoginScreen {
         FadeTransition userTwoLoggedInFade = new FadeTransition(Duration.seconds(1.5), userTwoLoggedInDisplay); userTwoLoggedInFade.setFromValue(0); userTwoLoggedInFade.setToValue(1);
         registerHere.setFont(Font.font("Orbitron", 12));
         registerHere.setTranslateX(237);
-        registerHere.setTranslateY(433);
+        registerHere.setTranslateY(550);
         Image registerImage = new Image(getClass().getResource("/images/registerPage.png").toExternalForm());
         ImageView registerImageView = new ImageView(registerImage);
         registerImageView.setFitHeight(600);
@@ -106,7 +108,7 @@ public class LoginScreen {
         // once both players logged in, add startGame to pane and allow
         // for game to start
         startGame.setOnMouseClicked(event -> {
-            MainScreen newMainScreen = new MainScreen(primaryStage, userOne, userTwo);
+            MainScreen newMainScreen = new MainScreen(primaryStage);
             scene = newMainScreen.getScene();
             primaryStage.setScene(scene);
         });
@@ -120,11 +122,15 @@ public class LoginScreen {
                     if(usersLoggedIn == 1){
                         userOneLoggedInDisplay.setVisible(true);
                         userOneLoggedInFade.play();
+                        Session.setPlayer1(userInputLogin.getText());
+                        userInputLogin.clear();
+                        userInputPassword.clear();
                     }
                     else{
                         userTwoLoggedInDisplay.setVisible(true);
                         userTwoLoggedInFade.play();
                     }
+
                 }
                 else if (validatingLogin == 0) {
                     System.out.println("IT NOT WORKED");
@@ -156,6 +162,9 @@ public class LoginScreen {
                     onLoginClick.setVisible(false);
                     loginPane.getChildren().add(startGame);
                     loginPane.getChildren().remove(onLoginClick);
+                    Session.setPlayer2(userInputLogin.getText());
+                    userInputLogin.clear();
+                    userInputPassword.clear();
                 }
 
             }
@@ -180,10 +189,10 @@ public class LoginScreen {
 
         //////////////////////////////////////////////////////////////
         // if you want to skip login uncomment these next four lines.
-        loginPane.getChildren().add(startGame);
-        startGame.setVisible(true);
-        startGame.setTranslateX(220);
-        startGame.setTranslateY(50);
+//        loginPane.getChildren().add(startGame);
+//        startGame.setVisible(true);
+//        startGame.setTranslateX(220);
+//        startGame.setTranslateY(50);
         //////////////////////////////////////////////////////////////
 
         createAccount.setOnMouseClicked(mouseEvent -> {
