@@ -151,6 +151,21 @@ public class MainScreen {
         }
     }
 
+    private void drawGifStars(Pane pane, int numberOfStars) {
+        DropShadow glow = new DropShadow();
+        glow.setOffsetX(0);
+        glow.setOffsetY(0);
+        glow.setColor(Color.WHITE);
+        glow.setRadius(10);
+
+        for (int i = 0; i < numberOfStars; i++) {
+            double x = Math.random() * pane.getPrefWidth();
+            double y = Math.random() * pane.getPrefHeight();
+            Circle star = new Circle(x, y, Math.random() * 0.5, Color.WHITE);
+            pane.getChildren().add(star);
+        }
+    }
+
     public Scene getScene() {
         return scene;
     }

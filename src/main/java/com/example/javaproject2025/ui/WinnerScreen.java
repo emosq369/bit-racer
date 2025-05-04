@@ -13,6 +13,8 @@ import javafx.stage.Stage;
 
 import java.sql.*;
 
+import static com.example.javaproject2025.ui.LoginScreen.createText;
+
 public class WinnerScreen {
 
     private Scene scene;
@@ -26,6 +28,7 @@ public class WinnerScreen {
     public String winnerUsername;
     public int winnerScore;
     public String trackName;
+    public Text scoreDisplay = createText("",32, Color.WHITE, 335, 275);
 
     public WinnerScreen(Stage primaryStage, String winnerBit, String winnerUsername , int score, String track, String userOneUsername, String userTwoUsername) throws SQLException, ClassNotFoundException {
         this.userOneUsername = userOneUsername;
@@ -34,8 +37,9 @@ public class WinnerScreen {
         this.winnerUsername = winnerUsername;
         this.winnerScore = score;
         this.trackName = track;
-        System.out.println("CONGRATS TO " + winnerUsername + " your score was" + score + " On teh track " + track);
+        scoreDisplay.setVisible(false);
         sendScoreToDatabase();
+
         GameScreen gameScreen = new GameScreen(primaryStage, userOneUsername, userTwoUsername,"" );
         Label mainMenu = gameScreen.mainMenuButton;
         mainMenu.setTranslateX(250);
@@ -57,7 +61,7 @@ public class WinnerScreen {
         }
 
         root.setStyle("-fx-background-color: black;");
-        root.getChildren().add(mainMenu);
+        root.getChildren().addAll(mainMenu, scoreDisplay);
         scene = new Scene(root, 600, 600);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Bit Racer");
@@ -65,19 +69,8 @@ public class WinnerScreen {
     }
 
     public void sendScore(String winnerString ,int score) {
-//        if (winnerString.equals("BIT 1")) {
-//            winnerBit = "Bit 1";
-//        }
-//        else if (winnerString.equals("BIT 2")){
-//            winnerBit = "Bit 2";
-//        }
-        Text displayScore = new Text(Integer.toString(score));
-        displayScore.setFont(Font.font("Orbitron", FontWeight.BOLD, 32));
-        displayScore.setX(335);
-        displayScore.setY(275);
-        displayScore.setFill(Color.WHITE);
-        root.getChildren().add(displayScore);
-
+        scoreDisplay.setText(Integer.toString(score));
+        scoreDisplay.setVisible(true);
     }
 
 

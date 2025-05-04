@@ -62,8 +62,6 @@ public class Track {
         }
     }
 
-
-
     public void buildLevel3Layout(double width, double height) {
         boundaries.clear();
 

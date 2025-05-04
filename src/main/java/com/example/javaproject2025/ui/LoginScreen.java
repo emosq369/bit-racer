@@ -26,9 +26,7 @@ public class LoginScreen {
     public Pane loginPane = new Pane();
     public Label registerHere = createMenuLabel("REGISTER HERE", Color.GREEN);
     public Pane registerPane = new Pane();
-    private Text winner;
     private int usersLoggedIn;
-    private boolean duplicateFound = false;
     public Label createAccount = createMenuLabel("REGISTER ACCOUNT", Color.WHITE);
     public Label returnToLogin = labelCreation("RETURN TO LOGIN", Color.WHITE, 420, 22);
     public String userOne;
@@ -44,7 +42,7 @@ public class LoginScreen {
     public Text emptyLoginDisplay = createText("ENTER A VALID USERNAME", 20, Color.RED, 145, 550);
     public Text duplicateLoginDisplay = createText("PLAYER TWO CANNOT BE SAME ACCOUNT", 20, Color.RED, 65, 550);
 
-    public LoginScreen(Stage primaryStage) throws ClassNotFoundException, SQLException {
+    public LoginScreen(Stage primaryStage) {
         userOneLoggedInDisplay.setVisible(false);
         userTwoLoggedInDisplay.setVisible(false);
         shortUserNameDisplay.setVisible(false);
@@ -275,7 +273,7 @@ public class LoginScreen {
         return 0;
     }
 
-    public Text createText(String text, int fontSize, Color color, int x, int y) {
+    public static Text createText(String text, int fontSize, Color color, int x, int y) {
         Text createText = new Text(text);
         DropShadow strongGlow = createNeonGlow(color);
         strongGlow.setRadius(40);
