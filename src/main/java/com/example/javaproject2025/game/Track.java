@@ -46,6 +46,7 @@ public class Track {
     }
 
     public void buildLevel2Layout(double width, double height) {
+        boundaries.clear();
 
         Line l1 = new Line(2/3.0*width, 1/3.0*height, 300, 0);
         Line r1 = new Line(500, 1/2.0*height, 2/3.0*width, 0);
@@ -64,23 +65,19 @@ public class Track {
 
     public void buildLevel3Layout(double width, double height) {
         boundaries.clear();
-
-        double bottomY = height;
-        double lowerMiddleY = height * 0.66;
-        double upperMiddleY = height * 0.33;
-        double topY = 0;
-
-        // Left side: zigzag up
-        Line leftBottom = new Line(width * 1/3, bottomY, 180, lowerMiddleY);
-        Line leftZig = new Line(180, lowerMiddleY, 140, upperMiddleY);
-        Line leftTop = new Line(140, upperMiddleY, 300, topY);
-
-        // Right side: zigzag up
-        Line rightBottom = new Line(width * 2/3, bottomY, 400, lowerMiddleY);
-        Line rightZig = new Line(400, lowerMiddleY, 440, upperMiddleY);
-        Line rightTop = new Line(440, upperMiddleY, 500, topY);
-
-        for (Line l : List.of(leftBottom, leftZig, leftTop, rightBottom, rightZig, rightTop)) {
+        Line l1 = new Line(1/3.0*width, height, 1/2.0*width, 3/4.0*height);
+        Line r1 = new Line(2/3.0*width, height, 350, 3/4.0*height);
+        Line l2 = new Line(1/2.0*width, 3/4.0*height, 350,400);
+        Line r2 = new Line(350, 3/4.0*height,3/4.0*width, 2/3.0*height);
+        Line l3 = new Line( 350,400,1/4.0*width, 1/2.0*height);
+        Line r3 = new Line(3/4.0*width, 2/3.0*height,1/2.0*width, 350);
+        Line l4 = new Line( 1/4.0*width, 1/2.0*height,1/2.0*width, 1/8.0*height);
+        Line r4 = new Line(1/2.0*width, 350,1/2.0*width, 1/4.0*height);
+        Line l5 = new Line( 1/2.0*width, 1/8.0*height,2/3.0*width, 130);
+        Line r5 = new Line(1/2.0*width, 1/4.0*height,2/3.0*width+20, 1/4.0*height);
+        Line l6 = new Line( 2/3.0*width, 130,1/2.0*width,0);
+        Line r6 = new Line(2/3.0*width+20, 1/4.0*height,2/3.0*width+20,0);
+        for (Line l : List.of(l1,r1,l2,r2,l3,r3,l4,r4,l5,r5,l6,r6)) {
             l.setStroke(Color.WHITE);
             l.setStrokeWidth(4);
             boundaries.add(l);
