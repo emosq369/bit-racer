@@ -2,7 +2,6 @@ package com.example.javaproject2025;
 import com.example.javaproject2025.game.Bit;
 import com.example.javaproject2025.game.Track;
 import com.example.javaproject2025.game.Vector;
-import com.example.javaproject2025.ui.GameHUD;
 import javafx.animation.AnimationTimer;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -32,7 +31,6 @@ public class testEdwin extends Application {
         Pane root = new Pane();
         Scene scene = new Scene(root, 600,600, Color.BLACK);
         Text myText = new Text();
-        GameHUD gameHUD = new GameHUD();
         Text previousBitCoordinates = new Text();
         Bit bit1 = new Bit("bit1", 237, 568, Color.RED);
         root.getChildren().add(gifView);

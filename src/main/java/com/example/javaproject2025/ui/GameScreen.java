@@ -54,8 +54,8 @@ public class GameScreen  {
         mainMenuButton.setTranslateX(480);
         mainMenuButton.setTranslateY(10);
         randomizeTurn();
-        Text bitOneScoreDisplay = createText("BIT 1 SCORE : 0", 18, Color.RED, 20, 530);
-        Text bitTwoScoreDisplay = createText("BIT 2 SCORE : 0", 18, Color.BLUE, 20, 530);
+        Text bitOneScoreDisplay = createText(userOne + " score : 0", 18, Color.RED, 20, 530);
+        Text bitTwoScoreDisplay = createText(userTwo + " score : 0", 18, Color.BLUE, 415, 530);
 
         // finish line
         finishLine.setStartX(335);
@@ -117,7 +117,7 @@ public class GameScreen  {
                         bitOneScore += 1;
                         bit1.launch(10);
                         bit1.moved = true;
-                        bitOneScoreDisplay.setText("BIT 1 SCORE : " + bitOneScore);
+                        bitOneScoreDisplay.setText(userOne + " score : " + bitOneScore);
 //                        bitOneScore.setText("BIT 1 SCORE : " + (bit1Score));
                     }
                 }
@@ -135,7 +135,7 @@ public class GameScreen  {
                         bit1.moved = false;
                         bit2.launch(10);
                         bit2.moved = true;
-                        bitTwoScoreDisplay.setText("BIT 2 SCORE : " + bitTwoScore);
+                        bitTwoScoreDisplay.setText(userTwo + " score : " + bitTwoScore);
                     }
                     case R -> {
                         bit2.getShape().setCenterX(sceneWidth * 5 / 9);

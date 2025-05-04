@@ -199,7 +199,6 @@ public class LoginScreen {
             System.out.println(usersLoggedIn);
             try {
                 int result = createAccount(userInputRegisterUsername.getText(), userInputRegisterPassword.getText());
-
                 if (result == 0) {
                     accountCreatedDisplay.setVisible(true);
                     accountCreatedFade.play();

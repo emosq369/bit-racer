@@ -6,8 +6,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -19,8 +17,8 @@ public class WinnerScreen {
 
     private Scene scene;
     public Pane root;
-    public Image bit0WinScreen = new Image(getClass().getResource("/images/bit0WinScreen.png").toExternalForm());
-    public Image bit1WinScreen = new Image(getClass().getResource("/images/bit1WinScreen.png").toExternalForm());
+    public Image bitOneWinScreen = new Image(getClass().getResource("/images/bit0WinScreen.png").toExternalForm());
+    public Image bitTwoWinScreen = new Image(getClass().getResource("/images/bit1WinScreen.png").toExternalForm());
     public ImageView winScreenImageView;
     public String winnerBit;
     public String userOneUsername;
@@ -28,7 +26,8 @@ public class WinnerScreen {
     public String winnerUsername;
     public int winnerScore;
     public String trackName;
-    public Text scoreDisplay = createText("",32, Color.WHITE, 335, 275);
+    public Text scoreDisplay = createText("",24, Color.WHITE, 335, 319);
+    public Text winnerUsernameDisplay = createText("",32, Color.LIGHTGRAY, 120, 225);
 
     public WinnerScreen(Stage primaryStage, String winnerBit, String winnerUsername , int score, String track, String userOneUsername, String userTwoUsername) throws SQLException, ClassNotFoundException {
         this.userOneUsername = userOneUsername;
@@ -46,26 +45,28 @@ public class WinnerScreen {
         mainMenu.setTranslateY(500);
         root = new Pane();
         if(winnerBit.equals("bit1")){
-            winScreenImageView = new ImageView(bit0WinScreen);
+            winScreenImageView = new ImageView(bitOneWinScreen);
             winScreenImageView.setFitHeight(600);
             winScreenImageView.setFitWidth(605);
             winScreenImageView.setPreserveRatio(true);
-            root.getChildren().add(winScreenImageView);
-        }
-        if(winnerBit.equals("bit2")){
-            winScreenImageView = new ImageView(bit1WinScreen);
-            winScreenImageView.setFitHeight(600);
-            winScreenImageView.setFitWidth(605);
-            winScreenImageView.setPreserveRatio(true);
-            root.getChildren().add(winScreenImageView);
+            winnerUsernameDisplay.setText(userOneUsername + " wins!");
+            winnerUsernameDisplay.setFill(Color.RED);
+            root.getChildren().addAll(winScreenImageView, winnerUsernameDisplay);
         }
 
-        root.setStyle("-fx-background-color: black;");
+        if(winnerBit.equals("bit2")){
+            winScreenImageView = new ImageView(bitTwoWinScreen);
+            winScreenImageView.setFitHeight(600);
+            winScreenImageView.setFitWidth(605);
+            winScreenImageView.setPreserveRatio(true);
+            winnerUsernameDisplay.setText(userTwoUsername + " wins!");
+            winnerUsernameDisplay.setFill(Color.BLUE);
+            root.getChildren().addAll(winScreenImageView, winnerUsernameDisplay);
+        }
+
         root.getChildren().addAll(mainMenu, scoreDisplay);
         scene = new Scene(root, 600, 600);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Bit Racer");
-        primaryStage.show();
+        primaryStage.setScene(scene); primaryStage.setTitle("Bit Racer"); primaryStage.show();
     }
 
     public void sendScore(String winnerString ,int score) {
@@ -75,12 +76,10 @@ public class WinnerScreen {
 
 
     public void sendScoreToDatabase() throws ClassNotFoundException, SQLException {
-        String userNameFromDatabase;
-        String userPasswordFromDatabase;
         Class.forName("com.mysql.cj.jdbc.Driver");
         Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/bitracer", "root", "bitracerDB");
         Statement statement = connection.createStatement();
-        PreparedStatement ps = null;
+        PreparedStatement ps;
         String insertScoreStatement = "insert into scores values('" + winnerUsername + "','" + winnerScore + "','" + trackName + "')";
         ps = connection.prepareStatement(insertScoreStatement);
         ps.executeUpdate();
