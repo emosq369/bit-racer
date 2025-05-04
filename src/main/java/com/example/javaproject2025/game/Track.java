@@ -85,32 +85,23 @@ public class Track {
     }
 
     public void setFinishLine(Line finishLine, String track) {
-        if(track == "track1") {
-            finishLine.setStartX(335);
-            finishLine.setStartY(90);
-            finishLine.setEndX(405);
-            finishLine.setEndY(90);
-            finishLine.setFill(Color.GREEN);
-            finishLine.setStroke(Color.GREEN);
+        if(track.equals("track1")) {
+            finishLine.setStartX(335); finishLine.setStartY(90);
+            finishLine.setEndX(405); finishLine.setEndY(90);
+            finishLine.setFill(Color.GREEN); finishLine.setStroke(Color.GREEN);
             finishLine.setStrokeWidth(1);
         }
-        if(track == "track2") {
-            finishLine.setStartX(343);
-            finishLine.setStartY(90);
-            finishLine.setEndX(425);
-            finishLine.setEndY(90);
-            finishLine.setFill(Color.GREEN);
-            finishLine.setStroke(Color.GREEN);
+        if(track.equals("track2")) {
+            finishLine.setStartX(343); finishLine.setStartY(90);
+            finishLine.setEndX(425); finishLine.setEndY(90);
+            finishLine.setFill(Color.GREEN); finishLine.setStroke(Color.GREEN);
             finishLine.setStrokeWidth(1);
 
         }
-        if(track == "track3") {
-            finishLine.setStartX(368);
-            finishLine.setStartY(90);
-            finishLine.setEndX(420);
-            finishLine.setEndY(90);
-            finishLine.setFill(Color.GREEN);
-            finishLine.setStroke(Color.GREEN);
+        if(track.equals("track3")) {
+            finishLine.setStartX(368); finishLine.setStartY(90);
+            finishLine.setEndX(420); finishLine.setEndY(90);
+            finishLine.setFill(Color.GREEN); finishLine.setStroke(Color.GREEN);
             finishLine.setStrokeWidth(1);
         }
     }
