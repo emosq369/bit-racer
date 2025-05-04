@@ -39,6 +39,7 @@ public class GameScreen  {
     public Text scoreBit1 = new Text("BIT 1 SCORE : " + Integer.toString(bit1Score));
     public Text scoreBit2 = new Text("BIT 2 SCORE : " + Integer.toString(bit2Score));
     private final Glow glowEffect = new Glow(1.5);
+    private final Glow lineGlow = new Glow(9.5);
     public Font gameFont = Font.loadFont(getClass().getResourceAsStream("/Minecraft.ttf"), 22);
     private Text playerOneScore;
     private Text playerTwoScore;
@@ -74,15 +75,16 @@ public class GameScreen  {
         scoreBit2.setFill(Color.BLUE);
         scoreBit2.setX(410);
         scoreBit2.setY(530);
-        //scoreBit2.setOpacity(0);
 
         // finish line
-        finishLine.setStartX(330);
+        finishLine.setStartX(335);
         finishLine.setStartY(90);
-        finishLine.setEndX(400);
+        finishLine.setEndX(405);
         finishLine.setEndY(90);
-        finishLine.setFill(Color.RED);
-        finishLine.setStroke(Color.RED);
+        finishLine.setFill(Color.GREEN);
+        finishLine.setStroke(Color.GREEN);
+        finishLine.setEffect(lineGlow);
+        finishLine.setStrokeWidth(1);
 
         // Render tracks dynamically
         Track track = new Track(trackName);
@@ -92,6 +94,7 @@ public class GameScreen  {
             case "track3" -> track.buildLevel3Layout(sceneWidth, sceneHeight);
             default -> track.buildLevel1Layout(sceneWidth, sceneHeight); // fallback
         }
+        root.getChildren().add(finishLine);
         track.render(root);
 
         // Create bits
@@ -111,12 +114,6 @@ public class GameScreen  {
 
         root.getChildren().add(scoreBit1);
         root.getChildren().add(scoreBit2);
-//        if(currentTurn.equals("bit1")){
-//            root.getChildren().add(scoreBit1);
-//        }
-//        else{
-//            root.getChildren().add(scoreBit2);
-//        }
 
         started = true;
 
@@ -157,11 +154,6 @@ public class GameScreen  {
                         bit2.getShape().setCenterY(sceneHeight - 5);
                         bit2.launched = false;
                     }
-                    case B -> {
-                        track.render(root);
-                        root.getChildren().add(finishLine);
-                    }
-
                 }
             }
         });
@@ -211,6 +203,7 @@ public class GameScreen  {
                 }
 
                 GamePhysics gamePhysics = new GamePhysics();
+
                 if(bit2.getY() <= finishLine.getStartY()) {
                     for (int i = 0; i < track.getBoundaries().size(); i++) {
                         root.getChildren().remove(track.getBoundaries().get(i));
