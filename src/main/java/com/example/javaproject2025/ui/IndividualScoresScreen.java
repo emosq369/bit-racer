@@ -11,14 +11,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
+import java.util.*;
 
 import com.example.javaproject2025.utils.ScreenUtils;
-
 
 public class IndividualScoresScreen {
     private Scene scene;
@@ -34,43 +30,58 @@ public class IndividualScoresScreen {
         Label title = new Label(username.toUpperCase() + "'S BEST SCORES");
         title.setTextFill(Color.WHITE);
         title.setFont(Font.font("Orbitron", 30));
+        title.setEffect(new DropShadow(10, Color.WHITE));
 
         VBox topBox = new VBox(title);
         topBox.setAlignment(Pos.CENTER);
-        topBox.setPadding(new Insets(30, 0, 0, 0));
+        topBox.setPadding(new Insets(30, 0, 10, 0));
         root.setTop(topBox);
 
-        VBox scoresBox = new VBox(15);
+        VBox scoresBox = new VBox(30);
         scoresBox.setAlignment(Pos.CENTER);
+
+        Map<String, String> trackNames = new LinkedHashMap<>();
+        trackNames.put("track1", "TRACK 1");
+        trackNames.put("track2", "TRACK 2");
+        trackNames.put("track3", "TRACK 3");
+
+        Map<String, Label> scoreLabels = new HashMap<>();
+
+        for (String key : trackNames.keySet()) {
+            Label trackLabel = new Label(trackNames.get(key));
+            trackLabel.setTextFill(Color.WHITE);
+            trackLabel.setFont(Font.font("Orbitron", 22));
+
+            Label scoreLabel = new Label("...");
+            scoreLabel.setTextFill(Color.WHITE);
+            scoreLabel.setFont(Font.font("Orbitron", 24));
+
+            VBox entryBox = new VBox(5, trackLabel, scoreLabel);
+            entryBox.setAlignment(Pos.CENTER);
+            scoresBox.getChildren().add(entryBox);
+            scoreLabels.put(key, scoreLabel);
+        }
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/bitracer", "root", "bitracerDB");
 
-            String query = "SELECT track, MAX(score) AS best_score FROM scores WHERE username = ? GROUP BY track";
+            String query = "SELECT track, MIN(score) AS best_score FROM scores WHERE username = ? GROUP BY track";
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, username);
             ResultSet rs = stmt.executeQuery();
 
-            boolean hasResults = false;
             while (rs.next()) {
-                hasResults = true;
                 String track = rs.getString("track");
                 int score = rs.getInt("best_score");
 
-                Label scoreLabel = new Label("Track " + track + ": " + score);
-                scoreLabel.setTextFill(Color.WHITE);
-                scoreLabel.setFont(Font.font("Orbitron", 24));
-                scoresBox.getChildren().add(scoreLabel);
+                Label label = scoreLabels.get(track);
+                if (label != null) {
+                    label.setText(String.valueOf(score));
+                }
             }
 
-            if (!hasResults) {
-                Label noScores = new Label("No scores yet!");
-                noScores.setTextFill(Color.GRAY);
-                noScores.setFont(Font.font("Orbitron", 20));
-                scoresBox.getChildren().add(noScores);
-            }
-
+            connection.close();
         } catch (Exception e) {
             e.printStackTrace();
             Label errorLabel = new Label("Error loading scores.");
@@ -84,6 +95,8 @@ public class IndividualScoresScreen {
         Label mainMenu = new Label("MAIN MENU");
         mainMenu.setTextFill(Color.WHITE);
         mainMenu.setFont(Font.font("Orbitron", 18));
+        mainMenu.setEffect(new DropShadow(5, Color.WHITE));
+        mainMenu.setTextAlignment(TextAlignment.CENTER);
         mainMenu.setOnMouseClicked(e -> primaryStage.setScene(new MainScreen(primaryStage).getScene()));
 
         VBox bottomBox = new VBox(mainMenu);
@@ -91,7 +104,7 @@ public class IndividualScoresScreen {
         bottomBox.setPadding(new Insets(0, 0, 20, 0));
         root.setBottom(bottomBox);
 
-        scene = new Scene(root, 600, 600);
+        scene = new Scene(root, sceneWidth, sceneHeight);
     }
 
     public Scene getScene() {
