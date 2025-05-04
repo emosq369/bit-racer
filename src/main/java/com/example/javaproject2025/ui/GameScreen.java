@@ -5,44 +5,32 @@ import com.example.javaproject2025.game.GamePhysics;
 import com.example.javaproject2025.game.Track;
 import com.example.javaproject2025.utils.ScreenUtils;
 import javafx.animation.AnimationTimer;
-import javafx.animation.FadeTransition;
+import static com.example.javaproject2025.ui.LoginScreen.createText;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.Glow;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.sql.SQLException;
 
-import static com.example.javaproject2025.utils.ScreenUtils.*;
 import static com.example.javaproject2025.ui.MainScreen.createMenuLabel;
 import static com.example.javaproject2025.ui.MainScreen.createNeonGlow;
 
 public class GameScreen  {
     // main root, holds all elements of the game.
     public Pane root = new Pane();
-    public Bit bit1 = new Bit("Bit1", 600*4/9, 600-5, Color.RED);
-    public Bit bit2 = new Bit("Bit2", 600*5/9, 600-5, Color.BLUE);
+    public Bit bit1 = new Bit("Bit1", 600.0*4/9, 600-5, Color.RED);
+    public Bit bit2 = new Bit("Bit2", 600.0*5/9, 600-5, Color.BLUE);
     public Scene scene;
     public String currentTurn = "";
     public boolean started = false;
-    public int bit1Score;
-    public int bit2Score;
-    public Text scoreBit1 = new Text("BIT 1 SCORE : " + Integer.toString(bit1Score));
-    public Text scoreBit2 = new Text("BIT 2 SCORE : " + Integer.toString(bit2Score));
-    private final Glow glowEffect = new Glow(1.5);
-    private final Glow lineGlow = new Glow(9.5);
-    public Font gameFont = Font.loadFont(getClass().getResourceAsStream("/Minecraft.ttf"), 22);
-    private Text playerOneScore;
-    private Text playerTwoScore;
+    public int bitOneScore;
+    public int bitTwoScore;
     public Label mainMenuButton = createMenuLabel("MAIN MENU", Color.WHITE);
     public Line finishLine = new Line();
     public String userOneUsername;
@@ -52,6 +40,7 @@ public class GameScreen  {
     public final double sceneHeight = 600;
 
     public GameScreen(Stage primaryStage, String userOne, String userTwo, String trackName) {
+        final Glow glowEffect = new Glow(1.5);
         this.userOneUsername = userOne;
         this.userTwoUsername = userTwo;
         this.trackName = trackName;
@@ -65,16 +54,8 @@ public class GameScreen  {
         mainMenuButton.setTranslateX(480);
         mainMenuButton.setTranslateY(10);
         randomizeTurn();
-        scoreBit1.setFont(Font.font("Orbitron", 18));
-        scoreBit1.setEffect(glowEffect);
-        scoreBit1.setFill(Color.RED);
-        scoreBit1.setX(20);
-        scoreBit1.setY(530);
-        scoreBit2.setFont(Font.font("Orbitron", 18));
-        scoreBit2.setEffect(glowEffect);
-        scoreBit2.setFill(Color.BLUE);
-        scoreBit2.setX(410);
-        scoreBit2.setY(530);
+        Text bitOneScoreDisplay = createText("BIT 1 SCORE : 0", 18, Color.RED, 20, 530);
+        Text bitTwoScoreDisplay = createText("BIT 2 SCORE : 0", 18, Color.BLUE, 20, 530);
 
         // finish line
         finishLine.setStartX(335);
@@ -83,7 +64,6 @@ public class GameScreen  {
         finishLine.setEndY(90);
         finishLine.setFill(Color.GREEN);
         finishLine.setStroke(Color.GREEN);
-        finishLine.setEffect(lineGlow);
         finishLine.setStrokeWidth(1);
 
         // Render tracks dynamically
@@ -107,20 +87,26 @@ public class GameScreen  {
         // button which handles removal of all GameScreen Objects
         mainMenuButton.setOnMouseClicked(event -> {
             root.getChildren().removeAll(bit1.getShape(), bit2.getShape(), bit1.getDirectionLine(), bit2.getDirectionLine(),
-                    finishLine, mainMenuButton, scoreBit1, scoreBit2);
+                    finishLine, mainMenuButton);
             MainScreen newMenuAfterClicked = new MainScreen(primaryStage, userOneUsername, userTwoUsername);
             primaryStage.setScene(newMenuAfterClicked.getScene());
         });
 
-        root.getChildren().add(scoreBit1);
-        root.getChildren().add(scoreBit2);
+        root.getChildren().add(bitOneScoreDisplay);
+        root.getChildren().add(bitTwoScoreDisplay);
+//        root.getChildren().add(bitOneScore);
 
         started = true;
 
+
         // Add more elements later: bits, arrows, etc.
         scene = new Scene(root, sceneWidth, sceneHeight);
+        boolean bitOneTurnTriggered = false;
         scene.setOnKeyPressed(event -> {
             if(currentTurn.equals("bit1")) {
+                if(!bitOneTurnTriggered){
+
+                }
                 switch (event.getCode()) {
                     case A -> bit1.rotate(-5);  // Bit1 Rotate left
                     case D -> bit1.rotate(5);   // Bit 1 Rotate right
@@ -128,14 +114,16 @@ public class GameScreen  {
                         if(started){
                             started = false;
                         }
-                        bit1Score += 1;
+                        bitOneScore += 1;
                         bit1.launch(10);
                         bit1.moved = true;
-                        scoreBit1.setText("BIT 1 SCORE : " + Integer.toString(bit1Score));
+                        bitOneScoreDisplay.setText("BIT 1 SCORE : " + bitOneScore);
+//                        bitOneScore.setText("BIT 1 SCORE : " + (bit1Score));
                     }
                 }
             }
             else{
+                System.out.println("bit 2 turn");
                 switch (event.getCode()) {
                     case LEFT -> bit2.rotate(-5); //Bit 2 Rotate left
                     case RIGHT -> bit2.rotate(5); // Bit 2 Rotate right
@@ -143,11 +131,11 @@ public class GameScreen  {
                         if(started){
                             started = false;
                         }
-                        bit2Score += 1;
+                        bitTwoScore += 1;
                         bit1.moved = false;
                         bit2.launch(10);
                         bit2.moved = true;
-                        scoreBit2.setText("BIT 2 SCORE: " + Integer.toString(bit2Score));
+                        bitTwoScoreDisplay.setText("BIT 2 SCORE : " + bitTwoScore);
                     }
                     case R -> {
                         bit2.getShape().setCenterX(sceneWidth * 5 / 9);
@@ -161,38 +149,34 @@ public class GameScreen  {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if(checkWinner() == "bit1"){
+                if(checkWinner().equals("bit1")){
                     System.out.println("bit 1 wins!");
                     root.getChildren().removeAll(bit1.getShape(), bit2.getShape(), bit1.getDirectionLine(), bit2.getDirectionLine(),
-                            finishLine, mainMenuButton, scoreBit1, scoreBit2);
+                            finishLine, mainMenuButton);
                     this.stop();
-                    WinnerScreen winnerScreen = null;
+                    WinnerScreen winnerScreen;
                     try {
-                        winnerScreen = new WinnerScreen(primaryStage, "bit1", userOneUsername, bit1Score, trackName, userOneUsername, userTwoUsername);
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    } catch (ClassNotFoundException e) {
+                        winnerScreen = new WinnerScreen(primaryStage, "bit1", userOneUsername, bitOneScore, trackName, userOneUsername, userTwoUsername);
+                    } catch (SQLException | ClassNotFoundException e) {
                         throw new RuntimeException(e);
                     }
                     primaryStage.setScene(winnerScreen.getScene());
-                    winnerScreen.sendScore("BIT 1", bit1Score);
+                    winnerScreen.sendScore("BIT 1", bitOneScore);
                 }
 
-                else if(checkWinner() == "bit2" ){
+                else if(checkWinner().equals("bit2")){
                     System.out.println("bit 2 wins!");
                     root.getChildren().removeAll(bit1.getShape(), bit2.getShape(), bit1.getDirectionLine(), bit2.getDirectionLine(),
-                            finishLine, mainMenuButton, scoreBit1, scoreBit2);
+                            finishLine, mainMenuButton);
                     this.stop();
-                    WinnerScreen winnerScreen = null;
+                    WinnerScreen winnerScreen;
                     try {
-                        winnerScreen = new WinnerScreen(primaryStage, "bit2", userTwoUsername, bit2Score, trackName, userOneUsername, userTwoUsername);
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    } catch (ClassNotFoundException e) {
+                        winnerScreen = new WinnerScreen(primaryStage, "bit2", userTwoUsername, bitTwoScore, trackName, userOneUsername, userTwoUsername);
+                    } catch (SQLException | ClassNotFoundException e) {
                         throw new RuntimeException(e);
                     }
                     primaryStage.setScene(winnerScreen.getScene());
-                    winnerScreen.sendScore("BIT 2", bit2Score);
+                    winnerScreen.sendScore("BIT 2", bitTwoScore);
 
                 }
                 if(bit1.moved){
@@ -263,5 +247,8 @@ public class GameScreen  {
         return winner;
     }
 
+    public void currentTurn(){
+        System.out.println("the current turn right now is" + currentTurn);
+    }
 
 }
