@@ -80,9 +80,14 @@ public class WinnerScreen {
         Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/bitracer", "root", "bitracerDB");
         Statement statement = connection.createStatement();
         PreparedStatement ps;
-        String insertScoreStatement = "insert into scores values('" + winnerUsername + "','" + winnerScore + "','" + trackName + "')";
+        String insertScoreStatement = "INSERT INTO scores (winner, score, track, loser) VALUES (?, ?, ?, ?)";
         ps = connection.prepareStatement(insertScoreStatement);
+        ps.setString(1, winnerUsername);
+        ps.setInt(2, winnerScore);
+        ps.setString(3, trackName);
+        ps.setString(4, winnerUsername.equals(userOneUsername) ? userTwoUsername : userOneUsername);
         ps.executeUpdate();
+
     }
 
     public Scene getScene() {

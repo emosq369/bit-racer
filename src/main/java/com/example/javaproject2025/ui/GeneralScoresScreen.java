@@ -79,7 +79,7 @@ public class GeneralScoresScreen {
             Statement stmt = connection.createStatement();
 
                             String query =
-                    "SELECT s.track, s.username, s.score " +
+                    "SELECT s.track, s.winner, s.score, s.loser " +
                             "FROM scores s " +
                             "JOIN ( " +
                             "    SELECT track, MIN(score) AS best_score " +
@@ -94,12 +94,12 @@ public class GeneralScoresScreen {
 
             while (rs.next()) {
                 String track = rs.getString("track");
-                String username = rs.getString("username");
+                String winner = rs.getString("winner");
                 int score = rs.getInt("score");
 
                 Label label = trackLabels.get(track);
                 if (label != null) {
-                    label.setText(username + " - " + score);
+                    label.setText(winner + " - " + score);
                 }
             }
 
