@@ -73,13 +73,9 @@ public class Bit {
 
     public void launch(double speed) {
         if (launched) return; //prevent double launch
-
-
-
         double radians = Math.toRadians(angle);
         dx = speed * Math.cos(radians);
         dy = speed * Math.sin(radians);
-
         launched = true;
     }
 
@@ -90,7 +86,7 @@ public class Bit {
             updateDirectionLine();
 
             //  Apply friction
-            dx *= 0.98; // Or 0.95, tweak to taste
+            dx *= 0.98;
             dy *= 0.98;
 
             //  Stop the ball when it's slow enough

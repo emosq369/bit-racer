@@ -118,7 +118,6 @@ public class LoginScreen {
             try {
                 int validatingLogin = validateLogin(userInputLogin.getText(), userInputPassword.getText());
                 if (validatingLogin == 1) {
-                    System.out.println("IT WORKED");
                     if(usersLoggedIn == 1){
                         userOneLoggedInDisplay.setVisible(true);
                         userOneLoggedInFade.play();
@@ -133,18 +132,15 @@ public class LoginScreen {
 
                 }
                 else if (validatingLogin == 0) {
-                    System.out.println("IT NOT WORKED");
                     userDoesNotExistDisplay.setVisible(true);
                     userDoesNotExistFade.play();
                 }
                 else if(validatingLogin == 2){
-                    System.out.println("YOU DID NOT ENTER ANYTHING");
                     emptyLoginDisplay.setVisible(true);
                     emptyLoginFade.play();
 
                 }
                 else if(validatingLogin == 3) {
-                    System.out.println("OK USER EXISTS BUT ACCOUNT DOES NOT");
                     incorrectPasswordDisplay.setVisible(true);
                     incorrectPasswordFade.play();
                 } else if (validatingLogin == 4) {
@@ -189,10 +185,10 @@ public class LoginScreen {
 
         //////////////////////////////////////////////////////////////
         // if you want to skip login uncomment these next four lines.
-//        loginPane.getChildren().add(startGame);
-//        startGame.setVisible(true);
-//        startGame.setTranslateX(220);
-//        startGame.setTranslateY(50);
+        loginPane.getChildren().add(startGame);
+        startGame.setVisible(true);
+        startGame.setTranslateX(220);
+        startGame.setTranslateY(50);
         //////////////////////////////////////////////////////////////
 
         createAccount.setOnMouseClicked(mouseEvent -> {
@@ -237,6 +233,7 @@ public class LoginScreen {
     public int validateLogin(String username, String password) throws ClassNotFoundException, SQLException {
         String userNameFromDatabase;
         String userPasswordFromDatabase;
+        // setup database
         Class.forName("com.mysql.cj.jdbc.Driver");
         Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/bitracer", "root", "bitracerDB");
         Statement statement = connection.createStatement();
@@ -245,22 +242,22 @@ public class LoginScreen {
         );
 
         if (databaseQuery.next()) {
+            // check to see if the second user logging in is the same as the first one
             if(userOne != null && usersLoggedIn == 1) {
                 if(userOne.equals(username)){
-                    System.out.println("THIS USER ALREADY LOGGED IN DUPLICATE LOGIN");
                     return 4;
                 }
             }
-            System.out.println("WE ARE QUERYING RIGHT NOW");
+
             userNameFromDatabase = databaseQuery.getString(1);
             userPasswordFromDatabase = databaseQuery.getString(2);
+
+            // if user does not enter anything, return invalid username error
             if(username.isEmpty() || password.isEmpty()) {
                 return 2;
             }
-//            System.out.println("found user -> " + userNameFromDatabase);
-//            System.out.println("found user & their password is -> " + userPasswordFromDatabase);
-//            System.out.println("username already exists : " + dupliactedUsername);
-            // TODO : implement two users not logging in with the same username and password, aka same account.
+
+            // if username exists, validate password with associated user
             if (password.equals(userPasswordFromDatabase)) {
                 usersLoggedIn++;
                 if (usersLoggedIn == 1) {
@@ -272,7 +269,6 @@ public class LoginScreen {
                 return 1;
             } else {
                 // if the user exists but the password is wrong, return -1.
-                System.out.println("OK ACCOUNT EXISTS BUT WRONG PASSWORD");
                 return -1;
             }
         }
