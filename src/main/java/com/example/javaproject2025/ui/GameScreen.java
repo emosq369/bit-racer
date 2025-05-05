@@ -54,7 +54,6 @@ public class GameScreen  {
         Text bitOneScoreDisplay = createText(userOne + "\n    0", 18, Color.RED, 60, 530);
         Text bitTwoScoreDisplay = createText(userTwo + "\n    0", 18, Color.BLUE, 465, 530);
 
-
         // Render tracks dynamically
         Track track = new Track(trackName);
         switch (trackName.toLowerCase()) {
@@ -72,11 +71,13 @@ public class GameScreen  {
             }
             default -> track.buildLevel1Layout(sceneWidth, sceneHeight); // fallback
         }
-        // render track
-        track.render(root);
+
 
         // Create bits and add bits and directionals to the scene
         root.getChildren().addAll(bit1.getShape(), bit2.getShape(), bit1.getDirectionLine(), bit2.getDirectionLine(), mainMenuButton, finishLine, bitOneScoreDisplay, bitTwoScoreDisplay);
+
+        // render track
+        track.render(root);
 
         // button which handles removal of all GameScreen Objects
         mainMenuButton.setOnMouseClicked(event -> {
@@ -91,8 +92,8 @@ public class GameScreen  {
                 if(!bitOneTurnTriggered){
                 }
                 switch (event.getCode()) {
-                    case A -> bit1.rotate(-5);  // Bit1 Rotate left
-                    case D -> bit1.rotate(5);   // Bit 1 Rotate right
+                    case A -> bit1.rotate(-10);  // Bit1 Rotate left
+                    case D -> bit1.rotate(10);   // Bit 1 Rotate right
                     case S -> {
                         bitOneScore += 1;
                         bit1.launch(10);
@@ -104,8 +105,8 @@ public class GameScreen  {
             else{
                 System.out.println("bit 2 turn");
                 switch (event.getCode()) {
-                    case LEFT -> bit2.rotate(-5); //Bit 2 Rotate left
-                    case RIGHT -> bit2.rotate(5); // Bit 2 Rotate right
+                    case LEFT -> bit2.rotate(-10); //Bit 2 Rotate left
+                    case RIGHT -> bit2.rotate(10); // Bit 2 Rotate right
                     case UP -> {
                         bitTwoScore += 1;
                         bit1.moved = false;
@@ -126,7 +127,6 @@ public class GameScreen  {
             @Override
             public void handle(long now) {
                 if(checkWinner().equals("bit1")){
-                    System.out.println("bit 1 wins!");
                     root.getChildren().removeAll(bit1.getShape(), bit2.getShape(), bit1.getDirectionLine(), bit2.getDirectionLine(),
                             finishLine, mainMenuButton);
                     this.stop();
@@ -141,7 +141,6 @@ public class GameScreen  {
                 }
 
                 else if(checkWinner().equals("bit2")){
-                    System.out.println("bit 2 wins!");
                     root.getChildren().removeAll(bit1.getShape(), bit2.getShape(), bit1.getDirectionLine(), bit2.getDirectionLine(),
                             finishLine, mainMenuButton);
                     this.stop();
@@ -163,13 +162,6 @@ public class GameScreen  {
                 }
 
                 GamePhysics gamePhysics = new GamePhysics();
-
-//                if(bit2.getY() <= finishLine.getStartY()) {
-//                    for (int i = 0; i < track.getBoundaries().size(); i++) {
-//                        root.getChildren().remove(track.getBoundaries().get(i));
-//                    }
-//                    root.getChildren().remove(finishLine);
-//                }
 
                 bit1.moveIfLaunched();
                 bit2.moveIfLaunched();
@@ -193,7 +185,7 @@ public class GameScreen  {
                     }
                 }
             }
-        };
+    };
         timer.start();
     }
 
@@ -204,11 +196,7 @@ public class GameScreen  {
 
     public void randomizeTurn(){
         int randomNumber = (int) (Math.random() * 100);
-
-        if(randomNumber > 50)
-            currentTurn = "bit1";
-        else
-            currentTurn = "bit2";
+        currentTurn = randomNumber > 50 ? "bit1" : "bit2";
     }
 
     public String checkWinner(){
