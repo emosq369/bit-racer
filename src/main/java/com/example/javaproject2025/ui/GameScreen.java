@@ -215,10 +215,10 @@ public class GameScreen  {
 
         String winner = "";
 
-        if(bit1.getY() <= finishLine.getStartY()){
+        if(bit1.getY() <= 0){
             winner = "bit1";
         }
-        else if(bit2.getY() <= finishLine.getStartY()){
+        else if(bit2.getY() <= 0){
             winner = "bit2";
         }
 
