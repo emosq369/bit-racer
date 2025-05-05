@@ -59,15 +59,12 @@ public class GameScreen  {
         Track track = new Track(trackName);
         switch (trackName.toLowerCase()) {
             case "track1" -> {
-                track.setFinishLine(finishLine, "track1");
                 track.buildLevel1Layout(sceneWidth, sceneHeight);
             }
             case "track2" -> {
-                track.setFinishLine(finishLine, "track2");
                 track.buildLevel2Layout(sceneWidth, sceneHeight);
             }
             case "track3" -> {
-                track.setFinishLine(finishLine, "track3");
                 track.buildLevel3Layout(sceneWidth, sceneHeight);
             }
             default -> track.buildLevel1Layout(sceneWidth, sceneHeight); // fallback

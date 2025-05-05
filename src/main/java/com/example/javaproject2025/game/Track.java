@@ -56,6 +56,7 @@ public class Track {
         Line r3 = new Line(350, 2/3.0* height, 1/2.0*width, 1/2.0* height);
         Line l4 = new Line(width * 1/3.0, height,250, height*2/3 );
         Line r4 = new Line(width * 2/3.0, height,350, height*2/3);
+        Line c= new Line (300,275,400,275);
         for (Line l : List.of(l1, r1, l2, r2, l3, r3, l4, r4)) {
             l.setStroke(Color.WHITE);
             l.setStrokeWidth(4);
@@ -83,30 +84,6 @@ public class Track {
             boundaries.add(l);
         }
     }
-
-    public void setFinishLine(Line finishLine, String track) {
-        if(track.equals("track1")) {
-            finishLine.setStartX(335); finishLine.setStartY(90);
-            finishLine.setEndX(405); finishLine.setEndY(90);
-            finishLine.setFill(Color.GREEN); finishLine.setStroke(Color.GREEN);
-            finishLine.setStrokeWidth(1);
-        }
-        if(track.equals("track2")) {
-            finishLine.setStartX(343); finishLine.setStartY(90);
-            finishLine.setEndX(425); finishLine.setEndY(90);
-            finishLine.setFill(Color.GREEN); finishLine.setStroke(Color.GREEN);
-            finishLine.setStrokeWidth(1);
-
-        }
-        if(track.equals("track3")) {
-            finishLine.setStartX(368); finishLine.setStartY(90);
-            finishLine.setEndX(420); finishLine.setEndY(90);
-            finishLine.setFill(Color.GREEN); finishLine.setStroke(Color.GREEN);
-            finishLine.setStrokeWidth(1);
-        }
-    }
-
-
 }
 
 
