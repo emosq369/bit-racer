@@ -25,24 +25,24 @@ import static com.example.javaproject2025.ui.StageSelect.labelCreation;
 public class LoginScreen {
 
     private Scene scene;
-    public Pane loginPane = new Pane();
-    public Label registerHere = createMenuLabel("REGISTER HERE", Color.GREEN);
-    public Pane registerPane = new Pane();
+    private Pane loginPane = new Pane();
+    private Label registerHere = createMenuLabel("REGISTER HERE", Color.GREEN);
+    private Pane registerPane = new Pane();
     private int usersLoggedIn;
-    public Label createAccount = createMenuLabel("REGISTER ACCOUNT", Color.WHITE);
-    public Label returnToLogin = labelCreation("RETURN TO LOGIN", Color.WHITE, 420, 22);
-    public String userOne;
-    public Text userOneLoggedInDisplay = createText("Player One Logged In", 15, Color.RED, 45,50);
-    public Text userTwoLoggedInDisplay = createText("Player Two Logged In", 15, Color.BLUE, 350,50);
-    public String userTwo;
-    public Text duplicateFoundDisplay = new Text("NAME TAKEN, TRY AGAIN");
-    public Label startGame = labelCreation("START GAME", Color.WHITE, 200, 500);
-    public Text accountCreatedDisplay = createText("ACCOUNT CREATED", 20, Color.GREEN, 185, 550);
-    public Text userDoesNotExistDisplay = createText("USER DOES NOT EXIST", 20, Color.RED, 165, 550);
-    public Text incorrectPasswordDisplay = createText("INCORRECT PASSWORD", 20, Color.RED, 165, 550);
-    public Text shortUserNameDisplay = createText("USERNAME IS TOO SHORT", 20, Color.RED, 155, 550);
-    public Text emptyLoginDisplay = createText("ENTER A VALID USERNAME", 20, Color.RED, 145, 550);
-    public Text duplicateLoginDisplay = createText("PLAYER TWO CANNOT BE SAME ACCOUNT", 20, Color.RED, 65, 550);
+    private Label createAccount = createMenuLabel("REGISTER ACCOUNT", Color.WHITE);
+    private Label returnToLogin = labelCreation("RETURN TO LOGIN", Color.WHITE, 420, 22);
+    private String userOne;
+    private Text userOneLoggedInDisplay = createText("Player One Logged In", 15, Color.RED, 45,50);
+    private Text userTwoLoggedInDisplay = createText("Player Two Logged In", 15, Color.BLUE, 350,50);
+    private String userTwo;
+    private Text duplicateFoundDisplay = new Text("NAME TAKEN, TRY AGAIN");
+    private Label startGame = labelCreation("START GAME", Color.WHITE, 200, 500);
+    private Text accountCreatedDisplay = createText("ACCOUNT CREATED", 20, Color.GREEN, 185, 550);
+    private Text userDoesNotExistDisplay = createText("USER DOES NOT EXIST", 20, Color.RED, 165, 550);
+    private Text incorrectPasswordDisplay = createText("INCORRECT PASSWORD", 20, Color.RED, 165, 550);
+    private Text shortUserNameDisplay = createText("USERNAME IS TOO SHORT", 20, Color.RED, 155, 550);
+    private Text emptyLoginDisplay = createText("ENTER A VALID USERNAME", 20, Color.RED, 145, 550);
+    private Text duplicateLoginDisplay = createText("PLAYER TWO CANNOT BE SAME ACCOUNT", 20, Color.RED, 65, 550);
 
     public LoginScreen(Stage primaryStage) {
         userOneLoggedInDisplay.setVisible(false);
@@ -64,13 +64,13 @@ public class LoginScreen {
         FadeTransition mustUseTwoLoginsFade = new FadeTransition(Duration.seconds(3), duplicateLoginDisplay); mustUseTwoLoginsFade.setFromValue(1); mustUseTwoLoginsFade.setToValue(0);
         FadeTransition userOneLoggedInFade = new FadeTransition(Duration.seconds(1.5), userOneLoggedInDisplay); userOneLoggedInFade.setFromValue(0); userOneLoggedInFade.setToValue(1);
         FadeTransition userTwoLoggedInFade = new FadeTransition(Duration.seconds(1.5), userTwoLoggedInDisplay); userTwoLoggedInFade.setFromValue(0); userTwoLoggedInFade.setToValue(1);
-        registerHere.setFont(Font.font("Orbitron", 12));
-        registerHere.setTranslateX(237);
-        registerHere.setTranslateY(550);
+        registerHere.setFont(Font.font("Orbitron", 10));
+        registerHere.setTranslateX(247);
+        registerHere.setTranslateY(435);
         Image registerImage = new Image(getClass().getResource("/images/registerPage.png").toExternalForm());
         ImageView registerImageView = new ImageView(registerImage);
         registerImageView.setFitHeight(600);
-        registerImageView.setFitWidth(605);
+        registerImageView.setFitWidth(600);
         registerImageView.setPreserveRatio(true);
         TextField userInputLogin = new TextField();
         TextField userInputPassword = new PasswordField();
@@ -174,8 +174,10 @@ public class LoginScreen {
         gameAssetsImageView.setFitHeight(600);
         gameAssetsImageView.setFitWidth(605);
         gameAssetsImageView.setPreserveRatio(true);
+
         loginPane.getChildren().addAll(gameAssetsImageView, onLoginClick, userInputLogin, userInputPassword, registerHere, userDoesNotExistDisplay, incorrectPasswordDisplay, emptyLoginDisplay, duplicateLoginDisplay, userOneLoggedInDisplay, userTwoLoggedInDisplay);
         registerPane.getChildren().addAll(registerGameAssetsImageView, createAccount, userInputRegisterUsername, userInputRegisterPassword, returnToLogin, duplicateFoundDisplay, accountCreatedDisplay, shortUserNameDisplay);
+
         registerHere.setOnMouseClicked(mouseEvent -> {
             loginPane.setDisable(true);
             registerPane.setDisable(false);
