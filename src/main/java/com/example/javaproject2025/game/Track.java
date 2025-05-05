@@ -56,8 +56,9 @@ public class Track {
         Line r3 = new Line(350, 2/3.0* height, 1/2.0*width, 1/2.0* height);
         Line l4 = new Line(width * 1/3.0, height,250, height*2/3 );
         Line r4 = new Line(width * 2/3.0, height,350, height*2/3);
-        Line c= new Line (300,275,400,275);
-        for (Line l : List.of(l1, r1, l2, r2, l3, r3, l4, r4)) {
+        Line c1= new Line (300,250,400,250);
+        Line c2= new Line (417,150,375,50);
+        for (Line l : List.of(l1, r1, l2, r2, l3, r3, l4, r4, c1, c2)) {
             l.setStroke(Color.WHITE);
             l.setStrokeWidth(4);
             boundaries.add(l);
