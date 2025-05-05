@@ -35,7 +35,7 @@ public class GeneralScoresScreen {
         // Title
         Label title = new Label("TOP SCORES");
         title.setTextFill(Color.WHITE);
-        title.setFont(Font.font("Orbitron", 40));
+        title.setFont(Font.font("Orbitron", 36));
         title.setEffect(new DropShadow(10, Color.WHITE));
         VBox titleBox = new VBox(title);
         titleBox.setAlignment(Pos.CENTER);
@@ -56,7 +56,7 @@ public class GeneralScoresScreen {
         Map<String, Label> trackLabels = new HashMap<>();
         for (String trackKey : trackNames.keySet()) {
             Label trackLabel = new Label(trackNames.get(trackKey));
-            trackLabel.setFont(Font.font("Orbitron", 22));
+            trackLabel.setFont(Font.font("Orbitron", 30));
             trackLabel.setTextFill(Color.WHITE);
 
             Label scoreLabel = new Label("...");
@@ -109,10 +109,7 @@ public class GeneralScoresScreen {
         }
 
         // MAIN MENU
-        Label mainMenu = new Label("MAIN MENU");
-        mainMenu.setTextFill(Color.WHITE);
-        mainMenu.setFont(Font.font("Orbitron", 20));
-        mainMenu.setEffect(new DropShadow(5, Color.WHITE));
+        Label mainMenu = ScreenUtils.createGlowingLabel("MAIN MENU", Color.WHITE, 20);
         mainMenu.setTextAlignment(TextAlignment.CENTER);
         mainMenu.setOnMouseClicked(e -> primaryStage.setScene(new MainScreen(primaryStage).getScene()));
 

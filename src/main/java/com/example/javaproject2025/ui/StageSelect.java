@@ -1,5 +1,6 @@
 package com.example.javaproject2025.ui;
 
+import com.example.javaproject2025.utils.ScreenUtils;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
@@ -12,7 +13,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-import static com.example.javaproject2025.ui.MainScreen.createNeonGlow;
+import java.util.Objects;
 
 public class StageSelect {
 
@@ -21,8 +22,8 @@ public class StageSelect {
     public Label track1Label = labelCreation("TRACK 1", Color.WHITE, 35, 190);
     public Label track2Label = labelCreation("TRACK 2", Color.WHITE, 235, 190);
     public Label track3Label = labelCreation("TRACK 3", Color.WHITE, 435, 190);
-    public Label mainMenuLabel = labelCreation("MAIN MENU", Color.WHITE, 225, 530);
-    public Label trackSelect = labelCreation("SELECT A TRACK", Color.WHITE, 175, 50);
+    public Label mainMenuLabel = labelCreation("MAIN MENU", Color.WHITE, 240, 550);
+    public Label trackSelect = labelCreation("SELECT A TRACK", Color.WHITE, 125, 30);
     public String userOneUsername;
     public String userTwoUsername;
 
@@ -55,7 +56,6 @@ public class StageSelect {
             primaryStage.setScene(gameScreen.getScene());
         });
 
-
         mainMenuLabel.setOnMouseClicked(event -> {
             MainScreen mainScreen = new MainScreen(primaryStage);
             Scene scene = mainScreen.getScene();
@@ -77,27 +77,30 @@ public class StageSelect {
         Label label = new Label(text);
         label.setTranslateX(x);
         label.setTranslateY(y);
-        label.setFont(Font.font("Orbitron", FontWeight.BOLD, 25));
+        if (Objects.equals(text, "MAIN MENU")) label.setFont(Font.font("Orbitron", FontWeight.BOLD, 20));
+        else if (Objects.equals(text, "SELECT A TRACK")) label.setFont(Font.font("Orbitron", 36));
+        else label.setFont(Font.font("Orbitron", FontWeight.BOLD, 25));
         label.setTextFill(neonColor);
-        DropShadow normalGlow = createNeonGlow(neonColor);
-        DropShadow strongGlow = createNeonGlow(neonColor);
+        DropShadow normalGlow = ScreenUtils.createNeonGlow(neonColor);
+        DropShadow strongGlow = ScreenUtils.createNeonGlow(neonColor);
         strongGlow.setRadius(40); // Bigger glow when hovered
 
         label.setEffect(normalGlow);
 
-        // Hover effects
-        label.setOnMouseEntered(event -> {
-            label.setEffect(strongGlow);
-            label.setScaleX(1.1);
-            label.setScaleY(1.1);
-        });
+        if (!Objects.equals(text, "SELECT A TRACK")) {
+            // Hover effects
+            label.setOnMouseEntered(event -> {
+                label.setEffect(strongGlow);
+                label.setScaleX(1.1);
+                label.setScaleY(1.1);
+            });
 
-        label.setOnMouseExited(event -> {
-            label.setEffect(normalGlow);
+            label.setOnMouseExited(event -> {
+                label.setEffect(normalGlow);
                 label.setScaleX(1.0);
-            label.setScaleY(1.0);
-        });
-
+                label.setScaleY(1.0);
+            });
+        }
         return label;
     }
 

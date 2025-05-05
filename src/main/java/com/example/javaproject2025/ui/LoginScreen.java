@@ -3,6 +3,7 @@ package com.example.javaproject2025.ui;
 import java.sql.*;
 
 import com.example.javaproject2025.Session;
+import com.example.javaproject2025.utils.ScreenUtils;
 import javafx.animation.FadeTransition;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -19,7 +20,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.sql.SQLException;
 import static com.example.javaproject2025.ui.MainScreen.createMenuLabel;
-import static com.example.javaproject2025.ui.MainScreen.createNeonGlow;
 import static com.example.javaproject2025.ui.StageSelect.labelCreation;
 
 public class LoginScreen {
@@ -279,7 +279,7 @@ public class LoginScreen {
 
     public static Text createText(String text, int fontSize, Color color, int x, int y) {
         Text createText = new Text(text);
-        DropShadow strongGlow = createNeonGlow(color);
+        DropShadow strongGlow = ScreenUtils.createNeonGlow(color);
         strongGlow.setRadius(40);
         createText.setEffect(strongGlow);
         createText.setFont(Font.font("Orbitron", fontSize));

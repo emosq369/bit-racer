@@ -1,6 +1,5 @@
 package com.example.javaproject2025.ui;
 
-import com.example.javaproject2025.Session;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -12,7 +11,9 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.shape.Circle;
+
+import com.example.javaproject2025.utils.ScreenUtils;
+import com.example.javaproject2025.Session;
 
 public class MainScreen {
     private Scene scene;
@@ -23,7 +24,7 @@ public class MainScreen {
         Pane backgroundPane = new Pane();
         backgroundPane.setPrefSize(600, 600);
         backgroundPane.setStyle("-fx-background-color: black;");
-        drawStars(backgroundPane, 100); // Draw 100 random stars
+        ScreenUtils.drawStars(backgroundPane); // Draw 100 random stars
 
         BorderPane root = new BorderPane();
         root.setStyle("-fx-background-color: transparent;");
@@ -62,8 +63,6 @@ public class MainScreen {
         // Logout at top right
         Label logout = createMenuLabel("LOG OUT", Color.LIGHTGRAY);
         logout.setFont(Font.font("Orbitron", 16));
-        logout.setTextFill(Color.LIGHTGRAY);
-        logout.setEffect(createNeonGlow(Color.LIGHTGRAY));
         logout.setTranslateX(-20);
         logout.setTranslateY(10);
         logout.setOnMouseClicked(event -> {
@@ -104,8 +103,8 @@ public class MainScreen {
         label.setFont(Font.font("Orbitron", FontWeight.BOLD, 35));
         label.setTextFill(color);
 
-        DropShadow normalGlow = createNeonGlow(Color.WHITE);
-        DropShadow strongGlow = createNeonGlow(Color.WHITE);
+        DropShadow normalGlow = ScreenUtils.createNeonGlow(Color.WHITE);
+        DropShadow strongGlow = ScreenUtils.createNeonGlow(Color.WHITE);
         strongGlow.setRadius(40);
 
         label.setEffect(normalGlow);
@@ -123,30 +122,6 @@ public class MainScreen {
         });
 
         return label;
-    }
-
-    public static DropShadow createNeonGlow(Color color) {
-        DropShadow glow = new DropShadow();
-        glow.setOffsetX(0);
-        glow.setOffsetY(0);
-        glow.setColor(color);
-        glow.setRadius(20);
-        return glow;
-    }
-
-    private void drawStars(Pane pane, int numberOfStars) {
-        DropShadow glow = new DropShadow();
-        glow.setOffsetX(0);
-        glow.setOffsetY(0);
-        glow.setColor(Color.WHITE);
-        glow.setRadius(10);
-
-        for (int i = 0; i < numberOfStars; i++) {
-            double x = Math.random() * pane.getPrefWidth();
-            double y = Math.random() * pane.getPrefHeight();
-            Circle star = new Circle(x, y, Math.random() * 0.5, Color.WHITE);
-            pane.getChildren().add(star);
-        }
     }
 
     public Scene getScene() {

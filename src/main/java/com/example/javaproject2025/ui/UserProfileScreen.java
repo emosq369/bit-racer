@@ -30,19 +30,18 @@ public class UserProfileScreen {
 
         Label title = new Label(username.toUpperCase() + "'S BEST SCORES");
         title.setTextFill(Color.WHITE);
-        title.setFont(Font.font("Orbitron", 30));
+        title.setFont(Font.font("Orbitron", 36));
         title.setEffect(new DropShadow(10, Color.WHITE));
 // Hbox for wins and games
         HBox summaryBox = new HBox(40);
         summaryBox.setAlignment(Pos.CENTER);
 
         Label totalGamesLabel = new Label("GAMES: ...");
+        totalGamesLabel.setFont(Font.font("Orbitron", 22));
+        totalGamesLabel.setTextFill(Color.RED);
         Label totalWinsLabel = new Label("WINS: ...");
-
-        for (Label l : List.of( totalGamesLabel, totalWinsLabel)) {
-            l.setFont(Font.font("Orbitron", 22));
-            l.setTextFill(Color.WHITE);
-        }
+        totalWinsLabel.setFont(Font.font("Orbitron", 22));
+        totalWinsLabel.setTextFill(Color.BLUE);
 
         summaryBox.getChildren().addAll( totalGamesLabel, totalWinsLabel);
 
@@ -64,7 +63,7 @@ public class UserProfileScreen {
         for (String key : trackNames.keySet()) {
             Label trackLabel = new Label(trackNames.get(key));
             trackLabel.setTextFill(Color.WHITE);
-            trackLabel.setFont(Font.font("Orbitron", 22));
+            trackLabel.setFont(Font.font("Orbitron", 30));
 
             Label scoreLabel = new Label("...");
             scoreLabel.setTextFill(Color.WHITE);
@@ -124,10 +123,7 @@ public class UserProfileScreen {
 
         root.setCenter(scoresBox);
 
-        Label mainMenu = new Label("MAIN MENU");
-        mainMenu.setTextFill(Color.WHITE);
-        mainMenu.setFont(Font.font("Orbitron", 18));
-        mainMenu.setEffect(new DropShadow(5, Color.WHITE));
+        Label mainMenu = ScreenUtils.createGlowingLabel("MAIN MENU", Color.WHITE, 20);
         mainMenu.setTextAlignment(TextAlignment.CENTER);
         mainMenu.setOnMouseClicked(e -> primaryStage.setScene(new MainScreen(primaryStage).getScene()));
 

@@ -6,6 +6,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 
 public class ScreenUtils {
@@ -40,5 +41,31 @@ public class ScreenUtils {
         glow.setColor(color);
         glow.setRadius(20);
         return glow;
+    }
+
+    public static Label createGlowingLabel(String text, Color color, int size) {
+        Label label = new Label(text);
+        label.setFont(Font.font("Orbitron", FontWeight.BOLD, size));
+        label.setTextFill(color);
+
+        DropShadow normalGlow = createNeonGlow(color);
+        DropShadow strongGlow = createNeonGlow(color);
+        strongGlow.setRadius(40);
+
+        label.setEffect(normalGlow);
+
+        label.setOnMouseEntered(event -> {
+            label.setEffect(strongGlow);
+            label.setScaleX(1.1);
+            label.setScaleY(1.1);
+        });
+
+        label.setOnMouseExited(event -> {
+            label.setEffect(normalGlow);
+            label.setScaleX(1.0);
+            label.setScaleY(1.0);
+        });
+
+        return label;
     }
 }

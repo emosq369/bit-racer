@@ -4,12 +4,12 @@ import com.example.javaproject2025.Session;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import com.example.javaproject2025.utils.ScreenUtils;
 
@@ -35,10 +35,12 @@ public class UserSelectScreen {
         String p1 = Session.getPlayer1();
         String p2 = Session.getPlayer2();
 
-        Label player1Label = labelCreation(p1, Color.RED, 28);
+        Label player1Label = ScreenUtils.createGlowingLabel(p1, Color.RED, 35);
+        player1Label.setStyle("-fx-border-color: red; -fx-border-width: 2;");
         player1Label.setOnMouseClicked(e -> primaryStage.setScene(new UserProfileScreen(primaryStage, p1).getScene()));
 
-        Label player2Label = labelCreation(p2, Color.BLUE, 28);
+        Label player2Label = ScreenUtils.createGlowingLabel(p2, Color.BLUE, 35);
+        player2Label.setStyle("-fx-border-color: blue; -fx-border-width: 2;");
         player2Label.setOnMouseClicked(e -> primaryStage.setScene(new UserProfileScreen(primaryStage, p2).getScene()));
 
         HBox centerBox = new HBox(80, player1Label, player2Label);
@@ -46,7 +48,7 @@ public class UserSelectScreen {
         root.setCenter(centerBox);
 
         // Main menu at bottom center
-        Label mainMenu = labelCreation("MAIN MENU", Color.WHITE, 20);
+        Label mainMenu = ScreenUtils.createGlowingLabel("MAIN MENU", Color.WHITE, 20);
         mainMenu.setOnMouseClicked(e -> primaryStage.setScene(new MainScreen(primaryStage).getScene()));
         VBox bottomBox = new VBox(mainMenu);
         bottomBox.setAlignment(Pos.CENTER);
@@ -59,8 +61,8 @@ public class UserSelectScreen {
     private Label labelCreation(String text, Color color, int fontSize) {
         Label label = new Label(text);
         label.setTextFill(color);
-        label.setFont(Font.font("Orbitron", fontSize));
-        label.setEffect(new DropShadow(5, color));
+        label.setFont(Font.font("Orbitron", FontWeight.BOLD, fontSize));
+        label.setEffect(ScreenUtils.createNeonGlow(color));
         return label;
     }
 

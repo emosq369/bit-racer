@@ -4,11 +4,12 @@ import com.example.javaproject2025.game.Bit;
 import com.example.javaproject2025.game.GamePhysics;
 import com.example.javaproject2025.game.Track;
 import com.example.javaproject2025.utils.ScreenUtils;
-import javafx.animation.AnimationTimer;
 import static com.example.javaproject2025.ui.LoginScreen.createText;
+import static com.example.javaproject2025.ui.MainScreen.createMenuLabel;
+
+import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.effect.Glow;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -17,9 +18,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.sql.SQLException;
-
-import static com.example.javaproject2025.ui.MainScreen.createMenuLabel;
-import static com.example.javaproject2025.ui.MainScreen.createNeonGlow;
 
 public class GameScreen  {
     // main root, holds all elements of the game.
@@ -46,7 +44,7 @@ public class GameScreen  {
         ScreenUtils.drawStars(root);
         mainMenuButton.setFont(Font.font("Orbitron", 16));
         mainMenuButton.setTextFill(Color.LIGHTGRAY);
-        mainMenuButton.setEffect(createNeonGlow(Color.LIGHTGRAY));
+        mainMenuButton.setEffect(ScreenUtils.createNeonGlow(Color.LIGHTGRAY));
         mainMenuButton.setTranslateX(480);
         mainMenuButton.setTranslateY(10);
         randomizeTurn();
