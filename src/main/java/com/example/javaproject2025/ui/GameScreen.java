@@ -87,9 +87,9 @@ public class GameScreen  {
                 if(!bitOneTurnTriggered){
                 }
                 switch (event.getCode()) {
-                    case A -> bit1.rotate(-5);  // Bit1 Rotate left
-                    case D -> bit1.rotate(5);   // Bit 1 Rotate right
-                    case S -> {
+                    case LEFT -> bit1.rotate(-5);  // Bit1 Rotate left
+                    case RIGHT -> bit1.rotate(5);   // Bit 1 Rotate right
+                    case UP -> {
                         bitOneScore += 1;
                         bit1.launch(10);
                         bit1.moved = true;
