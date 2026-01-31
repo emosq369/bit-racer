@@ -8,7 +8,7 @@ public class Bit {
     private Circle shape;
     private Line directionLine;
     private String name;
-    private double angle = 270; //in degrees, it goes clokwise instead of counter clock wise
+    private double angle = 270; //in degrees, it goes clockwise instead of counter clock wise
     //that's why it's 270 instead of 90 to point upwards
     public boolean launched = false;
     public boolean moved = false;

@@ -1,5 +1,6 @@
 package com.example.javaproject2025.ui;
 
+import com.example.javaproject2025.config.Db;
 import com.example.javaproject2025.utils.ScreenUtils;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -13,10 +14,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -71,26 +69,20 @@ public class GeneralScoresScreen {
 
         }
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost/bitracer", "root", "bitracerDB"
-            );
-            Statement stmt = connection.createStatement();
+        // Retrieving High Scores
+        String query =
+                "SELECT s.track, s.winner, s.score, s.loser " +
+                        "FROM scores s " +
+                        "JOIN ( " +
+                        "    SELECT track, MIN(score) AS best_score " +
+                        "    FROM scores " +
+                        "    GROUP BY track " +
+                        ") AS top_scores " +
+                        "ON s.track = top_scores.track AND s.score = top_scores.best_score";
 
-                            String query =
-                    "SELECT s.track, s.winner, s.score, s.loser " +
-                            "FROM scores s " +
-                            "JOIN ( " +
-                            "    SELECT track, MIN(score) AS best_score " +
-                            "    FROM scores " +
-                            "    GROUP BY track " +
-                            ") AS top_scores " +
-                            "ON s.track = top_scores.track AND s.score = top_scores.best_score";
-
-
-
-            ResultSet rs = stmt.executeQuery(query);
+        try (Connection connection = Db.get();
+             PreparedStatement ps = connection.prepareStatement(query);
+             ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 String track = rs.getString("track");
@@ -103,10 +95,10 @@ public class GeneralScoresScreen {
                 }
             }
 
-            connection.close();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
+
 
         // MAIN MENU
         Label mainMenu = ScreenUtils.createGlowingLabel("MAIN MENU", Color.WHITE, 20);

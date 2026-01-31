@@ -1,11 +1,9 @@
 package com.example.javaproject2025.game;
 
-import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Polyline;
-import static com.example.javaproject2025.utils.ScreenUtils.*;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +22,6 @@ public class Track {
             root.getChildren().add(line);
         }
     }
-
 
     public List<Line> getBoundaries() {
         return boundaries;

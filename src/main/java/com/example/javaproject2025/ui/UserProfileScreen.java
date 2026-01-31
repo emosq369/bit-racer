@@ -1,5 +1,6 @@
 package com.example.javaproject2025.ui;
 
+import com.example.javaproject2025.config.Db;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -75,45 +76,47 @@ public class UserProfileScreen {
             scoreLabels.put(key, scoreLabel);
         }
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/bitracer", "root", "bitracerDB");
+        try (Connection connection = Db.get()) {
+
 // Total wins
             String winsQuery = "SELECT COUNT(*) AS wins FROM scores WHERE winner = ?";
-            PreparedStatement winsStmt = connection.prepareStatement(winsQuery);
-            winsStmt.setString(1, username);
-            ResultSet winsRs = winsStmt.executeQuery();
-            if (winsRs.next()) {
-                totalWinsLabel.setText("WINS: " + winsRs.getInt("wins"));
+            try (PreparedStatement winsStmt = connection.prepareStatement(winsQuery)) {
+                winsStmt.setString(1, username);
+                try (ResultSet winsRs = winsStmt.executeQuery()) {
+                    if (winsRs.next()) {
+                        totalWinsLabel.setText("WINS: " + winsRs.getInt("wins"));
+                    }
+                }
             }
 
 // Total games (wins + losses)
             String gamesQuery = "SELECT COUNT(*) AS games FROM scores WHERE winner = ? OR loser = ?";
-            PreparedStatement gamesStmt = connection.prepareStatement(gamesQuery);
-            gamesStmt.setString(1, username);
-            gamesStmt.setString(2, username);
-            ResultSet gamesRs = gamesStmt.executeQuery();
-            if (gamesRs.next()) {
-                totalGamesLabel.setText("GAMES: " + gamesRs.getInt("games"));
+            try (PreparedStatement gamesStmt = connection.prepareStatement(gamesQuery)) {
+                gamesStmt.setString(1, username);
+                gamesStmt.setString(2, username);
+                try (ResultSet gamesRs = gamesStmt.executeQuery()) {
+                    if (gamesRs.next()) {
+                        totalGamesLabel.setText("GAMES: " + gamesRs.getInt("games"));
+                    }
+                }
             }
 
+            // Best scores per track
             String query = "SELECT track, MIN(score) AS best_score FROM scores WHERE winner = ? GROUP BY track";
-            PreparedStatement stmt = connection.prepareStatement(query);
+            try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, username);
-            ResultSet rs = stmt.executeQuery();
+           try (ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 String track = rs.getString("track");
                 int score = rs.getInt("best_score");
 
                 Label label = scoreLabels.get(track);
-                if (label != null) {
-                    label.setText(String.valueOf(score));
-                }
+                if (label != null) label.setText(String.valueOf(score));
             }
-
-            connection.close();
-        } catch (Exception e) {
+            }
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
             Label errorLabel = new Label("Error loading scores.");
             errorLabel.setTextFill(Color.RED);

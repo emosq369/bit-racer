@@ -3,6 +3,7 @@ package com.example.javaproject2025.ui;
 import java.sql.*;
 
 import com.example.javaproject2025.Session;
+import com.example.javaproject2025.config.Db;
 import com.example.javaproject2025.utils.ScreenUtils;
 import javafx.animation.FadeTransition;
 import javafx.scene.Scene;
@@ -151,7 +152,7 @@ public class LoginScreen {
                     incorrectPasswordDisplay.setVisible(true);
                     incorrectPasswordFade.play();
                 }
-            } catch (ClassNotFoundException | SQLException e) {
+            } catch (SQLException e) {
                 throw new RuntimeException(e);
             } finally {
                 if (usersLoggedIn == 2) {
@@ -209,7 +210,7 @@ public class LoginScreen {
                     shortUserNameDisplay.setVisible(true);
                     shortUserNameFade.play();
                 }
-            } catch (ClassNotFoundException | SQLException e) {
+            } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         });
@@ -232,52 +233,41 @@ public class LoginScreen {
         return scene;
     }
 
-    public int validateLogin(String username, String password) throws ClassNotFoundException, SQLException {
-        String userNameFromDatabase;
-        String userPasswordFromDatabase;
-        // setup database
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/bitracer", "root", "bitracerDB");
-        Statement statement = connection.createStatement();
-        ResultSet databaseQuery = statement.executeQuery(
-                "SELECT username, password FROM users WHERE username = '" + username + "'"
-        );
-
-        if (databaseQuery.next()) {
-            // check to see if the second user logging in is the same as the first one
-            if(userOne != null && usersLoggedIn == 1) {
-                if(userOne.equals(username)){
-                    return 4;
-                }
-            }
-
-            userNameFromDatabase = databaseQuery.getString(1);
-            userPasswordFromDatabase = databaseQuery.getString(2);
-
-            // if user does not enter anything, return invalid username error
-            if(username.isEmpty() || password.isEmpty()) {
-                return 2;
-            }
-
-            // if username exists, validate password with associated user
-            if (password.equals(userPasswordFromDatabase)) {
-                usersLoggedIn++;
-                if (usersLoggedIn == 1) {
-                    userOne = userNameFromDatabase;
-                } else if (usersLoggedIn == 2) {
-                    userTwo = userNameFromDatabase;
-                }
-                // if user signed in correctly, return one.
-                return 1;
-            } else {
-                // if the user exists but the password is wrong, return -1.
-                return -1;
-            }
+    public int validateLogin(String username, String password) throws SQLException {
+        if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
+            return 2; // empty input
         }
 
-        // if the user does not exist in the database, return 0.
-        return 0;
+        String sql = "SELECT username, password FROM users WHERE username = ?";
+
+        try (Connection connection = Db.get();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setString(1, username);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) return 0; // user not found
+
+                // check second user isn't the same as first
+                if (userOne != null && usersLoggedIn == 1 && userOne.equals(username)) {
+                    return 4;
+                }
+
+                String userNameFromDatabase = rs.getString("username");
+                String userPasswordFromDatabase = rs.getString("password");
+
+                if (password.equals(userPasswordFromDatabase)) {
+                    usersLoggedIn++;
+                    if (usersLoggedIn == 1) userOne = userNameFromDatabase;
+                    else if (usersLoggedIn == 2) userTwo = userNameFromDatabase;
+                    return 1;
+                } else {
+                    return -1;
+                }
+            }
+        }
     }
+
 
     public static Text createText(String text, int fontSize, Color color, int x, int y) {
         Text createText = new Text(text);
@@ -291,41 +281,28 @@ public class LoginScreen {
         return createText;
     }
 
-    public int createAccount(String usernameFromInput, String passwordFromInput) throws ClassNotFoundException, SQLException {
-        try {
+    public int createAccount(String usernameFromInput, String passwordFromInput) throws SQLException {
+        if (usernameFromInput == null || usernameFromInput.isEmpty()) return 2;
 
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/bitracer", "root", "bitracerDB");
+        String sql = "INSERT INTO users (username, password) VALUES (?, ?)";
 
-            // validate length
-            if(usernameFromInput.length() > 0){
-                String query = "INSERT INTO users (username, password) VALUES (?, ?)";
-                PreparedStatement ps = connection.prepareStatement(query);
-                ps.setString(1, usernameFromInput);
-                ps.setString(2, passwordFromInput);
-                ps.executeUpdate();
+        try (Connection connection = Db.get();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
 
-            }
-            else{
-                // return if user does not enter anything into username field
-                return 2;
-            }
+            ps.setString(1, usernameFromInput);
+            ps.setString(2, passwordFromInput);
+            ps.executeUpdate();
+            return 0;
 
-
-        } catch (SQLException e) {
-            if (e instanceof SQLIntegrityConstraintViolationException) {
-                // if duplicate found
-                duplicateFoundDisplay.setVisible(true);
-                duplicateFoundDisplay.setFont(Font.font("Orbitron", 20));
-                duplicateFoundDisplay.setFill(Color.RED);
-                duplicateFoundDisplay.setX(165);
-                duplicateFoundDisplay.setY(550);
-                return 1;
-            }
+        } catch (SQLIntegrityConstraintViolationException dup) {
+            duplicateFoundDisplay.setVisible(true);
+            duplicateFoundDisplay.setFont(Font.font("Orbitron", 20));
+            duplicateFoundDisplay.setFill(Color.RED);
+            duplicateFoundDisplay.setX(165);
+            duplicateFoundDisplay.setY(550);
+            return 1;
         }
-
-        // if no duplicate found, insert into table
-        return 0;
     }
+
 }
 

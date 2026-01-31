@@ -1,5 +1,6 @@
 package com.example.javaproject2025.ui;
 
+import com.example.javaproject2025.config.Db;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -74,21 +75,22 @@ public class WinnerScreen {
         scoreDisplay.setVisible(true);
     }
 
+    public void sendScoreToDatabase() throws SQLException {
+    String sql = "INSERT INTO scores (winner, score, track, loser) VALUES (?, ?, ?, ?)";
 
-    public void sendScoreToDatabase() throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/bitracer", "root", "bitracerDB");
-        Statement statement = connection.createStatement();
-        PreparedStatement ps;
-        String insertScoreStatement = "INSERT INTO scores (winner, score, track, loser) VALUES (?, ?, ?, ?)";
-        ps = connection.prepareStatement(insertScoreStatement);
+    try (Connection connection = Db.get();
+         PreparedStatement ps = connection.prepareStatement(sql)) {
+
         ps.setString(1, winnerUsername);
         ps.setInt(2, winnerScore);
         ps.setString(3, trackName);
-        ps.setString(4, winnerUsername.equals(userOneUsername) ? userTwoUsername : userOneUsername);
-        ps.executeUpdate();
 
+        String loser = winnerUsername.equals(userOneUsername) ? userTwoUsername : userOneUsername;
+        ps.setString(4, loser);
+
+        ps.executeUpdate();
     }
+}
 
     public Scene getScene() {
         return scene;
